@@ -1,0 +1,15 @@
+{
+  "name": "qr-code-generator",
+  "version": "1.0.0",
+  "description": "A simple Node.js QR code generator — turns any text or URL into a PNG image.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["qrcode", "node", "cli"],
+  "license": "MIT",
+  "dependencies": {
+    "qrcode": "^1.5.3"
+  }
+}

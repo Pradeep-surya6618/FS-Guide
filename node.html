@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Node.js guide — run JavaScript outside the browser: modules, npm & package.json, the file system, environment variables, the event loop, and building a tiny HTTP server." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Node.js · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Node.js</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>Node.js</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Node.js</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Node basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#what" data-title="What is Node"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M12 22V12M3 7l9 5 9-5"/></svg></span> What is Node</a>
+          <a class="nav-link" href="#running" data-title="Running scripts"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span> Running scripts</a>
+          <a class="nav-link" href="#modules" data-title="Modules"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M7.5 4.2 12 6.8l4.5-2.6"/></svg></span> Modules</a>
+          <a class="nav-link" href="#npm" data-title="npm & package.json"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10v10h-3V10h-2v7H7z"/></svg></span> npm &amp; package.json</a>
+          <a class="nav-link" href="#fs" data-title="File system"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span> File system</a>
+          <a class="nav-link" href="#env" data-title="Environment variables"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span> Env variables</a>
+          <a class="nav-link" href="#event-loop" data-title="The event loop"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span> The event loop</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="A tiny HTTP server"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01"/></svg></span> A tiny server</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">BACKEND · 01</span>
+        <h2 class="section-title">Node.js</h2>
+        <p class="section-sub">Until now, your JavaScript ran in the browser. <strong>Node.js</strong> lets it run <em>anywhere</em> — on a server, your laptop, the cloud. That's how JavaScript builds backends: APIs, databases, tools, the lot.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🚀</div>
+          <div><div class="ctitle">JavaScript, set free</div><p>The browser was a cage — JS could only touch the page. Node took the same engine (Google's <strong>V8</strong>) out of the browser and gave it access to files, networks and the operating system. Same language, a whole new job.</p></div>
+        </div>
+        <p>This guide builds on <a href="javascript.html">JavaScript</a>. After it, <a href="express.html">Express</a> makes building servers easy, and <a href="mongodb.html">MongoDB</a> stores your data.</p>
+      </section>
+
+      <!-- WHAT -->
+      <section class="section reveal" id="what">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">What is Node.js?</h2>
+        <p class="section-sub">Node is a <strong>runtime</strong> — a program that runs JavaScript outside the browser. It's not a language or a framework; it's the engine plus a standard library for talking to files, networks and more.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">🌐</div>
+            <h4>Browser JS</h4>
+            <p>Runs in a tab. Can touch the DOM, but <strong>not</strong> your files or the network freely. For the user interface.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-mint">🖥️</div>
+            <h4>Node JS</h4>
+            <p>Runs on a machine. <strong>No DOM</strong>, but full access to files, databases and the network. For servers &amp; tools.</p>
+          </div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Check your install</div><p>Download from <code class="inline">nodejs.org</code> (the LTS version). Then in a terminal, <code class="inline">node -v</code> and <code class="inline">npm -v</code> should print version numbers — <code class="inline">npm</code> comes bundled with Node.</p></div>
+        </div>
+      </section>
+
+      <!-- RUNNING -->
+      <section class="section reveal" id="running">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Running scripts</h2>
+        <p class="section-sub">A Node program is just a <code class="inline">.js</code> file you run with the <code class="inline">node</code> command. No browser, no HTML — output goes to the terminal.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">app.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const name = "Node";
+console.log(`Hello from ${name}!`);
+
+// Node-only globals exist here:
+console.log("Running file:", __filename);
+console.log("Args:", process.argv.slice(2));</code></pre>
+        </div>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>node app.js          # run it
+node app.js hello 5  # pass arguments (read via process.argv)</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">New globals</div><p>In Node there's no <code class="inline">window</code> or <code class="inline">document</code>. Instead you get <code class="inline">process</code> (info about the running program), <code class="inline">__dirname</code>/<code class="inline">__filename</code> (where the file lives), and built-in modules you import.</p></div>
+        </div>
+      </section>
+
+      <!-- MODULES -->
+      <section class="section reveal" id="modules">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">Modules</h2>
+        <p class="section-sub">Big programs are split into <strong>modules</strong> — separate files that <code class="inline">export</code> things and <code class="inline">import</code> what they need. Node has two syntaxes; both are common.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">math.js → app.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// ---- ES Modules (modern — add "type":"module" to package.json) ----
+// math.js
+export function add(a, b) { return a + b; }
+
+// app.js
+import { add } from "./math.js";
+console.log(add(2, 3));   // 5
+
+// ---- CommonJS (the classic Node style) ----
+// math.js
+function add(a, b) { return a + b; }
+module.exports = { add };
+
+// app.js
+const { add } = require("./math.js");</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Kind</th><th>Import</th><th>Export</th></tr></thead>
+            <tbody>
+              <tr><td>ES Modules</td><td><code>import { x } from "..."</code></td><td><code>export ...</code></td></tr>
+              <tr><td>CommonJS</td><td><code>const x = require("...")</code></td><td><code>module.exports = ...</code></td></tr>
+              <tr><td>Built-in</td><td><code>import fs from "node:fs"</code></td><td>(provided by Node)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- NPM -->
+      <section class="section reveal" id="npm">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">npm &amp; package.json</h2>
+        <p class="section-sub"><strong>npm</strong> (Node Package Manager) installs open-source libraries — there are millions. <code class="inline">package.json</code> is your project's manifest: its name, scripts, and the list of packages it depends on.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">npm commands<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm init -y           # create package.json (the -y accepts defaults)
+npm install express   # add a package (saved to dependencies)
+npm install           # install everything package.json lists
+npm run dev           # run a script you defined</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">package.json<span class="lang">json</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>{
+  "name": "my-app",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "express": "^4.19.0"
+  }
+}</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">node_modules is huge — ignore it</div><p>Installed packages live in <code class="inline">node_modules/</code>. Never commit it — add it to <code class="inline">.gitignore</code> (see the <a href="git.html">Git guide</a>). Anyone can recreate it with <code class="inline">npm install</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- FILE SYSTEM -->
+      <section class="section reveal" id="fs">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">The file system module</h2>
+        <p class="section-sub">Node's built-in <code class="inline">fs</code> module reads and writes files — something browser JS can never do. It's how you'd save data without a database.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">files.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import fs from "node:fs";
+
+// write a file
+fs.writeFileSync("note.txt", "Hello, disk!");
+
+// read it back
+const text = fs.readFileSync("note.txt", "utf-8");
+console.log(text);   // "Hello, disk!"
+
+// save data as JSON
+const data = { user: "Ada", score: 10 };
+fs.writeFileSync("data.json", JSON.stringify(data, null, 2));</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Sync vs async</div><p>The <code class="inline">...Sync</code> versions are simplest to learn — they pause until done. Real servers prefer the async versions (with callbacks or <code class="inline">fs.promises</code>) so they don't block while waiting on the disk.</p></div>
+        </div>
+      </section>
+
+      <!-- ENV -->
+      <section class="section reveal" id="env">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">Environment variables</h2>
+        <p class="section-sub">Secrets and settings — API keys, database URLs, the port number — shouldn't be hard-coded. They live in <strong>environment variables</strong>, read through <code class="inline">process.env</code>.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">.env<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>PORT=3000
+DATABASE_URL=mongodb+srv://...
+API_KEY=super-secret-value</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">app.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import "dotenv/config";   // loads the .env file (npm i dotenv)
+
+const port = process.env.PORT || 3000;
+const key  = process.env.API_KEY;
+
+console.log("Starting on port", port);</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🔑</div>
+          <div><div class="ctitle">.env is secret</div><p>Always add <code class="inline">.env</code> to <code class="inline">.gitignore</code> so your keys never reach GitHub. Share a <code class="inline">.env.example</code> (with blank values) so teammates know which variables to set.</p></div>
+        </div>
+      </section>
+
+      <!-- EVENT LOOP -->
+      <section class="section reveal" id="event-loop">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">The event loop</h2>
+        <p class="section-sub">Node is <strong>single-threaded</strong> but handles thousands of requests at once. The trick is the <strong>event loop</strong>: instead of waiting around for slow things (disk, network), Node starts them, moves on, and runs your callback when they finish.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">async.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>console.log("1 — start");
+
+setTimeout(() =&gt; console.log("3 — later (after the timer)"), 0);
+
+console.log("2 — end");
+
+// Output order:  1, 2, 3
+// The slow/async work runs AFTER the main code finishes.</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Why it matters</div><p>This non-blocking model is why Node is great for APIs and real-time apps: while one request waits on a database, Node serves others. It's the same <code class="inline">async/await</code> idea from the <a href="javascript.html">JS guide</a>, working server-side.</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">A tiny HTTP server</h2>
+        <p class="section-sub">Build a working web server with <strong>zero libraries</strong> — just Node's built-in <code class="inline">http</code> module. It listens on a port and answers requests with JSON.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">What it shows off</div><p>Importing a built-in module, reading the request URL, sending a response with headers and a status code — the raw version of what <a href="express.html">Express</a> makes effortless next.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> server.js</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import http from "node:http";
+
+const server = http.createServer((req, res) =&gt; {
+  // req = the incoming request, res = how we reply
+
+  if (req.url === "/" &amp;&amp; req.method === "GET") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Hello from Node!" }));
+  } else if (req.url === "/time") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ now: new Date().toISOString() }));
+  } else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "Not found" }));   // any other URL
+  }
+});
+
+const PORT = 3000;
+server.listen(PORT, () =&gt; {
+  console.log(`Server running at http://localhost:${PORT}`);
+});</code></pre>
+        </div>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">run it<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>node server.js
+# then open http://localhost:3000 in your browser
+# or http://localhost:3000/time</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><code class="inline">http.createServer</code> runs your function for <em>every</em> request.</div></div>
+          <div class="kp"><span class="check">✓</span><div>You set the status code &amp; headers, then <code class="inline">res.end()</code> with the body.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Routing by hand (checking <code class="inline">req.url</code>) gets tedious — that's exactly the problem Express solves.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>You built a server the hard way. Now do it the easy way with <a href="express.html"><strong>Express</strong></a> — clean routes, JSON parsing, middleware — then store real data in <a href="mongodb.html">MongoDB</a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="api.html" class="prev"><span class="dir">← Related</span><span class="ttl">APIs &amp; REST</span></a>
+          <a href="express.html" class="next"><span class="dir">Next guide →</span><span class="ttl">Express.js</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Node.js complete</span>
+            <h3 class="foot-title">JavaScript on the <span class="grad">server</span></h3>
+            <p class="foot-lead">Modules, npm, files, env vars, the event loop, a raw server. Next: Express makes it elegant.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="express.html">Continue to Express
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

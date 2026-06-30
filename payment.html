@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Payments guide with Razorpay — how online payments work, getting API keys, creating an order on the backend, opening Razorpay Checkout, verifying the signature, webhooks, and going live." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Payments · Razorpay · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Payments</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>Payments</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Payments</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Payments</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#how" data-title="How payments work"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span> How it works</a>
+          <a class="nav-link" href="#keys" data-title="Account & keys"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M16 7l3 3M18 5l3 3"/></svg></span> Account &amp; keys</a>
+          <a class="nav-link" href="#order" data-title="Create an order"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg></span> Create an order</a>
+          <a class="nav-link" href="#checkout" data-title="Razorpay Checkout"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span> Checkout</a>
+          <a class="nav-link" href="#verify" data-title="Verify the signature"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span> Verify signature</a>
+          <a class="nav-link" href="#webhooks" data-title="Webhooks"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-9.3-5M3 12a6 6 0 0 0 9.3 5M12 8v8"/><circle cx="12" cy="12" r="2"/></svg></span> Webhooks</a>
+          <a class="nav-link" href="#go-live" data-title="Going live"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span> Going live</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="A Pay button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> A Pay button</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">PAYMENTS · 01</span>
+        <h2 class="section-title">Accepting payments with Razorpay</h2>
+        <p class="section-sub">Taking money online sounds scary, but a <strong>payment gateway</strong> like <strong>Razorpay</strong> (or Stripe) does the hard, regulated parts. You never touch card numbers — you just create an order, open their secure checkout, and verify the result.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🏦</div>
+          <div><div class="ctitle">The gateway is the cashier</div><p>You don't handle cash or count change — the cashier (Razorpay) does. You just tell them the amount and they tell you, securely, whether the payment went through.</p></div>
+        </div>
+        <p>This guide uses <a href="node.html">Node</a> + <a href="express.html">Express</a> for the backend. The card details never reach your server — that's what keeps you safe and PCI-compliant.</p>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section reveal" id="how">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">How online payments work</h2>
+        <p class="section-sub">There are three parties: your <strong>frontend</strong>, your <strong>backend</strong>, and <strong>Razorpay</strong>. The key idea: anything involving the secret key or real money happens on your backend, never the browser.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">the payment flow<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>1. Frontend: user clicks "Pay ₹500"
+2. Backend:  creates an ORDER with Razorpay → returns an order_id
+3. Frontend: opens Razorpay CHECKOUT with that order_id
+4. User pays on Razorpay's secure popup (cards never touch your server)
+5. Razorpay returns a payment_id + signature to the frontend
+6. Backend:  VERIFIES the signature → marks the order paid ✅</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Why an order first?</div><p>Creating the order server-side fixes the amount so the user can't tamper with it in the browser. The final signature check (step 6) proves the payment is genuine and unaltered.</p></div>
+        </div>
+      </section>
+
+      <!-- KEYS -->
+      <section class="section reveal" id="keys">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Account &amp; API keys</h2>
+        <p class="section-sub">Sign up at <code class="inline">razorpay.com</code>, switch to <strong>Test Mode</strong>, and grab your keys from <em>Settings → API Keys</em>. You get two: a public <strong>Key ID</strong> and a secret <strong>Key Secret</strong>.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">.env<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxx     # public — safe in the frontend
+RAZORPAY_KEY_SECRET=yyyyyyyyyyyyyyyy    # SECRET — backend only, never expose</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Key</th><th>Where it's used</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Key ID</strong> (<code>rzp_test_…</code>)</td><td>Public — sent to the browser to open checkout</td></tr>
+              <tr><td><strong>Key Secret</strong></td><td>Private — only on your backend, for creating orders &amp; verifying</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🔑</div>
+          <div><div class="ctitle">The secret is sacred</div><p>The Key Secret must live only in <code class="inline">.env</code> on your server. If it leaks, anyone can forge payments. Use <strong>Test Mode</strong> keys (and the test card <code class="inline">4111 1111 1111 1111</code>) until you're ready to go live.</p></div>
+        </div>
+      </section>
+
+      <!-- ORDER -->
+      <section class="section reveal" id="order">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">Creating an order (backend)</h2>
+        <p class="section-sub">Your server asks Razorpay to create an order for a set amount. Amounts are in the <strong>smallest unit</strong> — paise for ₹, so ₹500 is <code class="inline">50000</code>.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">install<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install razorpay</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">order.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const Razorpay = require("razorpay");
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+app.post("/create-order", async (req, res) =&gt; {
+  const order = await razorpay.orders.create({
+    amount: 50000,      // ₹500 in paise
+    currency: "INR",
+    receipt: "receipt_001",
+  });
+  res.json(order);      // contains order.id — send it to the frontend
+});</code></pre>
+        </div>
+      </section>
+
+      <!-- CHECKOUT -->
+      <section class="section reveal" id="checkout">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">Opening Razorpay Checkout</h2>
+        <p class="section-sub">The frontend loads Razorpay's script, gets an order from your backend, and opens the secure payment popup. Razorpay handles the card form, OTP, UPI — everything.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;button id="pay"&gt;Pay ₹500&lt;/button&gt;
+&lt;script src="https://checkout.razorpay.com/v1/checkout.js"&gt;&lt;/script&gt;
+&lt;script src="pay.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">pay.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>document.getElementById("pay").addEventListener("click", async () =&gt; {
+  // 1. ask YOUR backend to create an order
+  const res = await fetch("/create-order", { method: "POST" });
+  const order = await res.json();
+
+  // 2. configure &amp; open Razorpay's checkout popup
+  const rzp = new Razorpay({
+    key: "rzp_test_xxxxxxxxxx",   // your PUBLIC Key ID
+    order_id: order.id,
+    amount: order.amount,
+    name: "My Store",
+    handler: function (response) {
+      // 3. payment done — send the result to the backend to verify
+      fetch("/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(response),
+      });
+    },
+  });
+  rzp.open();
+});</code></pre>
+        </div>
+      </section>
+
+      <!-- VERIFY -->
+      <section class="section reveal" id="verify">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Verifying the signature</h2>
+        <p class="section-sub">After payment, Razorpay sends back three things. Your backend recomputes the signature with your <em>secret</em> and checks it matches — proving the payment is real and untampered. <strong>Never skip this.</strong></p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">verify.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const crypto = require("crypto");
+
+app.post("/verify", (req, res) =&gt; {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+  // recompute the signature: HMAC-SHA256 of "order_id|payment_id"
+  const expected = crypto
+    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest("hex");
+
+  if (expected === razorpay_signature) {
+    // ✅ genuine — now mark the order paid in your database
+    res.json({ status: "success" });
+  } else {
+    res.status(400).json({ status: "failed" });   // tampered or fake
+  }
+});</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Trust the signature, not the browser</div><p>Never mark an order paid just because the frontend said so — the browser can be faked. Only the server-side signature check (computed with your secret) is trustworthy.</p></div>
+        </div>
+      </section>
+
+      <!-- WEBHOOKS -->
+      <section class="section reveal" id="webhooks">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">Webhooks</h2>
+        <p class="section-sub">What if the user closes the tab right after paying? Your <code class="inline">handler</code> never runs. <strong>Webhooks</strong> fix this: Razorpay calls <em>your</em> server directly when a payment succeeds — a reliable, browser-independent confirmation.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">webhook.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// Razorpay POSTs here when events happen (set the URL in the dashboard)
+app.post("/webhook", (req, res) =&gt; {
+  const event = req.body.event;   // e.g. "payment.captured"
+
+  if (event === "payment.captured") {
+    // update your database — the payment is confirmed
+  }
+  res.json({ received: true });   // always 200 so Razorpay stops retrying
+});</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">A server-to-server callback</div><p>A webhook is just an <a href="api.html">API</a> endpoint <em>you</em> expose for Razorpay to call. It also carries a signature you should verify, exactly like the checkout response.</p></div>
+        </div>
+      </section>
+
+      <!-- GO LIVE -->
+      <section class="section reveal" id="go-live">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">Going live</h2>
+        <p class="section-sub">When your test flow works end-to-end, switch from Test to Live mode.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Complete Razorpay's <strong>KYC</strong> (business verification) to activate Live mode.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Swap test keys (<code class="inline">rzp_test_…</code>) for <strong>live keys</strong> (<code class="inline">rzp_live_…</code>) in your <code class="inline">.env</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Serve everything over <strong>HTTPS</strong> and set your live <strong>webhook URL</strong>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Always <strong>verify signatures</strong> server-side before fulfilling an order.</div></div>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🔒</div>
+          <div><div class="ctitle">Security recap</div><p>Secret key on the backend only · amount fixed server-side via the order · signature verified before fulfilment · HTTPS everywhere. Get those four right and you're solid.</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">A working "Pay" button</h2>
+        <p class="section-sub">Wire the whole flow together: a button that creates an order, opens checkout, and verifies the result. Use Test Mode and the test card — no real money moves.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">Three files</div><p>A backend (<code class="inline">/create-order</code> + <code class="inline">/verify</code>), a button page, and the test card <code class="inline">4111 1111 1111 1111</code> with any future expiry &amp; any CVV.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> server.js (backend)</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>require("dotenv/config");
+const express = require("express");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
+
+const app = express();
+app.use(express.json());
+app.use(express.static("public"));   // serve the button page
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+// 1. create an order
+app.post("/create-order", async (req, res) =&gt; {
+  const order = await razorpay.orders.create({ amount: 50000, currency: "INR" });
+  res.json(order);
+});
+
+// 2. verify the payment
+app.post("/verify", (req, res) =&gt; {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+  const expected = crypto
+    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest("hex");
+
+  res.json({ status: expected === razorpay_signature ? "success" : "failed" });
+});
+
+app.listen(3000, () =&gt; console.log("http://localhost:3000"));</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>The browser only ever sees the <strong>public</strong> Key ID and the order id.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The amount is set on the server, so it can't be tampered with.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The <code class="inline">/verify</code> signature check is the gate before you'd save "paid".</div></div>
+          <div class="kp"><span class="check">✓</span><div>Frontend code is the <a href="#checkout">Checkout</a> snippet above — together they're a full payment.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>You've covered the whole stack — front end, back end, database, auth and payments. Bring it together in the <a href="fullstack.html"><strong>Full-Stack capstone</strong></a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="authentication.html" class="prev"><span class="dir">← Previous</span><span class="ttl">Authentication</span></a>
+          <a href="fullstack.html" class="next"><span class="dir">Capstone →</span><span class="ttl">Full Stack Guide</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Payments complete</span>
+            <h3 class="foot-title">Take <span class="grad">payments</span> safely</h3>
+            <p class="foot-lead">Orders, checkout, signature verification, webhooks, going live. The last piece of a real product.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="fullstack.html">Build the full stack
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

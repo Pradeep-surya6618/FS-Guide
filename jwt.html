@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="JWT guide — JSON Web Tokens explained: structure (header.payload.signature), signing & verifying with jsonwebtoken, where to store tokens, auth middleware, protecting routes, and token expiry & refresh." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>JWT · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>JWT</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>JWT</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>JWT</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">JWT basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#what" data-title="What a JWT is"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> What a JWT is</a>
+          <a class="nav-link" href="#structure" data-title="header.payload.signature"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="9.5" y="4" width="5" height="16" rx="1"/><rect x="16" y="4" width="5" height="16" rx="1"/></svg></span> Token structure</a>
+          <a class="nav-link" href="#flow" data-title="How JWT auth works"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span> How it works</a>
+          <a class="nav-link" href="#sign" data-title="Signing a token"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18z"/><path d="M2 2l7.6 7.6"/><circle cx="11" cy="11" r="2"/></svg></span> Signing</a>
+          <a class="nav-link" href="#verify" data-title="Verifying a token"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span> Verifying</a>
+          <a class="nav-link" href="#middleware" data-title="Auth middleware & routes"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> Middleware</a>
+          <a class="nav-link" href="#storage" data-title="Where to store tokens"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span> Storing tokens</a>
+          <a class="nav-link" href="#expiry" data-title="Expiry & refresh"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></span> Expiry &amp; refresh</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="Token-protected route"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> Protected route</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">SECURITY · 01</span>
+        <h2 class="section-title">JWT — JSON Web Tokens</h2>
+        <p class="section-sub">A <strong>JWT</strong> is a signed, self-contained token that proves who a user is. After login, the server hands one out; the user sends it back on every request, and the server trusts it because of its signature. It's the modern way to keep APIs logged in.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🎟️</div>
+          <div><div class="ctitle">A festival wristband</div><p>At the gate you show ID once and get a tamper-proof wristband. Inside, staff just glance at the band — they don't re-check your ID. A JWT is that wristband: proof you already authenticated, that any part of the system can verify at a glance.</p></div>
+        </div>
+        <p>This guide pairs with <a href="authentication.html">Authentication</a> (login, hashing, cookies vs sessions). Here we focus on the token itself.</p>
+      </section>
+
+      <!-- WHAT -->
+      <section class="section reveal" id="what">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">What a JWT is</h2>
+        <p class="section-sub">JWT stands for <strong>JSON Web Token</strong>. It's a string that packs some data (your identity) plus a <strong>signature</strong> the server can check. The magic: it's <em>tamper-evident</em> — change one character and the signature no longer matches.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Self-contained</strong> — it carries the user's info, so the server needn't store a session.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Signed, not encrypted</strong> — anyone can read it, but no one can forge it without the secret.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Stateless</strong> — perfect for APIs and multiple servers; just verify the signature.</div></div>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Readable ≠ secret</div><p>A JWT is only <em>encoded</em> (Base64), not encrypted — anyone can decode and read the payload. So <strong>never put secrets</strong> (passwords, card numbers) inside it. Store only an id and maybe a role.</p></div>
+        </div>
+      </section>
+
+      <!-- STRUCTURE -->
+      <section class="section reveal" id="structure">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">header.payload.signature</h2>
+        <p class="section-sub">A JWT is three Base64 chunks joined by dots. You'll recognise one instantly by those two dots.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a JWT<span class="lang">token</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>eyJhbGciOiJIUzI1NiJ9 . eyJpZCI6IjQyIiwicm9sZSI6InVzZXIifQ . 4pq7s-Xb...
+└──── HEADER ────────┘ └──────── PAYLOAD ──────────────┘ └─ SIGNATURE ─┘</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Part</th><th>Holds</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Header</strong></td><td>The token type &amp; signing algorithm, e.g. <code>{ "alg": "HS256" }</code></td></tr>
+              <tr><td><strong>Payload</strong></td><td>The <em>claims</em> — your data: <code>{ "id": "42", "role": "user", "exp": ... }</code></td></tr>
+              <tr><td><strong>Signature</strong></td><td>Header + payload, hashed with your <strong>secret key</strong>. This is what makes it forge-proof.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">See inside one</div><p>Paste any token into <code class="inline">jwt.io</code> to see its decoded header and payload. You'll see the data in plain sight — proof it's encoded, not encrypted.</p></div>
+        </div>
+      </section>
+
+      <!-- FLOW -->
+      <section class="section reveal" id="flow">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">How JWT auth works</h2>
+        <p class="section-sub">The whole lifecycle, end to end.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">the token lifecycle<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>1. POST /login (email + password)
+2. Server checks credentials, then SIGNS a token   ──▶  sends it back
+3. Client stores the token
+4. For each protected request, client sends:
+       Authorization: Bearer &lt;token&gt;
+5. Server VERIFIES the signature → trusts the payload → allows the request
+   (no database lookup needed — the token IS the proof)</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">The "Bearer" convention</div><p>Tokens travel in the <code class="inline">Authorization</code> header as <code class="inline">Bearer &lt;token&gt;</code>. "Bearer" just means "whoever holds this token is granted access" — so guard it like a key.</p></div>
+        </div>
+      </section>
+
+      <!-- SIGNING -->
+      <section class="section reveal" id="sign">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">Signing a token</h2>
+        <p class="section-sub">Use the <code class="inline">jsonwebtoken</code> library. <code class="inline">jwt.sign()</code> takes your payload, a secret, and options like expiry, and returns the token string.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">install<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install jsonwebtoken</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">sign.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const jwt = require("jsonwebtoken");
+
+// after a successful login:
+const token = jwt.sign(
+  { id: user._id, role: user.role },   // the payload (keep it small!)
+  process.env.JWT_SECRET,              // the secret — from .env, never hard-coded
+  { expiresIn: "1h" }                  // auto-expires in an hour
+);
+
+res.json({ token });   // send it to the client</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🔑</div>
+          <div><div class="ctitle">The secret is everything</div><p>Anyone with <code class="inline">JWT_SECRET</code> can forge valid tokens for any user. Make it long and random, keep it in <code class="inline">.env</code>, and never commit it.</p></div>
+        </div>
+      </section>
+
+      <!-- VERIFYING -->
+      <section class="section reveal" id="verify">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Verifying a token</h2>
+        <p class="section-sub">On each protected request, <code class="inline">jwt.verify()</code> checks the signature and expiry. If valid, it returns the payload; if not, it throws — so wrap it in <code class="inline">try/catch</code>.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">verify.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>try {
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(payload.id);    // "42" — we trust this now
+} catch (err) {
+  // thrown if the signature is wrong OR the token has expired
+  console.log("Invalid or expired token");
+}</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">No database needed</div><p>Verification is pure maths on the token + secret — that's why JWT scales so well. The server doesn't look anything up; the valid signature <em>is</em> the proof.</p></div>
+        </div>
+      </section>
+
+      <!-- MIDDLEWARE -->
+      <section class="section reveal" id="middleware">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">Auth middleware &amp; protecting routes</h2>
+        <p class="section-sub">Wrap verification in an <a href="express.html">Express middleware</a> so any route can be protected by simply adding it.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">auth.middleware.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const jwt = require("jsonwebtoken");
+
+function auth(req, res, next) {
+  // header looks like: "Authorization: Bearer eyJhbGci..."
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "No token" });
+
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);  // attach the payload
+    next();                                                 // let it through
+  } catch {
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+}
+
+module.exports = auth;
+
+// usage — protect any route:
+app.get("/profile", auth, (req, res) =&gt; {
+  res.json({ id: req.user.id });   // available because middleware set it
+});</code></pre>
+        </div>
+      </section>
+
+      <!-- STORAGE -->
+      <section class="section reveal" id="storage">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">Where to store tokens</h2>
+        <p class="section-sub">Once the client has a token, where does it keep it? Two options, each with a trade-off — this is one of the most-debated questions in web auth.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">💾</div>
+            <h4>localStorage</h4>
+            <p>Easy: save it, add it to the <code class="inline">Authorization</code> header yourself. But <strong>any script can read it</strong> — risky if your site has an XSS hole.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-mint">🍪</div>
+            <h4>HttpOnly cookie</h4>
+            <p>The browser sends it automatically and JS <em>can't</em> read it (safer from XSS). Needs <code class="inline">Secure</code> + <code class="inline">SameSite</code> to guard against CSRF.</p>
+          </div>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">client.js (localStorage approach)<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// after login — save the token
+localStorage.setItem("token", data.token);
+
+// on each request — send it in the header
+fetch("/api/profile", {
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+});</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Rule of thumb</div><p>For maximum safety, store tokens in an <strong>HttpOnly cookie</strong>. <code class="inline">localStorage</code> is simpler and fine for learning projects — just be aware of the XSS trade-off. (More on cookies vs sessions in the <a href="authentication.html">Auth guide</a>.)</p></div>
+        </div>
+      </section>
+
+      <!-- EXPIRY -->
+      <section class="section reveal" id="expiry">
+        <span class="section-kicker k-1">09</span>
+        <h2 class="section-title">Token expiry &amp; refresh</h2>
+        <p class="section-sub">Tokens should expire — a stolen one shouldn't work forever. But short expiry means users get logged out often. The fix: two tokens.</p>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Token</th><th>Lives</th><th>Job</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Access token</strong></td><td>Short (~15 min)</td><td>Sent on every request; if stolen, it expires fast.</td></tr>
+              <tr><td><strong>Refresh token</strong></td><td>Long (days)</td><td>Stored securely; used only to get a new access token.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">refresh.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const accessToken  = jwt.sign({ id }, SECRET, { expiresIn: "15m" });
+const refreshToken = jwt.sign({ id }, REFRESH_SECRET, { expiresIn: "7d" });
+
+// when the access token expires, the client calls /refresh
+// with the refresh token to get a fresh access token —
+// no need to log in again.</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Logout is the catch</div><p>Because JWTs are stateless, you can't truly "delete" one server-side — it's valid until it expires. Real logout means deleting it client-side and/or keeping a small server-side <em>denylist</em> of revoked refresh tokens.</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">A token-protected route</h2>
+        <p class="section-sub">A tiny but complete example: a <code class="inline">/login</code> that issues a JWT, and a <code class="inline">/secret</code> route only reachable with a valid one. Run it, then test with curl.</p>
+
+        <h3><span class="h3-ico">⚙️</span> server.js</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>require("dotenv/config");
+const express = require("express");
+const jwt = require("jsonwebtoken");
+
+const app = express();
+app.use(express.json());
+const SECRET = process.env.JWT_SECRET;
+
+// LOGIN — (skipping password checks for brevity; see the Auth guide)
+app.post("/login", (req, res) =&gt; {
+  const token = jwt.sign({ id: 42, name: "Ada" }, SECRET, { expiresIn: "1h" });
+  res.json({ token });
+});
+
+// MIDDLEWARE — verify the token
+function auth(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "No token" });
+  try {
+    req.user = jwt.verify(token, SECRET);
+    next();
+  } catch {
+    res.status(401).json({ error: "Invalid token" });
+  }
+}
+
+// PROTECTED route
+app.get("/secret", auth, (req, res) =&gt; {
+  res.json({ message: `Welcome, ${req.user.name}! 🎉` });
+});
+
+app.listen(3000, () =&gt; console.log("http://localhost:3000"));</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🧪</span> Try it</h3>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">test.sh<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># 1. log in → get a token
+curl -X POST http://localhost:3000/login
+
+# 2. call /secret WITHOUT a token → 401
+curl http://localhost:3000/secret
+
+# 3. call /secret WITH the token → success
+curl http://localhost:3000/secret \
+  -H "Authorization: Bearer PASTE_TOKEN_HERE"</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><code class="inline">/login</code> signs a token; the client keeps it.</div></div>
+          <div class="kp"><span class="check">✓</span><div>No token → <code class="inline">401</code>. Valid token → the protected data.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The server stored nothing — the token alone proved the identity.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>Combine this with password hashing and a real user model in the <a href="authentication.html"><strong>Authentication</strong></a> guide, then see it all in the <a href="fullstack.html">Full-Stack capstone</a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="authentication.html" class="prev"><span class="dir">← Related</span><span class="ttl">Authentication</span></a>
+          <a href="payment.html" class="next"><span class="dir">Next guide →</span><span class="ttl">Payments</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> JWT complete</span>
+            <h3 class="foot-title">Stateless <span class="grad">trust</span></h3>
+            <p class="foot-lead">Structure, signing, verifying, middleware, storage, refresh. Now wire it into a full login.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="authentication.html">Full auth flow
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

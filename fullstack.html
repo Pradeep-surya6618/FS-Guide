@@ -1,0 +1,2518 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Learn React + Node.js + Express + MongoDB. A beginner-friendly, beautifully designed guide to building and deploying your first full stack application — from installing software to going live on Vercel." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Full Stack Guide · React + Node.js + Express + MongoDB</title>
+
+  <!-- Fonts: Inter (UI) + JetBrains Mono (code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Favicon: inline gradient "FS" mark -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='46' font-weight='bold' fill='white' text-anchor='middle'%3EFS%3C/text%3E%3C/svg%3E" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Apply saved theme + collapsed state before first paint (no flash) -->
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <!-- Reading progress bar -->
+  <div class="progress-track"><div class="progress-fill"></div></div>
+
+  <!-- Mobile scrim -->
+  <div class="scrim"></div>
+
+  <!-- =========================== TOP APP BAR =========================== -->
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">FS</span>
+        <span class="brand-text">
+          <strong>Full Stack Guide</strong>
+          <span>React · Node · Mongo</span>
+        </span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guide / <b>Overview</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Course progress" aria-label="Course progress">
+        <span class="ap-bar"><i class="ap-fill"></i></span>
+        <span class="ap-pct">0%</span>
+      </div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search the guide…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+
+    <!-- =========================== SIDEBAR =========================== -->
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="#top" aria-label="Full Stack Guide — home">
+        <span class="logo">FS</span>
+        <span class="brand-text">
+          <strong>Full Stack Guide</strong>
+          <span>React · Node · Mongo</span>
+        </span>
+      </a>
+
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Getting Started</div>
+          <a class="nav-link active" href="#top" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#software" data-title="Software Required"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></span> Software Required</a>
+          <a class="nav-link" href="#react-project" data-title="Create React Project"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(120 12 12)"/></svg></span> Create React Project</a>
+          <a class="nav-link" href="#vscode" data-title="Open in VS Code"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span> Open in VS Code</a>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-title">Backend</div>
+          <a class="nav-link" href="#backend-project" data-title="Create Backend"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span> Create Backend</a>
+          <a class="nav-link" href="#express-server" data-title="Express Server"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1.5v3M15 1.5v3M9 19.5v3M15 19.5v3M1.5 9h3M1.5 15h3M19.5 9h3M19.5 15h3"/></svg></span> Express Server</a>
+          <a class="nav-link" href="#cors" data-title="Understanding CORS"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V6z"/></svg></span> Understanding CORS</a>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-title">Database</div>
+          <a class="nav-link" href="#mongodb-atlas" data-title="MongoDB Atlas"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span> MongoDB Atlas</a>
+          <a class="nav-link" href="#connect-mongodb" data-title="Connect MongoDB"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg></span> Connect MongoDB</a>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-title">Build Projects</div>
+          <a class="nav-link" href="#folder-structure" data-title="Folder Structure"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span> Folder Structure</a>
+          <a class="nav-link" href="#project-notes" data-title="Sticky Notes App"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h6"/></svg></span> Sticky Notes App</a>
+          <a class="nav-link" href="#project-contact" data-title="Contact Form"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span> Contact Form</a>
+          <a class="nav-link" href="#project-chatbot" data-title="AI Chatbot"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 0 1 9 9c0 5-4 8-9 8a10 10 0 0 1-3-.5L4 20l1.2-3.3A8.5 8.5 0 0 1 3 11a9 9 0 0 1 9-9z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg></span> AI Chatbot</a>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-title">APIs</div>
+          <a class="nav-link" href="#axios" data-title="Axios"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3.5-3.5M20 16H7l3.5 3.5"/></svg></span> Axios</a>
+          <a class="nav-link" href="#testing-apis" data-title="Testing APIs"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v5.5L5.4 17a2 2 0 0 0 1.8 3h9.6a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M8 14h8"/></svg></span> Testing APIs</a>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-title">Deploy</div>
+          <a class="nav-link" href="#deploy-backend" data-title="Deploy Backend"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/></svg></span> Deploy Backend</a>
+          <a class="nav-link" href="#deploy-react" data-title="Deploy React"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 4 22 20H2z"/></svg></span> Deploy React</a>
+          <a class="nav-link" href="#production" data-title="Production Connection"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></span> Production Connection</a>
+        </div>
+
+        <div class="nav-group">
+          <div class="nav-title">Reference</div>
+          <a class="nav-link" href="#errors" data-title="Common Errors"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20z"/><path d="M12 10v5M12 17.5h.01"/></svg></span> Common Errors</a>
+          <a class="nav-link" href="#practice" data-title="Practice Challenge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5 8 21l4-2 4 2-1-7.5"/></svg></span> Practice Challenge</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- =========================== CONTENT =========================== -->
+    <main class="content" id="top">
+
+      <!-- =============================== HERO =============================== -->
+      <section class="hero reveal">
+        <div class="hero-grid">
+          <div class="hero-left">
+            <span class="eyebrow"><span class="dot"></span> Beginner-friendly · 2026 edition</span>
+            <h1 class="hero-title">Build your first<br/><span class="grad">full-stack app</span></h1>
+            <p class="hero-stack">React<i>/</i>Node.js<i>/</i>Express<i>/</i>MongoDB</p>
+            <p class="lead">A hands-on guide from an empty laptop to a deployed app — every command, every file, every line explained, with the <em>why</em> behind each step.</p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="#software">Start learning
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn btn-ghost" href="#project-notes">View projects</a>
+            </div>
+            <ul class="hero-stats">
+              <li><b>~6 hrs</b><span>guided</span></li>
+              <li><b>Beginner</b><span>friendly</span></li>
+              <li><b>2 projects</b><span>hands-on</span></li>
+              <li><b>Free</b><span>all tools</span></li>
+            </ul>
+          </div>
+
+          <div class="hero-art">
+            <div class="glow-orb"></div>
+            <div class="stack-panel">
+              <div class="stack-head">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <span class="stack-title">request lifecycle</span>
+                <span class="live"><span class="live-dot"></span> live</span>
+              </div>
+              <div class="stack-body">
+                <div class="tier fe">
+                  <span class="tier-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(120 12 12)"/></svg></span>
+                  <div class="tier-text"><b>Frontend</b><span>React · localhost:5173</span></div>
+                  <span class="tier-tag">UI</span>
+                </div>
+                <div class="conn"><span class="conn-line"><span class="pkt"></span></span><span class="conn-label">axios.get('/api/notes')</span></div>
+                <div class="tier be">
+                  <span class="tier-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>
+                  <div class="tier-text"><b>Backend</b><span>Express · /api/notes</span></div>
+                  <span class="tier-tag ok">200 OK</span>
+                </div>
+                <div class="conn"><span class="conn-line"><span class="pkt" style="animation-delay:.7s"></span></span><span class="conn-label">mongoose query</span></div>
+                <div class="tier db">
+                  <span class="tier-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20s1.5-8 8.5-11C16 7.5 20 4 20 4s.5 8.5-5 12.5C11.5 19 4 20 4 20z"/><path d="M9 15c2.5-3 6-4.5 6-4.5"/></svg></span>
+                  <div class="tier-text"><b>Database</b><span>MongoDB Atlas · notes</span></div>
+                  <span class="tier-tag">find()</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course roadmap timeline -->
+        <div class="divider-soft"></div>
+        <h3 class="mt-0"><span class="h3-ico">🗺️</span> Course Roadmap</h3>
+        <div class="grid cols-4">
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">1</div><h4>Set up tools</h4><p>Install Node, VS Code, Git &amp; create a MongoDB Atlas account.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">2</div><h4>Build frontend</h4><p>Create a React app with Vite and understand every file.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-mint">3</div><h4>Build backend</h4><p>Express server, CORS, and a real MongoDB connection.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-warm">4</div><h4>Ship to Vercel</h4><p>Deploy both projects and connect them in production.</p></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 1 ============================ -->
+      <section class="section reveal" id="software">
+        <span class="section-kicker k-1">01 · SETUP</span>
+        <h2 class="section-title">Software you need to install</h2>
+        <p class="section-sub">Before writing a single line of code, we set up our workshop. Think of this like a carpenter laying out tools before building furniture — you wouldn't start without a hammer and saw. Here are the six free tools we'll use and, importantly, <strong>why</strong> each one matters.</p>
+
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div>
+            <div class="ctitle">Why are we doing this first?</div>
+            <p>Every later step depends on these tools existing on your computer. If you skip them, commands like <code class="inline">npm run dev</code> will simply fail with "command not found". Installing everything now means the rest of the guide will "just work".</p>
+          </div>
+        </div>
+
+        <h3><span class="h3-ico">🧰</span> The six tools at a glance</h3>
+        <div class="grid cols-3">
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">🖥️</div><h4>VS Code</h4><p>The code editor where you'll write and organise all your files. Free, fast, and the industry standard.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-mint">🟢</div><h4>Node.js</h4><p>Lets you run JavaScript <em>outside</em> the browser. It also gives you <code class="inline">npm</code>, the tool that installs packages.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-warm">🔀</div><h4>Git</h4><p>Tracks changes to your code and lets you push projects to GitHub — required for deploying to Vercel.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">🍃</div><h4>MongoDB Atlas</h4><p>A free cloud database. Your app's data (notes, contacts) lives here, safely online.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-amber">📮</div><h4>Postman</h4><p>A tool to test your backend APIs without needing a frontend. Send requests, see responses.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">🌐</div><h4>Chrome</h4><p>A browser with excellent developer tools (DevTools) to inspect your app and read errors.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⬇️</span> Where to download each (official sources only)</h3>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div>
+            <div class="ctitle">Only download from official websites</div>
+            <p>Fake "Node.js" or "VS Code" downloads on random sites can contain malware. Always use the official domains listed below.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Tool</th><th>Official download</th><th>Why you need it</th></tr></thead>
+            <tbody>
+              <tr><td>VS Code</td><td><code>code.visualstudio.com</code> <span class="shot-tag">screenshot placeholder</span></td><td>Write &amp; edit code</td></tr>
+              <tr><td>Node.js (LTS)</td><td><code>nodejs.org</code></td><td>Run JS + get npm</td></tr>
+              <tr><td>Git</td><td><code>git-scm.com</code></td><td>Version control + deploy</td></tr>
+              <tr><td>MongoDB Atlas</td><td><code>mongodb.com/atlas</code></td><td>Cloud database</td></tr>
+              <tr><td>Postman</td><td><code>postman.com/downloads</code></td><td>Test APIs</td></tr>
+              <tr><td>Chrome</td><td><code>google.com/chrome</code></td><td>Run &amp; debug the app</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div>
+            <div class="ctitle">Beginner tip: install the LTS version of Node</div>
+            <p>On nodejs.org you'll see two big buttons. Pick the one labelled <strong>LTS</strong> (Long-Term Support). It's the stable version recommended for almost everyone. The "Current" version has the newest features but can be less stable.</p>
+          </div>
+        </div>
+
+        <h3><span class="h3-ico">✅</span> Verify your installation</h3>
+        <p>After installing Node.js and Git, we need to confirm your computer can actually find them. Open a terminal (in VS Code: menu <strong>Terminal → New Terminal</strong>, or press <code class="inline">Ctrl + `</code>) and run these commands one by one:</p>
+
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="fname">Terminal<span class="lang">bash</span></span>
+            <span class="spacer"></span>
+            <button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button>
+          </div>
+          <pre><code>node -v
+npm -v
+git --version</code></pre>
+        </div>
+
+        <h4>What each command means</h4>
+        <ul>
+          <li><code class="inline">node -v</code> — asks Node.js to print its <strong>v</strong>ersion. If you see something like <code class="inline">v20.11.1</code>, Node is installed correctly.</li>
+          <li><code class="inline">npm -v</code> — npm (Node Package Manager) ships <em>inside</em> Node. This prints npm's version, e.g. <code class="inline">10.2.4</code>. We use npm to install libraries like Express and Axios.</li>
+          <li><code class="inline">git --version</code> — confirms Git is installed, e.g. <code class="inline">git version 2.43.0</code>. We need Git later to push code to GitHub.</li>
+        </ul>
+
+        <div class="callout output">
+          <div class="ci">🖨️</div>
+          <div>
+            <div class="ctitle">Expected output</div>
+            <p>Three version numbers, one per command. The exact numbers don't matter — what matters is that <em>numbers appear</em> instead of an error.</p>
+          </div>
+        </div>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Output<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>v20.11.1
+10.2.4
+git version 2.43.0</code></pre>
+        </div>
+
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div>
+            <div class="ctitle">Common mistake: "'node' is not recognized"</div>
+            <p>If a command says <code class="inline">'node' is not recognized as an internal or external command</code> (Windows) or <code class="inline">command not found: node</code> (Mac/Linux), it almost always means one thing: <strong>you opened the terminal before installing Node, or you didn't restart it.</strong> Fix: fully close every terminal window, then open a brand-new one and try again. Still failing? Re-run the Node installer and make sure "Add to PATH" stays checked.</p>
+          </div>
+        </div>
+
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — Terminal showing successful version checks</div>
+          <div class="shot-sub">Replace this with a real screenshot of your terminal after running the three commands above.</div>
+          <div class="shot-tag">/assets/verify-install.png</div>
+        </div>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Best practice:</strong> install the LTS version of Node.js, not "Current".</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Best practice:</strong> after any install, close and reopen the terminal so it picks up the new tools.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Best practice:</strong> create a free GitHub account now (github.com) — you'll need it for deployment.</div></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 2 ============================ -->
+      <section class="section reveal" id="react-project">
+        <span class="section-kicker k-4">02 · FRONTEND</span>
+        <h2 class="section-title">Create your React project</h2>
+        <p class="section-sub">The frontend is everything the user sees and clicks — buttons, forms, lists. We'll build it with <strong>React</strong>, and we'll create the project using a tool called <strong>Vite</strong>. Let's understand both before running any commands.</p>
+
+        <h3><span class="h3-ico">⚛️</span> Why React?</h3>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div>
+            <div class="ctitle">What is React?</div>
+            <p>React is a JavaScript library for building user interfaces out of small, reusable pieces called <strong>components</strong>. Instead of one giant HTML file, you build a <code class="inline">Button</code>, a <code class="inline">NoteCard</code>, a <code class="inline">Navbar</code> — and snap them together like LEGO bricks.</p>
+          </div>
+        </div>
+        <div class="callout analogy">
+          <div class="ci">🧱</div>
+          <div>
+            <div class="ctitle">Real-world analogy</div>
+            <p>Building a webpage with plain HTML is like writing a whole essay by hand every time. React is like having reusable paragraphs (components) — write a "NoteCard" once, then reuse it for 100 notes. Change it in one place, and all 100 update.</p>
+          </div>
+        </div>
+
+        <h3><span class="h3-ico">⚡</span> Why Vite (and not Create React App)?</h3>
+        <p><strong>Vite</strong> (pronounced "veet", French for "quick") is a tool that <em>creates</em> and <em>runs</em> your React project. The older tool, <strong>Create React App (CRA)</strong>, is now effectively retired and is much slower. Here's the honest comparison:</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>&nbsp;</th><th>Vite ⚡ (recommended)</th><th>Create React App 🐢 (legacy)</th></tr></thead>
+            <tbody>
+              <tr><td>Startup speed</td><td>Almost instant</td><td>Slow, gets slower as app grows</td></tr>
+              <tr><td>Hot reload</td><td>Lightning fast</td><td>Noticeably laggy</td></tr>
+              <tr><td>Maintenance</td><td>Actively developed</td><td>No longer recommended</td></tr>
+              <tr><td>Config</td><td>Tiny, simple</td><td>Hidden, harder to customise</td></tr>
+              <tr><td>Command</td><td><code>npm create vite@latest</code></td><td><code>npx create-react-app</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Verdict</div><p>Use <strong>Vite</strong>. It's faster, simpler, and what the React team itself now points beginners toward. We'll use it for the rest of this guide.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⌨️</span> Step 1 — Create the project</h3>
+        <p>Open your terminal, navigate to where you keep projects (e.g. your Desktop), and run:</p>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm create vite@latest frontend</code></pre>
+        </div>
+        <p>Breaking this command down word by word:</p>
+        <ul>
+          <li><code class="inline">npm create</code> — tells npm to scaffold (generate) a new project from a template.</li>
+          <li><code class="inline">vite@latest</code> — use the newest version of the Vite project generator.</li>
+          <li><code class="inline">frontend</code> — the folder name to create. We deliberately call it <code class="inline">frontend</code> because later we'll have a separate <code class="inline">backend</code> folder.</li>
+        </ul>
+
+        <h4>Vite will ask you a few questions — here's what to pick</h4>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Question</th><th>Choose</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td><code>Select a framework</code></td><td><strong>React</strong></td><td>We're building a React app.</td></tr>
+              <tr><td><code>Select a variant</code></td><td><strong>JavaScript</strong></td><td>We're using plain JavaScript, not TypeScript — simpler for beginners.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why JavaScript and not TypeScript?</div><p>TypeScript adds type-checking, which is powerful but adds extra rules to learn. As a beginner, plain <strong>JavaScript</strong> lets you focus on understanding React and the full-stack flow first. You can add TypeScript later.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">📂</span> Step 2 — Go into the folder</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>cd frontend</code></pre>
+        </div>
+        <p><code class="inline">cd</code> means <strong>"change directory"</strong>. Your terminal is like a file explorer with no windows — <code class="inline">cd frontend</code> walks <em>into</em> the new folder so the next commands run in the right place.</p>
+
+        <h3><span class="h3-ico">📦</span> Step 3 — Install dependencies</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install</code></pre>
+        </div>
+        <p>Vite created a list of required libraries (in <code class="inline">package.json</code>) but didn't download them yet. <code class="inline">npm install</code> reads that list and downloads everything into a folder called <code class="inline">node_modules</code>. This can take 10–30 seconds and only needs to be done once (and again whenever you add a new package).</p>
+
+        <h3><span class="h3-ico">▶️</span> Step 4 — Run the development server</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm run dev</code></pre>
+        </div>
+        <div class="callout output">
+          <div class="ci">🖨️</div>
+          <div><div class="ctitle">Expected terminal output</div><p>Vite starts a local server and prints a link. The key line is the <code class="inline">Local</code> URL.</p></div>
+        </div>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Output<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>  VITE v5.3.1  ready in 412 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help</code></pre>
+        </div>
+        <p>Hold <strong>Ctrl</strong> (or <strong>Cmd</strong> on Mac) and click the <code class="inline">http://localhost:5173/</code> link, or paste it into Chrome. You'll see the spinning Vite + React starter page. 🎉</p>
+
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — default Vite + React welcome page in the browser</div>
+          <div class="shot-sub">The page with the React and Vite logos and a "count is 0" button.</div>
+          <div class="shot-tag">/assets/vite-welcome.png</div>
+        </div>
+
+        <h3><span class="h3-ico">🤔</span> What is "localhost" and why 5173?</h3>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">localhost = your own computer</div><p><code class="inline">localhost</code> is a special address that always means "this very computer". The number after the colon (<code class="inline">5173</code>) is the <strong>port</strong> — like a specific door into your computer. Vite uses door <code class="inline">5173</code> by default. So <code class="inline">http://localhost:5173</code> means "open the website my computer is serving on door 5173".</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🔥</span> What is Hot Reload (HMR)?</h3>
+        <p>While <code class="inline">npm run dev</code> is running, edit any file and hit save. The browser updates <strong>instantly</strong> without a full refresh — and without losing your place. This is called <strong>Hot Module Replacement</strong>. Try it: open <code class="inline">src/App.jsx</code>, change some text, save, and watch the browser update in real time.</p>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Leave it running</div><p>Keep this terminal open while you work. To stop the server, click the terminal and press <code class="inline">Ctrl + C</code>. To start again, run <code class="inline">npm run dev</code>.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🗂️</span> Understanding every generated file</h3>
+        <p>Vite generated a small, clean folder structure. Here it is, followed by an explanation of <strong>every single file</strong>:</p>
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/<span class="lang">tree</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>frontend/
+├── node_modules/        # Installed libraries (auto-generated, never edit)
+├── public/              # Static files served as-is (favicon, images)
+│   └── vite.svg
+├── src/                 # YOUR code lives here
+│   ├── assets/          # Images/logos used inside components
+│   │   └── react.svg
+│   ├── App.css          # Styles for the App component
+│   ├── App.jsx          # The main/root React component
+│   ├── index.css        # Global styles for the whole app
+│   └── main.jsx         # The entry point — boots React into the page
+├── .gitignore           # Tells Git which files to ignore
+├── index.html           # The single HTML page React mounts into
+├── package.json         # Project info + scripts + dependency list
+├── package-lock.json    # Exact versions of every installed package
+└── vite.config.js       # Vite's configuration file</code></pre>
+        </div>
+
+        <h4>File-by-file explanation</h4>
+        <ul>
+          <li><strong><code class="inline">index.html</code></strong> — Surprisingly, a React app has just <em>one</em> HTML file. It contains a single empty <code class="inline">&lt;div id="root"&gt;&lt;/div&gt;</code>. React injects your entire UI inside that div.</li>
+          <li><strong><code class="inline">src/main.jsx</code></strong> — The <em>entry point</em>. It finds <code class="inline">#root</code> in index.html and tells React to render your <code class="inline">&lt;App /&gt;</code> there. This file runs first.</li>
+          <li><strong><code class="inline">src/App.jsx</code></strong> — The root component. This is where you'll start building your UI. <code class="inline">.jsx</code> means "JavaScript + HTML-like syntax".</li>
+          <li><strong><code class="inline">src/App.css</code> / <code class="inline">src/index.css</code></strong> — Stylesheets. <code class="inline">index.css</code> is global; <code class="inline">App.css</code> is scoped to App by convention.</li>
+          <li><strong><code class="inline">src/assets/</code></strong> — Put images/icons here that are imported by components.</li>
+          <li><strong><code class="inline">public/</code></strong> — Files here are copied to the site root untouched. Good for a <code class="inline">favicon</code> or robots.txt.</li>
+          <li><strong><code class="inline">package.json</code></strong> — The project's "ID card". Lists its name, the <code class="inline">scripts</code> you can run (like <code class="inline">dev</code>), and its dependencies.</li>
+          <li><strong><code class="inline">package-lock.json</code></strong> — Auto-generated. Records the <em>exact</em> version of every package so the app installs identically on any machine. Don't edit it by hand.</li>
+          <li><strong><code class="inline">vite.config.js</code></strong> — Vite's settings. For now it just enables the React plugin; later you can add a proxy or change the port here.</li>
+          <li><strong><code class="inline">node_modules/</code></strong> — Thousands of downloaded library files. Huge, auto-generated, and <strong>never</strong> committed to Git.</li>
+          <li><strong><code class="inline">.gitignore</code></strong> — A list of files/folders Git should ignore (like <code class="inline">node_modules</code>).</li>
+        </ul>
+
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div>
+            <p>• Running <code class="inline">npm run dev</code> from the <em>wrong folder</em> (you forgot <code class="inline">cd frontend</code>). The error: <code class="inline">Could not read package.json</code>.</p>
+            <p>• Editing files inside <code class="inline">node_modules</code> — never do this; your changes get wiped on the next install.</p>
+            <p>• Forgetting to run <code class="inline">npm install</code> before <code class="inline">npm run dev</code> → error: <code class="inline">vite: command not found</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 3 ============================ -->
+      <section class="section reveal" id="vscode">
+        <span class="section-kicker k-1">03 · EDITOR</span>
+        <h2 class="section-title">Open the project in VS Code</h2>
+        <p class="section-sub">Now that the project exists, let's open it in VS Code — your home base for the rest of the guide. You can write code, run terminals, and install extensions all in one window.</p>
+
+        <h3><span class="h3-ico">⌨️</span> Open instantly from the terminal</h3>
+        <p>Make sure your terminal is inside the <code class="inline">frontend</code> folder, then run:</p>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>code .</code></pre>
+        </div>
+        <p><code class="inline">code</code> launches VS Code; the <code class="inline">.</code> means "the current folder". So <code class="inline">code .</code> = "open this folder in VS Code".</p>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">If <code class="inline">code</code> is not recognised</div><p>On a fresh VS Code install the <code class="inline">code</code> command may not be registered yet. Fix: open VS Code → press <code class="inline">Ctrl/Cmd + Shift + P</code> → type <strong>"Shell Command: Install 'code' command in PATH"</strong> → hit Enter. Restart the terminal. Or simply use <strong>File → Open Folder…</strong> instead.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧭</span> The four areas you'll use constantly</h3>
+        <div class="grid cols-2">
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">📁</div><h4>Explorer (left)</h4><p>A file tree of your project. Click a file to open it. Toggle with <code class="inline">Ctrl/Cmd + B</code>.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-mint">⌨️</div><h4>Integrated Terminal</h4><p>Open with <code class="inline">Ctrl + `</code> (backtick). Run <code class="inline">npm run dev</code> here — no separate app needed.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">🧩</div><h4>Extensions</h4><p>The square icon on the far left. Add helpers like Prettier and ESLint (below).</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-warm">📄</div><h4>Editor (center)</h4><p>Where you actually write code. Open multiple files as tabs.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> Recommended extensions</h3>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Extension</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Prettier</strong></td><td>Auto-formats your code on save so it always looks tidy.</td></tr>
+              <tr><td><strong>ESLint</strong></td><td>Highlights mistakes and bad patterns as you type.</td></tr>
+              <tr><td><strong>ES7+ React snippets</strong></td><td>Type <code>rafce</code> to scaffold a whole React component instantly.</td></tr>
+              <tr><td><strong>Auto Rename Tag</strong></td><td>Edit an opening tag and the closing tag updates automatically.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — VS Code with Explorer, editor, and integrated terminal</div>
+          <div class="shot-sub">Show the frontend folder open, App.jsx in the editor, and the dev server running in the terminal.</div>
+          <div class="shot-tag">/assets/vscode-overview.png</div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Pro tip: split terminals</div><p>Later you'll run the frontend <em>and</em> backend at the same time. In VS Code's terminal panel, click the <strong>split</strong> icon (or <code class="inline">Ctrl + Shift + 5</code>) to have two terminals side by side — one per project.</p></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 4 ============================ -->
+      <section class="section reveal" id="backend-project">
+        <span class="section-kicker k-3">04 · BACKEND</span>
+        <h2 class="section-title">Create the backend project</h2>
+        <p class="section-sub">The backend is the "kitchen" of your app — the user never sees it, but it does the real work: talking to the database, applying rules, and sending data back. We build it as a <strong>completely separate project</strong> from the frontend.</p>
+
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why a separate folder/project?</div><p>Frontend and backend are two different programs that run independently — possibly even on different servers. Keeping them in separate folders (each with its own <code class="inline">package.json</code>) keeps their dependencies clean and lets you deploy them separately to Vercel. Mixing them causes confusing version clashes.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">📁</span> Step 1 — Create &amp; enter the folder</h3>
+        <p>Go <em>up and out</em> of the frontend folder first, so backend sits <em>next to</em> it, not inside it:</p>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>cd ..
+mkdir backend
+cd backend</code></pre>
+        </div>
+        <ul>
+          <li><code class="inline">cd ..</code> — go <em>up</em> one folder (out of <code class="inline">frontend</code>). The <code class="inline">..</code> means "parent folder".</li>
+          <li><code class="inline">mkdir backend</code> — <strong>m</strong>a<strong>k</strong>e a new <strong>dir</strong>ectory named <code class="inline">backend</code>.</li>
+          <li><code class="inline">cd backend</code> — step into it. All following commands run here.</li>
+        </ul>
+
+        <h3><span class="h3-ico">🆕</span> Step 2 — Initialise a Node project</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm init -y</code></pre>
+        </div>
+        <p><code class="inline">npm init</code> creates a <code class="inline">package.json</code> — the backend's ID card. The <code class="inline">-y</code> flag means "say <strong>y</strong>es to all the default questions", giving you a ready-made file instantly. It looks like this:</p>
+        <div class="code" data-lang="json">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/package.json<span class="lang">json</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">📦</span> Step 3 — Install the core packages</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install express mongoose cors dotenv</code></pre>
+        </div>
+        <div class="grid cols-2">
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">🚂</div><h4>express</h4><p>The web framework. Handles incoming requests and lets us define routes like <code class="inline">/api/notes</code>.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-mint">🍃</div><h4>mongoose</h4><p>Talks to MongoDB using friendly JavaScript objects instead of raw database queries.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">🛡️</div><h4>cors</h4><p>Lets your React frontend (a different origin) legally call this backend. Explained in depth next.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-amber">🔑</div><h4>dotenv</h4><p>Loads secret values (like your DB password) from a <code class="inline">.env</code> file into your code safely.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🔁</span> Step 4 — Install nodemon (dev only)</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install -D nodemon</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What is nodemon, and what does -D mean?</div><p><strong>nodemon</strong> watches your files and automatically restarts the server whenever you save — so you don't have to stop and start it manually. The <code class="inline">-D</code> flag installs it as a <strong>dev dependency</strong>: a tool needed only while <em>developing</em>, not when the app runs in production. It gets listed under <code class="inline">devDependencies</code> in package.json.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">📝</span> Step 5 — Add scripts &amp; type to package.json</h3>
+        <p>Open <code class="inline">backend/package.json</code> and edit the <code class="inline">"scripts"</code> section so it looks like this. Also add <code class="inline">"type": "module"</code> so we can use modern <code class="inline">import</code> syntax:</p>
+        <div class="code" data-lang="json">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/package.json<span class="lang">json</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}</code></pre>
+        </div>
+        <ul>
+          <li><code class="inline">"start"</code> → runs the server normally with Node. Used in production / by Vercel.</li>
+          <li><code class="inline">"dev"</code> → runs with nodemon (auto-restart). Used while you build. Run it with <code class="inline">npm run dev</code>.</li>
+          <li><code class="inline">"type": "module"</code> → lets you write <code class="inline">import express from 'express'</code> instead of the older <code class="inline">require()</code> style.</li>
+        </ul>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistake</div><p>Mixing <code class="inline">import</code> and <code class="inline">require</code>. If you add <code class="inline">"type": "module"</code>, use <code class="inline">import</code> everywhere. If you see <code class="inline">SyntaxError: Cannot use import statement outside a module</code>, you forgot the <code class="inline">"type": "module"</code> line.</p></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 5 ============================ -->
+      <section class="section reveal" id="express-server">
+        <span class="section-kicker k-3">05 · BACKEND</span>
+        <h2 class="section-title">Create the Express server</h2>
+        <p class="section-sub">Time to write the heart of the backend: <code class="inline">server.js</code>. We'll build it up and explain <strong>every single line</strong>. Create a new file called <code class="inline">server.js</code> in the <code class="inline">backend</code> folder.</p>
+
+        <h3><span class="h3-ico">🧩</span> The complete starter server</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// 1. Import the packages we installed
+import express from "express";   // the web framework
+import cors from "cors";         // lets the frontend call us
+import dotenv from "dotenv";     // loads secrets from .env
+
+// 2. Load variables from the .env file into process.env
+dotenv.config();
+
+// 3. Create the Express application
+const app = express();
+
+// 4. Decide which port to run on (from .env, or 5000 as a fallback)
+const PORT = process.env.PORT || 5000;
+
+// 5. Middleware — code that runs on EVERY incoming request
+app.use(cors());            // allow cross-origin requests from the frontend
+app.use(express.json());    // automatically parse JSON request bodies
+
+// 6. A simple test route so we can confirm the server is alive
+app.get("/", (req, res) => {
+  res.send("API is running ✅");
+});
+
+// 7. Start listening for requests
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔍</span> Line-by-line explanation</h3>
+        <ul>
+          <li><strong>Imports</strong> — we pull in <code class="inline">express</code>, <code class="inline">cors</code> and <code class="inline">dotenv</code>, the packages we installed with npm.</li>
+          <li><strong><code class="inline">dotenv.config()</code></strong> — reads your <code class="inline">.env</code> file and copies its values into <code class="inline">process.env</code> so you can use them. Must run before you read any env variable.</li>
+          <li><strong><code class="inline">const app = express()</code></strong> — creates your application object. Everything (routes, middleware) attaches to <code class="inline">app</code>.</li>
+          <li><strong><code class="inline">const PORT = process.env.PORT || 5000</code></strong> — uses the port from <code class="inline">.env</code> if it exists, otherwise defaults to <code class="inline">5000</code>. The <code class="inline">||</code> means "or".</li>
+          <li><strong><code class="inline">app.use(cors())</code></strong> — middleware that adds the headers browsers need to allow your React app to call this server (full deep-dive next section).</li>
+          <li><strong><code class="inline">app.use(express.json())</code></strong> — middleware that reads incoming JSON and puts it on <code class="inline">req.body</code>. Without it, <code class="inline">req.body</code> would be <code class="inline">undefined</code>.</li>
+          <li><strong><code class="inline">app.get("/", ...)</code></strong> — defines a <strong>route</strong>. When someone visits <code class="inline">/</code>, the function runs. <code class="inline">req</code> = the incoming request, <code class="inline">res</code> = your response. <code class="inline">res.send(...)</code> sends text back.</li>
+          <li><strong><code class="inline">app.listen(PORT, ...)</code></strong> — actually starts the server and keeps it running, listening for requests on the chosen port. The callback prints a confirmation to the terminal.</li>
+        </ul>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What is "middleware"?</div><p>Middleware is simply a function that runs <em>between</em> receiving a request and sending a response. Think of airport security: every passenger (request) passes through the same checkpoints (middleware) before reaching the gate (your route). <code class="inline">cors()</code> and <code class="inline">express.json()</code> are two such checkpoints.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">▶️</span> Run it</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm run dev</code></pre>
+        </div>
+        <div class="callout output">
+          <div class="ci">🖨️</div>
+          <div><div class="ctitle">Expected output</div><p>nodemon starts and you see your message. Now open <code class="inline">http://localhost:5000</code> in the browser — you'll see <strong>"API is running ✅"</strong>.</p></div>
+        </div>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Output<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>[nodemon] starting `node server.js`
+Server running on http://localhost:5000</code></pre>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div>
+            <p>• <code class="inline">Cannot GET /api/notes</code> — that route doesn't exist yet; we add it in the projects section.</p>
+            <p>• <code class="inline">Error: listen EADDRINUSE :::5000</code> — port 5000 is already used by another program. Stop the other server, or change the port in <code class="inline">.env</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 6 ============================ -->
+      <section class="section reveal" id="cors">
+        <span class="section-kicker k-2">06 · THE BIG ONE</span>
+        <h2 class="section-title">Understanding CORS (in depth)</h2>
+        <p class="section-sub">CORS confuses almost every beginner. By the end of this section you'll understand <em>exactly</em> what it is, <em>why</em> browsers enforce it, why Postman ignores it, and how to configure it safely. We'll use diagrams throughout.</p>
+
+        <h3><span class="h3-ico">🌍</span> First: what is an "origin"?</h3>
+        <p>An <strong>origin</strong> is the combination of three things: <strong>protocol</strong> + <strong>domain</strong> + <strong>port</strong>. If <em>any</em> of those three differ between two URLs, they are <strong>different origins</strong>.</p>
+        <div class="origin-compare">
+          <div class="origin-pill a"><small>Frontend (React / Vite)</small>http://localhost:5173</div>
+          <div class="origin-vs">≠</div>
+          <div class="origin-pill b"><small>Backend (Express)</small>http://localhost:5000</div>
+        </div>
+        <p>Same protocol (<code class="inline">http</code>), same domain (<code class="inline">localhost</code>) — but the <strong>port differs</strong> (<code class="inline">5173</code> vs <code class="inline">5000</code>). That alone makes them <strong>different origins</strong>, and that's why CORS comes into play even on your own laptop.</p>
+
+        <h3><span class="h3-ico">🔒</span> The Same-Origin Policy</h3>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What is the Same-Origin Policy (SOP)?</div><p>A built-in <strong>browser</strong> security rule. By default, JavaScript running on one origin is <strong>not allowed</strong> to read responses from a different origin. So your React code at <code class="inline">:5173</code> is blocked from reading data at <code class="inline">:5000</code> — unless the backend explicitly says "I allow this".</p></div>
+        </div>
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why would browsers block this? It seems annoying!</div><p>Imagine you're logged into your bank in one tab. You open a shady website in another tab. Without the Same-Origin Policy, that shady site's JavaScript could quietly call your bank's API <em>using your logged-in session</em> and steal your data. SOP stops that. CORS is the safe, controlled way for a server to say "these specific origins are allowed."</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🚫</span> Why React fails but Postman works</h3>
+        <div class="diagram">
+          <div class="dg-title">🧭 Without CORS configured</div>
+          <div class="flow">
+            <div class="flow-box browser"><span class="fb-ico">🌐</span><b>Browser</b><small>localhost:5173</small></div>
+            <div class="flow-arrow blocked"><span class="ar">⛔</span><span class="lbl">SOP blocks the response</span></div>
+            <div class="flow-box be"><span class="fb-ico">🚀</span><b>Express</b><small>localhost:5000</small></div>
+          </div>
+        </div>
+        <div class="diagram">
+          <div class="dg-title">🧪 Postman (not a browser)</div>
+          <div class="flow">
+            <div class="flow-box" style="background:linear-gradient(135deg,#f59e0b,#f97316)"><span class="fb-ico">📮</span><b>Postman</b><small>desktop app</small></div>
+            <div class="flow-arrow"><span class="ar">✅</span><span class="lbl">No SOP — request succeeds</span></div>
+            <div class="flow-box be"><span class="fb-ico">🚀</span><b>Express</b><small>localhost:5000</small></div>
+          </div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">The key insight</div><p>CORS is enforced <strong>only by browsers</strong>. Postman, curl, and your backend itself are not browsers, so they never apply the Same-Origin Policy. That's why "it works in Postman but fails in React" — the server is fine; the <em>browser</em> is the one blocking it until CORS headers are present.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">✈️</span> Preflight requests &amp; the OPTIONS method</h3>
+        <p>For certain requests (like a <code class="inline">POST</code> with JSON, or anything with custom headers), the browser sends a quiet "permission check" <em>first</em>, before the real request. This is called a <strong>preflight request</strong>, and it uses the HTTP <code class="inline">OPTIONS</code> method.</p>
+        <div class="diagram">
+          <div class="dg-title">✈️ A preflight handshake</div>
+          <div class="flow">
+            <div class="flow-box browser"><span class="fb-ico">🌐</span><b>Browser</b><small>1 · OPTIONS ?</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">"May I POST here?"</span></div>
+            <div class="flow-box be"><span class="fb-ico">🚀</span><b>Server</b><small>2 · Yes, allowed</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">3 · real POST sent</span></div>
+            <div class="flow-box db"><span class="fb-ico">🍃</span><b>DB</b><small>4 · data saved</small></div>
+          </div>
+        </div>
+        <p>If your server doesn't answer the <code class="inline">OPTIONS</code> preflight with the right headers, the browser cancels the real request and you see a CORS error. The good news: the <code class="inline">cors</code> package handles preflight automatically.</p>
+
+        <h3><span class="h3-ico">🛡️</span> Using the cors middleware</h3>
+        <h4>The simplest version (allows everyone)</h4>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import cors from "cors";
+
+// Allow requests from ANY origin (fine for early local development)
+app.use(cors());</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Good for learning, risky for production</div><p><code class="inline">cors()</code> with no options sends <code class="inline">Access-Control-Allow-Origin: *</code> — meaning <em>any</em> website can call your API. That's convenient while learning but in production you should restrict it to your own frontend.</p></div>
+        </div>
+
+        <h4>The production-ready version (allow only your frontend)</h4>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import cors from "cors";
+
+const allowedOrigins = [
+  "http://localhost:5173",            // local React (Vite) dev server
+  "https://your-app.vercel.app"       // your deployed frontend
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,           // who is allowed to call us
+    methods: ["GET", "POST", "PUT", "DELETE"], // which HTTP verbs are allowed
+    allowedHeaders: ["Content-Type", "Authorization"], // which request headers are allowed
+    credentials: true                 // allow cookies / auth headers to be sent
+  })
+);</code></pre>
+        </div>
+
+        <h4>Every option, explained</h4>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Option</th><th>What it controls</th></tr></thead>
+            <tbody>
+              <tr><td><code>origin</code></td><td>Which websites may call your API. A single string, an array, or <code>true</code> (reflect any). This becomes the <code>Access-Control-Allow-Origin</code> header.</td></tr>
+              <tr><td><code>methods</code></td><td>Which HTTP verbs (GET, POST, PUT, DELETE, PATCH) the browser is allowed to use.</td></tr>
+              <tr><td><code>allowedHeaders</code></td><td>Which custom request headers the frontend may send (e.g. <code>Content-Type</code>, <code>Authorization</code>).</td></tr>
+              <tr><td><code>credentials</code></td><td>If <code>true</code>, the browser may send cookies / auth headers. <strong>Note:</strong> you cannot use <code>credentials: true</code> together with <code>origin: "*"</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3><span class="h3-ico">⚖️</span> Good vs. bad examples</h3>
+        <div class="grid cols-2">
+          <div class="card"><span class="top-line" style="background:var(--grad-mint)"></span><div class="card-ico bg-mint">✅</div><h4>Good (production)</h4><p>Explicit list of trusted origins, only the methods you use, credentials handled deliberately.</p></div>
+          <div class="card"><span class="top-line" style="background:var(--grad-warm)"></span><div class="card-ico" style="background:var(--grad-warm)">❌</div><h4>Bad (production)</h4><p><code class="inline">app.use(cors())</code> left wide open on a real app, exposing your API to every website on the internet.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🔐</span> Security best practices</h3>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>In production, <strong>whitelist</strong> only your real frontend domain(s).</div></div>
+          <div class="kp"><span class="check">✓</span><div>Store allowed origins in <strong>environment variables</strong>, not hardcoded.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Only enable <code class="inline">credentials: true</code> if you actually use cookies/auth.</div></div>
+          <div class="kp"><span class="check">✓</span><div>List only the HTTP methods your API really supports.</div></div>
+        </div>
+
+        <h3><span class="h3-ico">🐞</span> The error you'll inevitably see</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Chrome DevTools Console<span class="lang">error</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>Access to XMLHttpRequest at 'http://localhost:5000/api/notes'
+from origin 'http://localhost:5173' has been blocked by CORS policy:
+No 'Access-Control-Allow-Origin' header is present on the requested resource.</code></pre>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">How to fix this error — checklist</div>
+            <p>1. Did you actually call <code class="inline">app.use(cors())</code>? 2. Is it placed <strong>before</strong> your routes? 3. Is the backend server actually running? 4. In production, is your frontend's URL in the <code class="inline">origin</code> list (exact match, including <code class="inline">https://</code> and no trailing slash)?</p>
+          </div>
+        </div>
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">Summary</div><p>CORS is a browser safety mechanism. Your server uses the <code class="inline">cors</code> package to attach <code class="inline">Access-Control-Allow-*</code> headers that tell the browser "these origins are allowed." Use <code class="inline">cors()</code> while learning, switch to an explicit origin list in production.</p></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 7 ============================ -->
+      <section class="section reveal" id="mongodb-atlas">
+        <span class="section-kicker k-3">07 · DATABASE</span>
+        <h2 class="section-title">Set up MongoDB Atlas</h2>
+        <p class="section-sub">Your app needs somewhere to <em>store</em> data permanently — notes, contact messages, users. We'll use <strong>MongoDB Atlas</strong>: a free, cloud-hosted MongoDB database. No installation needed; it lives online and your backend connects to it.</p>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What is MongoDB? What is Atlas?</div><p><strong>MongoDB</strong> is a database that stores data as flexible JSON-like <em>documents</em> (instead of rigid tables). <strong>Atlas</strong> is MongoDB's official cloud service that hosts your database for you, with a generous free tier — perfect for learning and small projects.</p></div>
+        </div>
+        <div class="callout analogy">
+          <div class="ci">🗄️</div>
+          <div><div class="ctitle">Analogy</div><p>A database is a smart filing cabinet. A <strong>collection</strong> is a drawer (e.g. "notes"). A <strong>document</strong> is a single folder inside that drawer (one note). MongoDB lets each folder hold flexible contents instead of forcing identical forms.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">📋</span> Step-by-step setup</h3>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot">1</div><span class="tl-time">2 min</span><h4>Create a free account</h4><p>Go to <code class="inline">mongodb.com/atlas</code> and sign up (Google sign-in is fastest). Choose the free <strong>"M0"</strong> shared cluster when asked.</p></div>
+          <div class="tl-item"><div class="tl-dot">2</div><span class="tl-time">3 min</span><h4>Create a cluster</h4><p>Pick a cloud provider/region near you and click <strong>Create</strong>. A "cluster" is your database server. The free M0 tier is plenty for this guide.</p></div>
+          <div class="tl-item"><div class="tl-dot">3</div><span class="tl-time">1 min</span><h4>Create a database user</h4><p>Under <strong>Database Access</strong>, add a user with a <strong>username</strong> and <strong>password</strong>. Write these down — your backend logs in with them. Avoid special characters in the password to keep the connection string simple.</p></div>
+          <div class="tl-item"><div class="tl-dot">4</div><span class="tl-time">1 min</span><h4>Whitelist your IP</h4><p>Under <strong>Network Access</strong>, click <strong>Add IP Address</strong>. For learning, choose <strong>"Allow access from anywhere"</strong> (<code class="inline">0.0.0.0/0</code>). This is required so your backend (and later Vercel) can connect.</p></div>
+          <div class="tl-item"><div class="tl-dot">5</div><span class="tl-time">1 min</span><h4>Get the connection string</h4><p>Click <strong>Connect → Drivers</strong>. Copy the connection string. It looks like the one below.</p></div>
+        </div>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Connection string<span class="lang">uri</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>mongodb+srv://&lt;username&gt;:&lt;password&gt;@cluster0.xxxxx.mongodb.net/?retryWrites=true&amp;w=majority</code></pre>
+        </div>
+        <p>You'll modify it slightly:</p>
+        <ul>
+          <li>Replace <code class="inline">&lt;username&gt;</code> with your database username.</li>
+          <li>Replace <code class="inline">&lt;password&gt;</code> with that user's password.</li>
+          <li>Add a database name right after <code class="inline">.net/</code> — for example <code class="inline">.net/fullstack_guide?</code>. This is the <strong>database name</strong> your data lives in.</li>
+        </ul>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Final string (example)<span class="lang">uri</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>mongodb+srv://surya:MySecret123@cluster0.ab12c.mongodb.net/fullstack_guide?retryWrites=true&amp;w=majority</code></pre>
+        </div>
+
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — Atlas "Connect → Drivers" screen with the connection string</div>
+          <div class="shot-sub">Highlight where the username/password go and where to add the database name.</div>
+          <div class="shot-tag">/assets/atlas-connect.png</div>
+        </div>
+
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div>
+            <p>• Leaving <code class="inline">&lt;password&gt;</code> literally in the string instead of your real password.</p>
+            <p>• A password with special characters (<code class="inline">@ : / ?</code>) that breaks the URL — either avoid them or URL-encode them.</p>
+            <p>• Forgetting to whitelist your IP → connection hangs then fails with a timeout.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 8 ============================ -->
+      <section class="section reveal" id="connect-mongodb">
+        <span class="section-kicker k-3">08 · DATABASE</span>
+        <h2 class="section-title">Connect your backend to MongoDB</h2>
+        <p class="section-sub">Now we'll wire the connection string into our Express server — safely, using environment variables so the password never ends up on GitHub.</p>
+
+        <h3><span class="h3-ico">🔑</span> Step 1 — Create a <code class="inline">.env</code> file</h3>
+        <p>In the <code class="inline">backend</code> folder, create a file named exactly <code class="inline">.env</code> (yes, it starts with a dot). Put your secrets here:</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/.env<span class="lang">env</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>PORT=5000
+MONGO_URI=mongodb+srv://surya:MySecret123@cluster0.ab12c.mongodb.net/fullstack_guide?retryWrites=true&amp;w=majority</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What is a .env file?</div><p>A plain text file holding <code class="inline">KEY=value</code> pairs for secrets and settings. The <code class="inline">dotenv</code> package loads them into <code class="inline">process.env</code> so your code can read <code class="inline">process.env.MONGO_URI</code> without the secret ever being written inside your source code.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🙈</span> Step 2 — Never upload <code class="inline">.env</code>: create <code class="inline">.gitignore</code></h3>
+        <p>Create a file named <code class="inline">.gitignore</code> in <code class="inline">backend</code>. Git will refuse to track anything listed here:</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/.gitignore<span class="lang">gitignore</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>node_modules
+.env</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">This step is critical</div><p>If you push <code class="inline">.env</code> to a public GitHub repo, bots will find your database password within <em>minutes</em> and can wipe or hijack your data. Always add <code class="inline">.env</code> to <code class="inline">.gitignore</code> <strong>before</strong> your first commit. Also create a safe <code class="inline">.env.example</code> (with placeholder values) so teammates know which variables are needed.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🔌</span> Step 3 — Create <code class="inline">config/db.js</code></h3>
+        <p>Make a folder <code class="inline">config</code> inside <code class="inline">backend</code>, and a file <code class="inline">db.js</code> inside it. This file's only job is to connect to MongoDB:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/config/db.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import mongoose from "mongoose";
+
+// A reusable function that connects to MongoDB Atlas
+const connectDB = async () =&gt; {
+  try {
+    // mongoose.connect returns a promise, so we await it
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`✅ MongoDB connected: ${conn.connection.host}`);
+  } catch (error) {
+    // If the connection fails, log the error and stop the app
+    console.error(`❌ MongoDB connection error: ${error.message}`);
+    process.exit(1); // exit with "failure" code so we notice
+  }
+};
+
+export default connectDB;</code></pre>
+        </div>
+        <h4>Line-by-line</h4>
+        <ul>
+          <li><code class="inline">import mongoose</code> — the library that talks to MongoDB.</li>
+          <li><code class="inline">async () =&gt; {}</code> — an async function, because connecting takes time and returns a <em>promise</em>.</li>
+          <li><code class="inline">await mongoose.connect(process.env.MONGO_URI)</code> — opens the connection using the secret string from <code class="inline">.env</code>. <code class="inline">await</code> pauses until it's done.</li>
+          <li><code class="inline">try / catch</code> — if anything goes wrong (wrong password, no internet), we land in <code class="inline">catch</code> instead of crashing silently.</li>
+          <li><code class="inline">process.exit(1)</code> — stops the server because an app with no database is useless. Code <code class="inline">1</code> signals an error.</li>
+          <li><code class="inline">export default connectDB</code> — makes this function importable from <code class="inline">server.js</code>.</li>
+        </ul>
+
+        <h3><span class="h3-ico">🔗</span> Step 4 — Call it from <code class="inline">server.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";   // 👈 import our connector
+
+dotenv.config();
+connectDB();                              // 👈 connect to MongoDB on startup
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req, res) =&gt; res.send("API is running ✅"));
+
+app.listen(PORT, () =&gt; console.log(`Server on http://localhost:${PORT}`));</code></pre>
+        </div>
+        <div class="callout output">
+          <div class="ci">🖨️</div>
+          <div><div class="ctitle">Expected output</div><p>Restart the server (<code class="inline">npm run dev</code>). You should now see both messages:</p></div>
+        </div>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Output<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>Server on http://localhost:5000
+✅ MongoDB connected: cluster0-shard-00-01.ab12c.mongodb.net</code></pre>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common connection errors</div>
+            <p>• <code class="inline">MongooseServerSelectionError</code> → IP not whitelisted, or no internet. Re-check Network Access in Atlas.</p>
+            <p>• <code class="inline">bad auth: authentication failed</code> → wrong username/password in <code class="inline">MONGO_URI</code>.</p>
+            <p>• <code class="inline">process.env.MONGO_URI is undefined</code> → you forgot <code class="inline">dotenv.config()</code>, or the <code class="inline">.env</code> file is in the wrong folder.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 9 ============================ -->
+      <section class="section reveal" id="folder-structure">
+        <span class="section-kicker k-1">09 · STRUCTURE</span>
+        <h2 class="section-title">Project folder structure</h2>
+        <p class="section-sub">Before we build the projects, let's agree on a clean, professional folder layout for both the frontend and the backend. Good structure means you always know where things go.</p>
+
+        <h3><span class="h3-ico">⚛️</span> Frontend structure</h3>
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/<span class="lang">tree</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>frontend/
+├── src/
+│   ├── components/      # Reusable UI pieces (NoteCard, Navbar, Button)
+│   ├── pages/           # Full screens (Home, Notes, Contact)
+│   ├── services/        # API calls live here (api.js using Axios)
+│   ├── assets/          # Images, icons, logos
+│   ├── App.jsx          # Root component, sets up routes
+│   ├── main.jsx         # Entry point — mounts React
+│   └── index.css        # Global styles
+├── .env                 # Frontend env vars (VITE_API_URL)
+├── index.html
+├── package.json
+└── vite.config.js</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Folder</th><th>Why it exists</th></tr></thead>
+            <tbody>
+              <tr><td><code>components/</code></td><td>Small, reusable building blocks used across many pages. Keeps UI DRY.</td></tr>
+              <tr><td><code>pages/</code></td><td>One file per screen/route. Easy to map to URLs.</td></tr>
+              <tr><td><code>services/</code></td><td>All network/Axios code in one place, so components stay clean and API URLs aren't scattered.</td></tr>
+              <tr><td><code>assets/</code></td><td>Static images and icons imported by components.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3><span class="h3-ico">🚀</span> Backend structure</h3>
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/<span class="lang">tree</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>backend/
+├── config/
+│   └── db.js            # MongoDB connection
+├── models/              # Mongoose schemas (Note.js, Contact.js)
+├── routes/              # URL definitions (noteRoutes.js)
+├── controllers/         # The logic for each route (what to do)
+├── middleware/          # Reusable request handlers (error handler)
+├── .env                 # Secrets (MONGO_URI, PORT)
+├── .gitignore
+├── package.json
+└── server.js            # App entry point — ties everything together</code></pre>
+        </div>
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why split routes, controllers, and models?</div><p>It's the <strong>MVC-ish</strong> pattern. <strong>Models</strong> define the data shape, <strong>routes</strong> map URLs to handlers, and <strong>controllers</strong> hold the actual logic. Separating them keeps <code class="inline">server.js</code> tiny and makes each file easy to find and test. A 10-line route file is far easier to read than a 500-line server.js.</p></div>
+        </div>
+        <div class="diagram">
+          <div class="dg-title">🔄 How a request flows through the backend</div>
+          <div class="flow">
+            <div class="flow-box browser"><span class="fb-ico">🌐</span><b>Request</b><small>POST /api/notes</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">route matches</span></div>
+            <div class="flow-box be"><span class="fb-ico">🧭</span><b>Route</b><small>noteRoutes.js</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">calls</span></div>
+            <div class="flow-box" style="background:linear-gradient(135deg,#f59e0b,#f43f5e)"><span class="fb-ico">🧠</span><b>Controller</b><small>logic</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">via model</span></div>
+            <div class="flow-box db"><span class="fb-ico">🍃</span><b>MongoDB</b><small>saved</small></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 10 =========================== -->
+      <section class="section reveal" id="project-notes">
+        <span class="section-kicker k-4">10 · PROJECT 1</span>
+        <h2 class="section-title">Mini Project 1 — Sticky Notes App</h2>
+        <p class="section-sub">Time to combine everything into a real app. You'll build a <strong>Sticky Notes</strong> app with full <strong>CRUD</strong> — Create, Read, Update, Delete — backed by MongoDB and a React frontend talking to it through Axios. We'll build the backend first, then the frontend.</p>
+
+        <h3><span class="h3-ico">🗂️</span> Folder structure</h3>
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">sticky-notes/<span class="lang">tree</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>sticky-notes/
+├── backend/
+│   ├── config/db.js                 # MongoDB connection
+│   ├── models/Note.js               # { text, createdAt }
+│   ├── controllers/noteController.js # CRUD logic
+│   ├── routes/noteRoutes.js         # /api/notes  (GET POST DELETE)
+│   ├── .env                         # MONGO_URI, PORT
+│   └── server.js                    # app entry point
+└── frontend/
+    ├── src/
+    │   ├── components/NoteCard.jsx
+    │   ├── services/api.js          # Axios calls
+    │   ├── App.jsx
+    │   └── main.jsx
+    ├── .env                         # VITE_API_URL
+    └── package.json</code></pre>
+        </div>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What is CRUD?</div><p>The four basic things you do with data, each mapped to an HTTP method:</p>
+            <p><strong>C</strong>reate → <code class="inline">POST</code> · <strong>R</strong>ead → <code class="inline">GET</code> · <strong>U</strong>pdate → <code class="inline">PUT</code> · <strong>D</strong>elete → <code class="inline">DELETE</code>.</p>
+          </div>
+        </div>
+
+        <h3><span class="h3-ico">🗺️</span> The API we'll build</h3>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Does</th></tr></thead>
+            <tbody>
+              <tr><td><span class="status-pill s-2xx">GET</span></td><td><code>/api/notes</code></td><td>Get all notes</td></tr>
+              <tr><td><span class="status-pill s-2xx">POST</span></td><td><code>/api/notes</code></td><td>Create a new note</td></tr>
+              <tr><td><span class="status-pill s-4xx">PUT</span></td><td><code>/api/notes/:id</code></td><td>Update one note by id</td></tr>
+              <tr><td><span class="status-pill s-5xx">DELETE</span></td><td><code>/api/notes/:id</code></td><td>Delete one note by id</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="section-title" style="font-size:1.4rem;margin-top:28px">🚀 Part A — The Backend</h2>
+
+        <h3><span class="h3-ico">1️⃣</span> The Model — <code class="inline">models/Note.js</code></h3>
+        <p>A <strong>model</strong> defines the shape of one note in the database. Mongoose calls this a <em>schema</em>.</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/models/Note.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import mongoose from "mongoose";
+
+// Define what a single Note looks like
+const noteSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,        // a note must have a title
+      trim: true             // remove surrounding spaces
+    },
+    content: {
+      type: String,
+      default: ""            // content is optional
+    }
+  },
+  {
+    timestamps: true          // auto-add createdAt &amp; updatedAt fields
+  }
+);
+
+// Create &amp; export the model. "Note" → MongoDB collection "notes"
+const Note = mongoose.model("Note", noteSchema);
+export default Note;</code></pre>
+        </div>
+        <ul>
+          <li><code class="inline">new mongoose.Schema({...})</code> — describes each field and its rules.</li>
+          <li><code class="inline">required: true</code> — saving fails if <code class="inline">title</code> is missing.</li>
+          <li><code class="inline">trim: true</code> — strips accidental spaces around the text.</li>
+          <li><code class="inline">timestamps: true</code> — Mongoose adds <code class="inline">createdAt</code> and <code class="inline">updatedAt</code> automatically.</li>
+          <li><code class="inline">mongoose.model("Note", ...)</code> — turns the schema into a usable model. Mongoose lowercases + pluralises the name, so data lands in a collection called <code class="inline">notes</code>.</li>
+        </ul>
+
+        <h3><span class="h3-ico">2️⃣</span> The Controller — <code class="inline">controllers/noteController.js</code></h3>
+        <p>The controller holds the <strong>logic</strong> for each action. Each function is an async handler receiving <code class="inline">req</code> (request) and <code class="inline">res</code> (response).</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/controllers/noteController.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import Note from "../models/Note.js";
+
+// GET /api/notes — read all notes (newest first)
+export const getNotes = async (req, res) =&gt; {
+  try {
+    const notes = await Note.find().sort({ createdAt: -1 });
+    res.status(200).json(notes);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// POST /api/notes — create a note
+export const createNote = async (req, res) =&gt; {
+  try {
+    const { title, content } = req.body;        // data sent by the frontend
+    if (!title) {
+      return res.status(400).json({ message: "Title is required" });
+    }
+    const newNote = await Note.create({ title, content });
+    res.status(201).json(newNote);              // 201 = created
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// PUT /api/notes/:id — update a note
+export const updateNote = async (req, res) =&gt; {
+  try {
+    const updated = await Note.findByIdAndUpdate(
+      req.params.id,        // which note (from the URL)
+      req.body,             // the new data
+      { new: true }         // return the UPDATED document
+    );
+    if (!updated) return res.status(404).json({ message: "Note not found" });
+    res.status(200).json(updated);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// DELETE /api/notes/:id — delete a note
+export const deleteNote = async (req, res) =&gt; {
+  try {
+    const deleted = await Note.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: "Note not found" });
+    res.status(200).json({ message: "Note deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};</code></pre>
+        </div>
+        <h4>Key ideas explained</h4>
+        <ul>
+          <li><code class="inline">Note.find()</code> — fetches all documents; <code class="inline">.sort({ createdAt: -1 })</code> puts newest first.</li>
+          <li><code class="inline">req.body</code> — the JSON the frontend sent. Available because of <code class="inline">express.json()</code> middleware.</li>
+          <li><code class="inline">req.params.id</code> — the <code class="inline">:id</code> part of the URL, e.g. <code class="inline">/api/notes/abc123</code>.</li>
+          <li><code class="inline">res.status(201)</code> — sets the HTTP status code (201 = "Created"). <code class="inline">.json(...)</code> sends JSON back.</li>
+          <li><code class="inline">{ new: true }</code> — tells Mongoose to return the note <em>after</em> updating, not before.</li>
+          <li>Each function is wrapped in <code class="inline">try/catch</code> so database errors return a clean <code class="inline">500</code> instead of crashing.</li>
+        </ul>
+
+        <h3><span class="h3-ico">3️⃣</span> The Routes — <code class="inline">routes/noteRoutes.js</code></h3>
+        <p>Routes connect each URL + method to a controller function.</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/routes/noteRoutes.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import express from "express";
+import {
+  getNotes,
+  createNote,
+  updateNote,
+  deleteNote
+} from "../controllers/noteController.js";
+
+const router = express.Router();
+
+router.get("/", getNotes);          // GET    /api/notes
+router.post("/", createNote);       // POST   /api/notes
+router.put("/:id", updateNote);     // PUT    /api/notes/:id
+router.delete("/:id", deleteNote);  // DELETE /api/notes/:id
+
+export default router;</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What is express.Router()?</div><p>A mini, modular router you can attach to a base path. Here every route is relative to <code class="inline">/api/notes</code> (which we set in server.js next), so <code class="inline">router.get("/")</code> really means <code class="inline">GET /api/notes</code>.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">4️⃣</span> Wire routes into <code class="inline">server.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import noteRoutes from "./routes/noteRoutes.js";   // 👈 import routes
+
+dotenv.config();
+connectDB();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req, res) =&gt; res.send("API is running ✅"));
+
+// Mount the notes routes under /api/notes
+app.use("/api/notes", noteRoutes);                 // 👈 plug them in
+
+app.listen(PORT, () =&gt; console.log(`Server on http://localhost:${PORT}`));</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Test the backend before touching React</div><p>Use Postman (next section) to hit <code class="inline">POST http://localhost:5000/api/notes</code> with a JSON body. If you get a created note back, your backend is solid — now the frontend just has to display it.</p></div>
+        </div>
+
+        <h2 class="section-title" style="font-size:1.4rem;margin-top:34px">⚛️ Part B — The Frontend</h2>
+
+        <h3><span class="h3-ico">📦</span> Install Axios</h3>
+        <p>In a terminal inside the <code class="inline">frontend</code> folder:</p>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal (frontend)<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install axios</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔧</span> Central API config — <code class="inline">src/services/api.js</code></h3>
+        <p>We create one Axios instance so the backend URL lives in a single place (and can switch between local and production).</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/services/api.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import axios from "axios";
+
+// Read the backend URL from an env var, fall back to localhost
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const api = axios.create({
+  baseURL,                              // every request is prefixed with this
+  headers: { "Content-Type": "application/json" }
+});
+
+export default api;</code></pre>
+        </div>
+        <p>Create a <code class="inline">.env</code> file in the <code class="inline">frontend</code> folder too. Vite only exposes vars that start with <code class="inline">VITE_</code>:</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/.env<span class="lang">env</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>VITE_API_URL=http://localhost:5000</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🎨</span> The main page — <code class="inline">src/pages/Notes.jsx</code></h3>
+        <p>This component does it all: loads notes on mount, creates, updates and deletes them, and re-renders the list. Read the inline comments carefully.</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/pages/Notes.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useState, useEffect } from "react";
+import api from "../services/api";
+
+export default function Notes() {
+  // STATE — React re-renders the UI whenever these change
+  const [notes, setNotes] = useState([]);          // the list of notes
+  const [title, setTitle] = useState("");          // form: title input
+  const [content, setContent] = useState("");      // form: content input
+  const [editingId, setEditingId] = useState(null);// id of note being edited
+
+  // READ — fetch all notes once, when the page first loads
+  const fetchNotes = async () =&gt; {
+    try {
+      const res = await api.get("/api/notes");
+      setNotes(res.data);                          // store them in state
+    } catch (err) {
+      console.error("Failed to load notes:", err.message);
+    }
+  };
+
+  useEffect(() =&gt; {
+    fetchNotes();                                  // run once on mount
+  }, []);                                          // [] = "only the first time"
+
+  // CREATE or UPDATE — depending on whether we're editing
+  const handleSubmit = async (e) =&gt; {
+    e.preventDefault();                            // stop the page reloading
+    if (!title.trim()) return;                     // ignore empty titles
+
+    try {
+      if (editingId) {
+        // UPDATE existing note
+        await api.put(`/api/notes/${editingId}`, { title, content });
+      } else {
+        // CREATE new note
+        await api.post("/api/notes", { title, content });
+      }
+      // reset the form and refresh the list
+      setTitle("");
+      setContent("");
+      setEditingId(null);
+      fetchNotes();
+    } catch (err) {
+      console.error("Save failed:", err.message);
+    }
+  };
+
+  // Put a note's values back into the form to edit it
+  const startEdit = (note) =&gt; {
+    setEditingId(note._id);
+    setTitle(note.title);
+    setContent(note.content);
+  };
+
+  // DELETE a note by id
+  const handleDelete = async (id) =&gt; {
+    try {
+      await api.delete(`/api/notes/${id}`);
+      fetchNotes();
+    } catch (err) {
+      console.error("Delete failed:", err.message);
+    }
+  };
+
+  return (
+    &lt;div className="notes-page"&gt;
+      &lt;h1&gt;📝 My Sticky Notes&lt;/h1&gt;
+
+      {/* The form handles both creating and editing */}
+      &lt;form onSubmit={handleSubmit} className="note-form"&gt;
+        &lt;input
+          placeholder="Title"
+          value={title}
+          onChange={(e) =&gt; setTitle(e.target.value)}
+        /&gt;
+        &lt;textarea
+          placeholder="Write your note..."
+          value={content}
+          onChange={(e) =&gt; setContent(e.target.value)}
+        /&gt;
+        &lt;button type="submit"&gt;
+          {editingId ? "Update Note" : "Add Note"}
+        &lt;/button&gt;
+      &lt;/form&gt;
+
+      {/* The list of notes */}
+      &lt;div className="note-grid"&gt;
+        {notes.map((note) =&gt; (
+          &lt;div className="note-card" key={note._id}&gt;
+            &lt;h3&gt;{note.title}&lt;/h3&gt;
+            &lt;p&gt;{note.content}&lt;/p&gt;
+            &lt;div className="note-actions"&gt;
+              &lt;button onClick={() =&gt; startEdit(note)}&gt;✏️ Edit&lt;/button&gt;
+              &lt;button onClick={() =&gt; handleDelete(note._id)}&gt;🗑️ Delete&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🧠</span> Understanding the React concepts used</h3>
+        <div class="grid cols-2">
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">📦</div><h4>useState</h4><p>Creates a piece of "state". When you call its setter (e.g. <code class="inline">setNotes</code>), React re-renders the component with the new value.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">🔄</div><h4>useEffect</h4><p>Runs side-effects like fetching data. With an empty <code class="inline">[]</code> dependency array, it runs once when the component first appears.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-mint">🗺️</div><h4>.map() rendering</h4><p>We turn the <code class="inline">notes</code> array into JSX cards. Each needs a unique <code class="inline">key</code> (we use Mongo's <code class="inline">_id</code>) so React tracks them efficiently.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-amber">🎛️</div><h4>Controlled inputs</h4><p>Each input's <code class="inline">value</code> is tied to state and updated via <code class="inline">onChange</code>. React is the single source of truth for the form.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🔗</span> Show the page — <code class="inline">src/App.jsx</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/App.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import Notes from "./pages/Notes";
+import "./index.css";
+
+export default function App() {
+  return &lt;Notes /&gt;;
+}</code></pre>
+        </div>
+
+        <div class="callout output">
+          <div class="ci">🖨️</div>
+          <div><div class="ctitle">Expected result</div><p>With <strong>both</strong> servers running (backend on 5000, frontend on 5173), open <code class="inline">http://localhost:5173</code>. Add a note → it appears instantly and is saved in MongoDB. Refresh the page → it's still there. Edit and delete work too. 🎉</p></div>
+        </div>
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — the finished Sticky Notes app with a few colourful note cards</div>
+          <div class="shot-sub">Show the form on top and a grid of note cards with Edit/Delete buttons.</div>
+          <div class="shot-tag">/assets/sticky-notes.png</div>
+        </div>
+
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes &amp; fixes</div>
+            <p>• <strong>CORS error</strong> in the console → backend missing <code class="inline">app.use(cors())</code> (see section 06).</p>
+            <p>• <strong>Notes don't appear</strong> → is the backend running? Is <code class="inline">VITE_API_URL</code> correct? Check the Network tab.</p>
+            <p>• <strong>"Cannot read properties of undefined"</strong> → you used <code class="inline">note.id</code> instead of Mongo's <code class="inline">note._id</code>.</p>
+            <p>• <strong>Form reloads the page</strong> → you forgot <code class="inline">e.preventDefault()</code> in <code class="inline">handleSubmit</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 11 =========================== -->
+      <section class="section reveal" id="project-contact">
+        <span class="section-kicker k-4">11 · PROJECT 2</span>
+        <h2 class="section-title">Mini Project 2 — Contact Form</h2>
+        <p class="section-sub">A classic real-world feature: a contact form that validates input, sends it to the backend, saves it in MongoDB, and shows a success message. You'll reuse everything from Project 1 and add <strong>form validation</strong>.</p>
+
+        <h3><span class="h3-ico">🗂️</span> Folder structure</h3>
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">contact-form/<span class="lang">tree</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>contact-form/
+├── backend/
+│   ├── config/db.js
+│   ├── models/Contact.js            # { name, email, phone, message }
+│   ├── controllers/contactController.js
+│   ├── routes/contactRoutes.js      # POST /api/contact
+│   ├── .env                         # MONGO_URI, PORT
+│   └── server.js
+└── frontend/
+    ├── src/
+    │   ├── components/ContactForm.jsx
+    │   ├── services/api.js
+    │   ├── App.jsx
+    │   └── main.jsx
+    ├── .env
+    └── package.json</code></pre>
+        </div>
+
+        <h2 class="section-title" style="font-size:1.4rem;margin-top:20px">🚀 Part A — The Backend</h2>
+
+        <h3><span class="h3-ico">1️⃣</span> Model — <code class="inline">models/Contact.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/models/Contact.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import mongoose from "mongoose";
+
+const contactSchema = new mongoose.Schema(
+  {
+    name:    { type: String, required: true, trim: true },
+    email:   { type: String, required: true, trim: true, lowercase: true },
+    phone:   { type: String, required: true, trim: true },
+    message: { type: String, required: true, trim: true }
+  },
+  { timestamps: true }
+);
+
+const Contact = mongoose.model("Contact", contactSchema);
+export default Contact;</code></pre>
+        </div>
+        <ul>
+          <li>All four fields are <code class="inline">required</code> — the database itself rejects incomplete submissions (a second line of defence after frontend validation).</li>
+          <li><code class="inline">lowercase: true</code> on email keeps stored addresses consistent.</li>
+        </ul>
+
+        <h3><span class="h3-ico">2️⃣</span> Controller — <code class="inline">controllers/contactController.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/controllers/contactController.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import Contact from "../models/Contact.js";
+
+// POST /api/contacts — save a contact message
+export const createContact = async (req, res) =&gt; {
+  try {
+    const { name, email, phone, message } = req.body;
+
+    // Server-side validation — never trust the client alone
+    if (!name || !email || !phone || !message) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const contact = await Contact.create({ name, email, phone, message });
+    res.status(201).json({
+      success: true,
+      message: "Thanks! Your message was received.",
+      data: contact
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// GET /api/contacts — list all messages (for an admin view)
+export const getContacts = async (req, res) =&gt; {
+  try {
+    const contacts = await Contact.find().sort({ createdAt: -1 });
+    res.status(200).json(contacts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">3️⃣</span> Routes — <code class="inline">routes/contactRoutes.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/routes/contactRoutes.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import express from "express";
+import { createContact, getContacts } from "../controllers/contactController.js";
+
+const router = express.Router();
+
+router.post("/", createContact);   // POST /api/contacts
+router.get("/", getContacts);      // GET  /api/contacts
+
+export default router;</code></pre>
+        </div>
+        <p>Then plug it into <code class="inline">server.js</code> just like the notes routes:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/server.js (add)<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import contactRoutes from "./routes/contactRoutes.js";
+// ...
+app.use("/api/contacts", contactRoutes);</code></pre>
+        </div>
+
+        <h2 class="section-title" style="font-size:1.4rem;margin-top:34px">⚛️ Part B — The Frontend Form</h2>
+        <p>The form keeps all four fields in one state object, validates them, and shows inline errors plus a success message.</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/pages/Contact.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useState } from "react";
+import api from "../services/api";
+
+const initialForm = { name: "", email: "", phone: "", message: "" };
+
+export default function Contact() {
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Update one field by its "name" attribute
+  const handleChange = (e) =&gt; {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Simple client-side validation; returns an errors object
+  const validate = () =&gt; {
+    const err = {};
+    if (!form.name.trim()) err.name = "Name is required";
+    if (!form.email.trim()) {
+      err.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      err.email = "Enter a valid email";
+    }
+    if (!/^[0-9]{7,15}$/.test(form.phone)) err.phone = "Enter a valid phone number";
+    if (!form.message.trim()) err.message = "Message cannot be empty";
+    return err;
+  };
+
+  const handleSubmit = async (e) =&gt; {
+    e.preventDefault();
+    setSuccess("");
+    const foundErrors = validate();
+    setErrors(foundErrors);
+    if (Object.keys(foundErrors).length &gt; 0) return; // stop if invalid
+
+    try {
+      setLoading(true);
+      const res = await api.post("/api/contacts", form);
+      setSuccess(res.data.message);   // "Thanks! Your message was received."
+      setForm(initialForm);           // clear the form
+    } catch (err) {
+      setSuccess("");
+      setErrors({ submit: err.response?.data?.message || "Something went wrong" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    &lt;div className="contact-page"&gt;
+      &lt;h1&gt;📨 Contact Us&lt;/h1&gt;
+
+      {success &amp;&amp; &lt;p className="success"&gt;✅ {success}&lt;/p&gt;}
+      {errors.submit &amp;&amp; &lt;p className="error"&gt;❌ {errors.submit}&lt;/p&gt;}
+
+      &lt;form onSubmit={handleSubmit} noValidate&gt;
+        &lt;input name="name" placeholder="Name"
+               value={form.name} onChange={handleChange} /&gt;
+        {errors.name &amp;&amp; &lt;span className="field-error"&gt;{errors.name}&lt;/span&gt;}
+
+        &lt;input name="email" placeholder="Email"
+               value={form.email} onChange={handleChange} /&gt;
+        {errors.email &amp;&amp; &lt;span className="field-error"&gt;{errors.email}&lt;/span&gt;}
+
+        &lt;input name="phone" placeholder="Phone"
+               value={form.phone} onChange={handleChange} /&gt;
+        {errors.phone &amp;&amp; &lt;span className="field-error"&gt;{errors.phone}&lt;/span&gt;}
+
+        &lt;textarea name="message" placeholder="Your message"
+               value={form.message} onChange={handleChange} /&gt;
+        {errors.message &amp;&amp; &lt;span className="field-error"&gt;{errors.message}&lt;/span&gt;}
+
+        &lt;button type="submit" disabled={loading}&gt;
+          {loading ? "Sending..." : "Send Message"}
+        &lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔍</span> What's happening, explained</h3>
+        <ul>
+          <li><strong>One state object</strong> <code class="inline">form</code> holds all fields. <code class="inline">[e.target.name]: e.target.value</code> updates just the field that changed — that's why each input has a <code class="inline">name</code> attribute.</li>
+          <li><strong><code class="inline">validate()</code></strong> returns an object of errors. If it's empty, the form is valid. The email/phone checks use simple regular expressions.</li>
+          <li><strong>Two layers of validation</strong> — the browser/React checks first (fast feedback), and the backend checks again (security). Never rely on the frontend alone.</li>
+          <li><strong><code class="inline">loading</code> state</strong> disables the button and shows "Sending..." so users don't double-submit.</li>
+          <li><strong><code class="inline">err.response?.data?.message</code></strong> reads the error message the backend sent, with optional chaining (<code class="inline">?.</code>) so it won't crash if the response is missing.</li>
+        </ul>
+
+        <div class="callout output">
+          <div class="ci">🖨️</div>
+          <div><div class="ctitle">Expected result</div><p>Fill the form and submit. Invalid fields show red messages instantly. On success you see "✅ Thanks! Your message was received." and the new document appears in your MongoDB <code class="inline">contacts</code> collection.</p></div>
+        </div>
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — contact form with a validation error and a success state</div>
+          <div class="shot-tag">/assets/contact-form.png</div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div>
+            <p>• Inputs missing the <code class="inline">name</code> attribute → <code class="inline">handleChange</code> can't tell which field changed.</p>
+            <p>• Forgetting <code class="inline">noValidate</code> on the form lets the browser's default validation fight with yours.</p>
+            <p>• Sending <code class="inline">form</code> but the backend expects different field names → 400 error. Keep names identical on both sides.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 12 =========================== -->
+      <section class="section reveal" id="axios">
+        <span class="section-kicker k-4">12 · APIs</span>
+        <h2 class="section-title">Axios — talking to your backend</h2>
+        <p class="section-sub"><strong>Axios</strong> is the library your React app uses to send HTTP requests to the backend. You've already used it; now let's understand it properly with examples for every method.</p>
+
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why Axios and not plain fetch?</div><p>The browser has a built-in <code class="inline">fetch()</code>, but Axios adds conveniences: it automatically converts JSON, lets you set a <code class="inline">baseURL</code> once, throws errors on bad status codes, and has cleaner syntax. For beginners it removes a lot of boilerplate.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">📦</span> Installation</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal (frontend)<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install axios</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔡</span> The four methods, with examples</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">axios examples<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import api from "../services/api"; // our pre-configured axios instance
+
+// GET — read data
+const res = await api.get("/api/notes");
+console.log(res.data);            // the array of notes
+
+// POST — create data (second argument is the body)
+await api.post("/api/notes", { title: "Hello", content: "World" });
+
+// PUT — update data by id
+await api.put("/api/notes/123", { title: "Updated title" });
+
+// DELETE — remove data by id
+await api.delete("/api/notes/123");</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">The golden rule: data is in <code class="inline">res.data</code></div><p>Axios wraps the server's reply in a response object. The actual payload your backend sent is always on <code class="inline">res.data</code> — not <code class="inline">res</code> itself. Other useful fields: <code class="inline">res.status</code> (e.g. 200) and <code class="inline">res.headers</code>.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⏳</span> async / await explained</h3>
+        <p>HTTP requests take time. <code class="inline">await</code> tells JavaScript "pause here until the response arrives, then continue" — without freezing the whole app. A function using <code class="inline">await</code> must be marked <code class="inline">async</code>.</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">error handling pattern<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>async function loadNotes() {
+  try {
+    const res = await api.get("/api/notes");
+    return res.data;                  // success path
+  } catch (err) {
+    // err.response exists when the server replied with an error status
+    if (err.response) {
+      console.error("Server said:", err.response.status, err.response.data);
+    } else {
+      console.error("Network/other error:", err.message);
+    }
+  }
+}</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Always wrap requests in try/catch</div><p>If the backend is down or returns a 4xx/5xx, Axios <em>throws</em>. Catching it lets you show a friendly message instead of a blank screen. <code class="inline">err.response</code> contains the server's status and body; <code class="inline">err.message</code> covers network failures.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div>
+            <p>• Forgetting <code class="inline">await</code> → you get a Promise object instead of the data.</p>
+            <p>• Reading <code class="inline">res</code> instead of <code class="inline">res.data</code>.</p>
+            <p>• Calling <code class="inline">await</code> in a function that isn't <code class="inline">async</code> → syntax error.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 13 =========================== -->
+      <section class="section reveal" id="testing-apis">
+        <span class="section-kicker k-4">13 · APIs</span>
+        <h2 class="section-title">Testing your API with Postman</h2>
+        <p class="section-sub">Before connecting React, always test your backend with <strong>Postman</strong>. It lets you send requests and see raw responses — so you know whether a bug is in the backend or the frontend.</p>
+
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why test in Postman first?</div><p>If a feature is broken, you need to know <em>which half</em> is at fault. Postman talks straight to your API with no React involved. If Postman works but React doesn't, the bug is in the frontend (often CORS or a wrong URL). This saves hours.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧪</span> Testing each endpoint</h3>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Action</th><th>Method + URL</th><th>Body (raw JSON)</th></tr></thead>
+            <tbody>
+              <tr><td>Get all notes</td><td><code>GET http://localhost:5000/api/notes</code></td><td>— none —</td></tr>
+              <tr><td>Create a note</td><td><code>POST http://localhost:5000/api/notes</code></td><td><code>{ "title": "Test", "content": "Hi" }</code></td></tr>
+              <tr><td>Update a note</td><td><code>PUT http://localhost:5000/api/notes/&lt;id&gt;</code></td><td><code>{ "title": "Edited" }</code></td></tr>
+              <tr><td>Delete a note</td><td><code>DELETE http://localhost:5000/api/notes/&lt;id&gt;</code></td><td>— none —</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> How to send a POST in Postman (step by step)</h3>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot">1</div><h4>Set the method &amp; URL</h4><p>Choose <strong>POST</strong> from the dropdown and type <code class="inline">http://localhost:5000/api/notes</code>.</p></div>
+          <div class="tl-item"><div class="tl-dot">2</div><h4>Open the Body tab</h4><p>Click <strong>Body → raw</strong>, then pick <strong>JSON</strong> from the format dropdown on the right.</p></div>
+          <div class="tl-item"><div class="tl-dot">3</div><h4>Type the JSON</h4><p>Enter your note object (see below). JSON keys must be in double quotes.</p></div>
+          <div class="tl-item"><div class="tl-dot">4</div><h4>Hit Send</h4><p>You'll see the created note and a <strong>201 Created</strong> status in the response panel.</p></div>
+        </div>
+        <div class="code" data-lang="json">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Body → raw → JSON<span class="lang">json</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>{
+  "title": "My first note",
+  "content": "Created from Postman 🎉"
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🧾</span> The Headers tab</h3>
+        <p>For a JSON body, Postman usually sets <code class="inline">Content-Type: application/json</code> automatically. If your server complains it can't read the body, check that this header is present.</p>
+
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — Postman POST request with JSON body and 201 response</div>
+          <div class="shot-tag">/assets/postman-post.png</div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Save a Collection</div><p>Group your requests into a Postman <strong>Collection</strong> so you can re-run them anytime. You can even export the collection as a file and import it on another machine — handy for sharing your API with teammates.</p></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 14 =========================== -->
+      <section class="section reveal" id="deploy-backend">
+        <span class="section-kicker k-2">14 · DEPLOY</span>
+        <h2 class="section-title">Deploy the backend to Vercel</h2>
+        <p class="section-sub">Your app works on your laptop — now let's put the backend online so it has a real, public URL. We'll deploy the Express API to <strong>Vercel</strong>.</p>
+
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why deploy?</div><p><code class="inline">localhost</code> only exists on your computer. Nobody else can reach it. Deploying gives your backend a public address like <code class="inline">https://your-api.vercel.app</code> that your deployed frontend (and the world) can call.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">📄</span> Step 1 — Add a <code class="inline">vercel.json</code></h3>
+        <p>Vercel needs to know how to run your Express app. Create <code class="inline">vercel.json</code> in the <code class="inline">backend</code> folder:</p>
+        <div class="code" data-lang="json">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/vercel.json<span class="lang">json</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>{
+  "version": 2,
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "server.js" }
+  ]
+}</code></pre>
+        </div>
+        <ul>
+          <li><code class="inline">builds</code> — tells Vercel to run <code class="inline">server.js</code> using its Node.js engine.</li>
+          <li><code class="inline">routes</code> — sends <em>every</em> incoming path to <code class="inline">server.js</code>, so Express handles all routing.</li>
+        </ul>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Export the app for serverless</div><p>On Vercel your server runs as a <strong>serverless function</strong>, so add <code class="inline">export default app;</code> at the end of <code class="inline">server.js</code> (keep <code class="inline">app.listen</code> for local dev — Vercel ignores it). This lets Vercel import your Express app.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⬆️</span> Step 2 — Push the backend to GitHub</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal (backend)<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>git init
+git add .
+git commit -m "Backend ready for deploy"
+git branch -M main
+git remote add origin https://github.com/YOUR_NAME/backend.git
+git push -u origin main</code></pre>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Before you push: double-check</div><p>Make sure <code class="inline">.env</code> and <code class="inline">node_modules</code> are in <code class="inline">.gitignore</code>. Run <code class="inline">git status</code> — if you see <code class="inline">.env</code> listed, <strong>stop</strong> and add it to <code class="inline">.gitignore</code> before committing.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🔐</span> Step 3 — Import to Vercel &amp; add env vars</h3>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot">1</div><h4>Import the repo</h4><p>On <code class="inline">vercel.com</code> → <strong>Add New → Project</strong> → import your backend GitHub repo.</p></div>
+          <div class="tl-item"><div class="tl-dot">2</div><h4>Add Environment Variables</h4><p>In project <strong>Settings → Environment Variables</strong>, add <code class="inline">MONGO_URI</code> with your Atlas string. (You don't need <code class="inline">PORT</code> — Vercel handles ports for you.)</p></div>
+          <div class="tl-item"><div class="tl-dot">3</div><h4>Confirm Atlas allows Vercel</h4><p>In Atlas → Network Access, make sure <code class="inline">0.0.0.0/0</code> is whitelisted, otherwise Vercel can't reach your database.</p></div>
+          <div class="tl-item"><div class="tl-dot">4</div><h4>Deploy</h4><p>Click <strong>Deploy</strong>. After ~1 minute you get a URL like <code class="inline">https://your-api.vercel.app</code>. Visit it — you should see "API is running ✅".</p></div>
+        </div>
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — Vercel "Environment Variables" screen with MONGO_URI added</div>
+          <div class="shot-tag">/assets/vercel-env.png</div>
+        </div>
+
+        <h3><span class="h3-ico">🩺</span> Troubleshooting deployment</h3>
+        <div class="accordion">
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🐞</span> 500 error / "FUNCTION_INVOCATION_FAILED"<span class="plus">+</span></button><div class="acc-body"><div class="acc-inner">Usually a missing env var or DB connection failure. Open Vercel → your project → <strong>Logs</strong> to read the real error. Confirm <code>MONGO_URI</code> is set and Atlas whitelists <code>0.0.0.0/0</code>.</div></div></div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🐞</span> The page is blank or 404 on every route<span class="plus">+</span></button><div class="acc-body"><div class="acc-inner">Your <code>vercel.json</code> routes are likely missing. Make sure every path is sent to <code>server.js</code>, and that you added <code>export default app;</code>.</div></div></div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🐞</span> Works locally, fails on Vercel<span class="plus">+</span></button><div class="acc-body"><div class="acc-inner">90% of the time it's an environment variable you set in <code>.env</code> locally but forgot to add in Vercel's dashboard. Add it and redeploy.</div></div></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 15 =========================== -->
+      <section class="section reveal" id="deploy-react">
+        <span class="section-kicker k-2">15 · DEPLOY</span>
+        <h2 class="section-title">Deploy the React frontend to Vercel</h2>
+        <p class="section-sub">Now the frontend. Vercel was built by the makers of Next.js and deploys Vite/React apps beautifully — usually with zero config.</p>
+
+        <h3><span class="h3-ico">⬆️</span> Step 1 — Push the frontend to GitHub</h3>
+        <p>In a <strong>separate</strong> GitHub repo (frontend and backend stay separate):</p>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Terminal (frontend)<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>git init
+git add .
+git commit -m "Frontend ready for deploy"
+git branch -M main
+git remote add origin https://github.com/YOUR_NAME/frontend.git
+git push -u origin main</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🖱️</span> Step 2 — Import &amp; configure on Vercel</h3>
+        <p>Vercel auto-detects Vite. Confirm these settings on the import screen:</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Setting</th><th>Value</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Framework Preset</td><td><strong>Vite</strong></td><td>Vercel detects it automatically.</td></tr>
+              <tr><td>Build Command</td><td><code>npm run build</code></td><td>Compiles your app into static files.</td></tr>
+              <tr><td>Output Directory</td><td><code>dist</code></td><td>Vite puts the built site in <code>dist/</code>.</td></tr>
+              <tr><td>Install Command</td><td><code>npm install</code></td><td>Installs dependencies first.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3><span class="h3-ico">🔑</span> Step 3 — Add the environment variable</h3>
+        <p>This is the crucial step that connects your live frontend to your live backend. In Vercel → <strong>Settings → Environment Variables</strong>, add:</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Vercel env var<span class="lang">env</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>VITE_API_URL = https://your-api.vercel.app</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Must start with VITE_ and redeploy</div><p>Vite only exposes env vars prefixed with <code class="inline">VITE_</code>. Also, env vars are baked in at <strong>build time</strong> — if you add or change one, you must <strong>redeploy</strong> for it to take effect.</p></div>
+        </div>
+        <div class="shot">
+          <div class="shot-ico">📸</div>
+          <div class="shot-cap">Screenshot placeholder — Vercel import screen showing Vite preset, build command, and output dir</div>
+          <div class="shot-tag">/assets/vercel-frontend.png</div>
+        </div>
+        <div class="callout output">
+          <div class="ci">🎉</div>
+          <div><div class="ctitle">Done</div><p>Click <strong>Deploy</strong>. In about a minute you'll get a live URL like <code class="inline">https://your-app.vercel.app</code>. Open it on your phone — your full stack app is on the internet!</p></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 16 =========================== -->
+      <section class="section reveal" id="production">
+        <span class="section-kicker k-2">16 · DEPLOY</span>
+        <h2 class="section-title">Connect frontend &amp; backend in production</h2>
+        <p class="section-sub">Locally everything pointed at <code class="inline">localhost</code>. In production both apps have real URLs. Here's how to switch cleanly — without changing code each time.</p>
+
+        <h3><span class="h3-ico">🔁</span> Development vs. production URLs</h3>
+        <div class="origin-compare">
+          <div class="origin-pill a"><small>Development</small>http://localhost:5000</div>
+          <div class="origin-vs">→</div>
+          <div class="origin-pill b"><small>Production</small>https://your-api.vercel.app</div>
+        </div>
+        <p>Because we read the URL from <code class="inline">import.meta.env.VITE_API_URL</code> in <code class="inline">api.js</code>, we never hardcode it. Locally, <code class="inline">.env</code> supplies localhost; on Vercel, the dashboard env var supplies the production URL. <strong>Same code, different environments.</strong></p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/services/api.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// Local  → VITE_API_URL = http://localhost:5000   (from frontend/.env)
+// Vercel → VITE_API_URL = https://your-api.vercel.app (from dashboard)
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🛡️</span> Update CORS for production</h3>
+        <p>Your deployed backend must allow your deployed frontend's origin. Update the backend's CORS config and add the env var on Vercel:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_URL          // e.g. https://your-app.vercel.app
+];
+
+app.use(cors({ origin: allowedOrigins }));</code></pre>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">The #1 production gotcha</div><p>A CORS error appears in production because you forgot to add your frontend's Vercel URL to the backend's allowed origins. The origin must be an <strong>exact</strong> match — correct <code class="inline">https://</code>, correct subdomain, and <strong>no trailing slash</strong>.</p></div>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Frontend reads the backend URL from <code class="inline">VITE_API_URL</code> — never hardcoded.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Backend allows the frontend's production origin via CORS.</div></div>
+          <div class="kp"><span class="check">✓</span><div>After changing any env var on Vercel, <strong>redeploy</strong>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Atlas Network Access includes <code class="inline">0.0.0.0/0</code> so Vercel can connect.</div></div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 17 =========================== -->
+      <section class="section reveal" id="errors">
+        <span class="section-kicker k-1">17 · REFERENCE</span>
+        <h2 class="section-title">Common errors &amp; how to fix them</h2>
+        <p class="section-sub">Every developer hits these. Bookmark this section — when something breaks, find the error here and follow the fix. Click any item to expand it.</p>
+
+        <div class="accordion">
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🧩</span> Module not found / Cannot find module<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> the package isn't installed, or the import path is wrong.</p>
+              <p><strong>Fix:</strong> run <code class="inline">npm install</code>. For your own files, check the path and extension — with <code class="inline">"type":"module"</code> you must include <code class="inline">.js</code>, e.g. <code class="inline">import x from "./config/db.js"</code>.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🚪</span> Cannot GET /<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> you visited a route the server doesn't define (e.g. opening the backend root when no <code class="inline">/</code> route exists).</p>
+              <p><strong>Fix:</strong> add a route like <code class="inline">app.get("/", ...)</code>, or visit the correct endpoint such as <code class="inline">/api/notes</code>. It's harmless if you just forgot the path.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🍃</span> MongoDB connection failed<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Causes &amp; fixes:</strong></p>
+              <p>• <code class="inline">bad auth</code> → wrong username/password in <code class="inline">MONGO_URI</code>.</p>
+              <p>• <code class="inline">ServerSelectionError</code> / timeout → your IP isn't whitelisted in Atlas Network Access (add <code class="inline">0.0.0.0/0</code>), or no internet.</p>
+              <p>• <code class="inline">undefined</code> URI → missing <code class="inline">dotenv.config()</code> or wrong <code class="inline">.env</code> location.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🔌</span> Port already in use (EADDRINUSE)<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> another process is already using port 5000 (often a server you forgot to stop).</p>
+              <p><strong>Fix:</strong> stop the old terminal (<code class="inline">Ctrl + C</code>), or change <code class="inline">PORT</code> in <code class="inline">.env</code>. On Mac/Linux: <code class="inline">lsof -i :5000</code> then <code class="inline">kill -9 &lt;PID&gt;</code>. On Windows: <code class="inline">netstat -ano | findstr :5000</code> then <code class="inline">taskkill /PID &lt;PID&gt; /F</code>.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">⛔</span> CORS policy blocked<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> backend isn't sending CORS headers, or doesn't allow your frontend's origin.</p>
+              <p><strong>Fix:</strong> add <code class="inline">app.use(cors())</code> (before routes) for dev, or add your frontend URL to the <code class="inline">origin</code> list for production. See <a href="#cors">Section 06</a>.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🔗</span> Axios error / Network Error<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> the backend isn't running, the URL is wrong, or it's a CORS issue.</p>
+              <p><strong>Fix:</strong> confirm the backend is up, check <code class="inline">VITE_API_URL</code>, open the browser <strong>Network</strong> tab to see the failing request, and inspect <code class="inline">err.response</code> for the server's message.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">💥</span> 500 Internal Server Error<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> an unhandled error in your backend code (often a database or null-property issue).</p>
+              <p><strong>Fix:</strong> read the backend terminal — the stack trace points to the line. Ensure handlers use <code class="inline">try/catch</code> and that you validate <code class="inline">req.body</code>.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🔍</span> 404 Not Found<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> the URL/method doesn't match any route (typo, wrong method, missing <code class="inline">/api</code> prefix).</p>
+              <p><strong>Fix:</strong> compare the request to your route definitions. <code class="inline">GET /notes</code> won't match <code class="inline">app.use("/api/notes", ...)</code> — it must be <code class="inline">/api/notes</code>.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">📛</span> 'node'/'npm' is not recognized<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> Node.js isn't installed or isn't on your PATH, or the terminal was open before installing.</p>
+              <p><strong>Fix:</strong> reinstall Node (LTS) keeping "Add to PATH" checked, then fully close and reopen the terminal.</p>
+            </div></div>
+          </div>
+          <div class="acc-item"><button class="acc-head"><span class="acc-q">🚀</span> Deployment failed on Vercel<span class="plus">+</span></button>
+            <div class="acc-body"><div class="acc-inner">
+              <p><strong>Cause:</strong> missing env vars, missing <code class="inline">export default app</code>, or a build error.</p>
+              <p><strong>Fix:</strong> open Vercel → <strong>Logs</strong> for the exact error. Add every env var from your local <code class="inline">.env</code> into the Vercel dashboard and redeploy.</p>
+            </div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SECTION 18 =========================== -->
+      <section class="section reveal" id="practice">
+        <span class="section-kicker k-2">18 · CHALLENGE</span>
+        <h2 class="section-title">Practice challenge — level up the Notes app</h2>
+        <p class="section-sub">You've built it; now make it yours. Each challenge below teaches a real, transferable skill. Try them in order — they get progressively harder.</p>
+
+        <div class="grid cols-3">
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">🔎</div><h4>Add search</h4><p>A search box that filters notes by title as you type. Hint: filter the <code class="inline">notes</code> array before <code class="inline">.map()</code>.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">🏷️</div><h4>Add categories</h4><p>Add a <code class="inline">category</code> field to the model and a dropdown in the form. Filter notes by category.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-warm">🎨</div><h4>Add colors</h4><p>Let each note pick a colour. Store it on the model and apply it as the card background.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-mint">✏️</div><h4>Inline edit</h4><p>Edit a note directly on its card instead of in the top form. Practice local component state.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-amber">🕒</div><h4>Show timestamps</h4><p>Display "created 5 minutes ago" using the <code class="inline">createdAt</code> field Mongoose already adds.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-cool">↕️</div><h4>Sort notes</h4><p>Add buttons to sort by newest, oldest, or A–Z. Practice array sorting and state.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">📄</div><h4>Pagination</h4><p>Show 6 notes per page with Next/Prev. Bonus: do it on the backend with <code class="inline">.limit()</code> and <code class="inline">.skip()</code>.</p></div>
+          <div class="card"><span class="top-line"></span><div class="card-ico bg-warm">⭐</div><h4>Pin favourites</h4><p>Add a <code class="inline">pinned</code> boolean. Pinned notes always sort to the top.</p></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">How to approach each one</div><p>For every feature, follow the same full-stack loop: <strong>1)</strong> update the Mongoose model, <strong>2)</strong> update the controller/route if needed, <strong>3)</strong> test it in Postman, <strong>4)</strong> wire it into React with Axios, <strong>5)</strong> update the UI. This loop is the entire job of a full stack developer — you now know it end to end. 🚀</p></div>
+        </div>
+
+        <div class="callout output">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What you've learned</div>
+            <p>Installing tooling · creating a React app with Vite · building an Express server · understanding CORS deeply · using MongoDB Atlas with Mongoose · environment variables &amp; secrets · full CRUD with REST · Axios &amp; async/await · form validation · testing with Postman · and deploying both halves to Vercel. That's a complete full stack skill set. Congratulations! 🎉</p>
+          </div>
+        </div>
+
+        <div class="pager">
+          <a href="#cors" class="prev"><span class="dir">← Revisit</span><span class="ttl">Understanding CORS</span></a>
+          <a href="#top" class="next"><span class="dir">Start over →</span><span class="ttl">Back to the top</span></a>
+        </div>
+      </section>
+
+
+      <!-- ============================ SECTION 12 · PROJECT 3 =========================== -->
+      <section class="section reveal" id="project-chatbot">
+        <span class="section-kicker k-1">12 · PROJECT 3</span>
+        <h2 class="section-title">Mini Project 3 — AI Chatbot</h2>
+        <p class="section-sub">The grand finale: a real <strong>AI chatbot</strong>. A React chat UI talks to an Express backend, the backend asks an <strong>AI model</strong> for a reply, and every message is saved in MongoDB so the conversation has memory. Same MERN loop as before — with an AI provider added.</p>
+
+        <div class="diagram">
+          <div class="dg-title">🔄 How a chat message flows</div>
+          <div class="flow">
+            <div class="flow-box browser"><span class="fb-ico">💬</span><b>React</b><small>you type</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">POST /api/chat</span></div>
+            <div class="flow-box be"><span class="fb-ico">🚀</span><b>Express</b><small>saves + asks AI</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">prompt</span></div>
+            <div class="flow-box" style="background:linear-gradient(135deg,#f59e0b,#f43f5e)"><span class="fb-ico">🤖</span><b>AI model</b><small>replies</small></div>
+            <div class="flow-arrow"><span class="ar">➡️</span><span class="lbl">save reply</span></div>
+            <div class="flow-box db"><span class="fb-ico">🍃</span><b>MongoDB</b><small>history</small></div>
+          </div>
+        </div>
+
+        <!-- API KEY -->
+        <h3><span class="h3-ico">🔑</span> Getting a FREE API key (Google Gemini)</h3>
+        <p>We'll use <strong>Google Gemini</strong> — it has a genuinely <strong>free tier with no credit card</strong>, which is perfect for learning. The key lives only in your backend's <code class="inline">.env</code>, never in the browser.</p>
+        <div class="callout what">
+          <div class="ci">🆓</div>
+          <div><div class="ctitle">Get your free key in 4 steps</div>
+            <p><strong>1.</strong> Open <code class="inline">aistudio.google.com/apikey</code> (Google AI Studio).<br/>
+               <strong>2.</strong> Sign in with any Google account.<br/>
+               <strong>3.</strong> Click <strong>Create API key</strong> → <em>Create API key in new project</em>.<br/>
+               <strong>4.</strong> Copy the key (it starts with <code class="inline">AIza…</code>) and paste it into your backend <code class="inline">.env</code>.</p>
+          </div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Prefer Claude or OpenAI?</div><p>They work the same way but need billing set up. Anthropic keys come from <code class="inline">console.anthropic.com</code>, OpenAI from <code class="inline">platform.openai.com</code> — swap by editing just the controller (see the note below it).</p></div>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🔒</div>
+          <div><div class="ctitle">Never leak your key</div><p>Keep it in the backend <code class="inline">.env</code>, add <code class="inline">.env</code> to <code class="inline">.gitignore</code>, and only ever call the AI from the <strong>server</strong>. A key in front-end code can be stolen and run up a bill.</p></div>
+        </div>
+
+        <!-- FOLDER STRUCTURE -->
+        <h3><span class="h3-ico">🗂️</span> Folder structure</h3>
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">ai-chatbot/<span class="lang">tree</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>ai-chatbot/
+├── backend/
+│   ├── config/db.js
+│   ├── models/Message.js            # { role, text, createdAt }
+│   ├── controllers/chatController.js # saves msg + calls the AI
+│   ├── routes/chatRoutes.js         # GET history · POST /api/chat
+│   ├── .env                         # MONGO_URI, GEMINI_API_KEY, PORT
+│   └── server.js
+└── frontend/
+    ├── src/
+    │   ├── components/ChatWindow.jsx
+    │   ├── components/ChatWindow.css
+    │   ├── App.jsx
+    │   └── main.jsx
+    ├── .env
+    └── package.json</code></pre>
+        </div>
+
+        <!-- PART A: BACKEND -->
+        <h2 class="section-title" style="font-size:1.4rem;margin-top:24px">🚀 Part A — The Backend</h2>
+
+        <h3><span class="h3-ico">📦</span> Install</h3>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install express mongoose cors dotenv
+# No AI SDK needed — we call Gemini over plain HTTP,
+# and Node 18+ has fetch() built in. 🎉</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔐</span> <code class="inline">.env</code></h3>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/.env<span class="lang">env</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>MONGO_URI=your_mongodb_atlas_connection_string
+GEMINI_API_KEY=AIzaxxxxxxxxxxxxxxxxxxxxxxxx
+PORT=5000</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">1️⃣</span> Model — <code class="inline">models/Message.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/models/Message.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import mongoose from "mongoose";
+
+const messageSchema = new mongoose.Schema(
+  {
+    role: { type: String, enum: ["user", "assistant"], required: true },
+    text: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.model("Message", messageSchema);</code></pre>
+        </div>
+        <ul>
+          <li><code class="inline">role</code> is either <code class="inline">"user"</code> (you) or <code class="inline">"assistant"</code> (the AI) — exactly the shape AI APIs expect.</li>
+          <li>Saving every message means the chat <strong>survives a refresh</strong> and the AI can read past turns for context.</li>
+        </ul>
+
+        <h3><span class="h3-ico">2️⃣</span> Controller — <code class="inline">controllers/chatController.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/controllers/chatController.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import Message from "../models/Message.js";
+
+// Gemini's REST endpoint (free tier). gemini-1.5-flash is fast &amp; free.
+const GEMINI_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+
+// GET /api/chat  → the whole conversation
+export const getHistory = async (req, res) => {
+  const messages = await Message.find().sort({ createdAt: 1 });
+  res.json(messages);
+};
+
+// POST /api/chat  → save user msg, ask Gemini, save + return the reply
+export const sendMessage = async (req, res) => {
+  try {
+    const { message } = req.body;
+    if (!message) return res.status(400).json({ error: "Message is required" });
+
+    // 1. save what the user said
+    await Message.create({ role: "user", text: message });
+
+    // 2. send the recent conversation to Gemini (so it has memory)
+    const history = await Message.find().sort({ createdAt: 1 }).limit(20);
+
+    const response = await fetch(`${GEMINI_URL}?key=${process.env.GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: history.map((m) => ({
+          // Gemini calls the AI side "model" instead of "assistant"
+          role: m.role === "assistant" ? "model" : "user",
+          parts: [{ text: m.text }],
+        })),
+      }),
+    });
+
+    const data = await response.json();
+    const reply =
+      data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't reply.";
+
+    // 3. save the AI's reply and send it back
+    const aiMessage = await Message.create({ role: "assistant", text: reply });
+    res.json(aiMessage);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "AI request failed" });
+  }
+};</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Using Claude or OpenAI instead?</div><p>Only this file changes. The idea is identical — send the conversation, read back the reply. e.g. OpenAI: <code class="inline">ai.chat.completions.create({ model, messages })</code> → <code class="inline">completion.choices[0].message.content</code>; Anthropic: <code class="inline">ai.messages.create(...)</code> → <code class="inline">completion.content[0].text</code>.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">3️⃣</span> Routes — <code class="inline">routes/chatRoutes.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/routes/chatRoutes.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import express from "express";
+import { getHistory, sendMessage } from "../controllers/chatController.js";
+
+const router = express.Router();
+router.get("/", getHistory);
+router.post("/", sendMessage);
+
+export default router;</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">4️⃣</span> Server — <code class="inline">server.js</code></h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/server.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import express from "express";
+import cors from "cors";
+import "dotenv/config";
+import mongoose from "mongoose";
+import chatRoutes from "./routes/chatRoutes.js";
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use("/api/chat", chatRoutes);
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB connected");
+    app.listen(process.env.PORT || 5000, () =>
+      console.log("🚀 Server on http://localhost:5000")
+    );
+  })
+  .catch((err) => console.error("❌ DB error:", err.message));</code></pre>
+        </div>
+
+        <!-- PART B: FRONTEND -->
+        <h2 class="section-title" style="font-size:1.4rem;margin-top:24px">⚛️ Part B — The Frontend (premium chat UI)</h2>
+
+        <h3><span class="h3-ico">5️⃣</span> The chat component — <code class="inline">components/ChatWindow.jsx</code></h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/components/ChatWindow.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import "./ChatWindow.css";
+
+const API = "http://localhost:5000/api/chat";
+
+export default function ChatWindow() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const endRef = useRef(null);
+
+  // load the saved conversation once
+  useEffect(() =&gt; {
+    axios.get(API).then((res) =&gt; setMessages(res.data));
+  }, []);
+
+  // auto-scroll to the newest message
+  useEffect(() =&gt; {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
+
+  async function send() {
+    const text = input.trim();
+    if (!text) return;
+    setInput("");
+    setMessages((prev) =&gt; [...prev, { role: "user", text }]); // show instantly
+    setLoading(true);
+    try {
+      const res = await axios.post(API, { message: text });
+      setMessages((prev) =&gt; [...prev, res.data]);             // AI reply
+    } catch {
+      setMessages((prev) =&gt; [...prev, { role: "assistant", text: "⚠️ Something went wrong." }]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    &lt;div className="chat"&gt;
+      &lt;header className="chat-head"&gt;
+        &lt;span className="chat-avatar"&gt;🤖&lt;/span&gt;
+        &lt;div&gt;&lt;strong&gt;AI Assistant&lt;/strong&gt;&lt;small&gt;● online&lt;/small&gt;&lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;div className="chat-body"&gt;
+        {messages.map((m, i) =&gt; (
+          &lt;div key={i} className={`bubble ${m.role}`}&gt;{m.text}&lt;/div&gt;
+        ))}
+        {loading &amp;&amp; (
+          &lt;div className="bubble assistant typing"&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
+        )}
+        &lt;div ref={endRef} /&gt;
+      &lt;/div&gt;
+
+      &lt;div className="chat-input"&gt;
+        &lt;input
+          value={input}
+          onChange={(e) =&gt; setInput(e.target.value)}
+          onKeyDown={(e) =&gt; e.key === "Enter" &amp;&amp; send()}
+          placeholder="Ask me anything…"
+        /&gt;
+        &lt;button onClick={send} aria-label="Send"&gt;➤&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🎨</span> Premium styles — <code class="inline">components/ChatWindow.css</code></h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/components/ChatWindow.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.chat {
+  width: 380px; max-width: 100%; height: 560px;
+  display: flex; flex-direction: column;
+  border-radius: 20px; overflow: hidden; background: #fff;
+  box-shadow: 0 30px 70px -25px rgba(40, 20, 90, 0.4);
+  font-family: Arial, sans-serif;
+}
+
+/* gradient header */
+.chat-head {
+  display: flex; align-items: center; gap: 12px; padding: 16px 18px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5, #06b6d4);
+  color: #fff;
+}
+.chat-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: grid; place-items: center; font-size: 20px;
+}
+.chat-head small { display: block; opacity: 0.85; font-size: 12px; }
+
+/* messages */
+.chat-body {
+  flex: 1; overflow-y: auto; padding: 18px;
+  display: flex; flex-direction: column; gap: 10px; background: #f4f5fb;
+}
+.bubble {
+  max-width: 78%; padding: 11px 14px; border-radius: 16px;
+  font-size: 14px; line-height: 1.45; white-space: pre-wrap;
+}
+.bubble.user {
+  align-self: flex-end; color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  border-bottom-right-radius: 5px;
+}
+.bubble.assistant {
+  align-self: flex-start; color: #1e2235; background: #fff;
+  border: 1px solid #e6e8f3; border-bottom-left-radius: 5px;
+}
+
+/* typing dots */
+.bubble.typing { display: flex; gap: 4px; }
+.bubble.typing span {
+  width: 7px; height: 7px; border-radius: 50%; background: #b7bcd6;
+  animation: blink 1.2s infinite both;
+}
+.bubble.typing span:nth-child(2) { animation-delay: 0.2s; }
+.bubble.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* input bar */
+.chat-input {
+  display: flex; gap: 8px; padding: 12px;
+  background: #fff; border-top: 1px solid #eee;
+}
+.chat-input input {
+  flex: 1; padding: 12px 14px; border: 1px solid #ddd;
+  border-radius: 999px; outline: none; font-size: 14px;
+}
+.chat-input button {
+  width: 44px; height: 44px; border: none; border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #fff; font-size: 16px; cursor: pointer;
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">6️⃣</span> Use it — <code class="inline">App.jsx</code></h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/App.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import ChatWindow from "./components/ChatWindow";
+
+export default function App() {
+  return (
+    &lt;div style={{ minHeight: "100vh", display: "grid", placeItems: "center",
+                  background: "#0e1230" }}&gt;
+      &lt;ChatWindow /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>The AI key stays in the <strong>backend</strong> — the React app only calls your own <code class="inline">/api/chat</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Sending the saved history to the model gives the bot <strong>memory</strong> of the conversation.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The user message shows <em>instantly</em>; a typing indicator runs while the AI thinks.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Swap providers (Claude / Gemini / OpenAI) by editing only <code class="inline">chatController.js</code>.</div></div>
+        </div>
+
+        <div class="callout output">
+          <div class="ci">🎉</div>
+          <div><div class="ctitle">You built an AI app!</div><p>React UI · Express API · MongoDB history · a real AI model — the exact architecture behind production chat apps. Deploy it just like the other projects (frontend to Vercel, backend to Render/Railway), and set the env vars in the host's dashboard.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="#project-contact" class="prev"><span class="dir">← Previous</span><span class="ttl">Contact Form</span></a>
+          <a href="#top" class="next"><span class="dir">Start over →</span><span class="ttl">Back to the top</span></a>
+        </div>
+      </section>
+
+
+      <!-- =============================== FOOTER =============================== -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> end of guide</span>
+            <h3 class="foot-title">You made it to <span class="grad">the end</span> 🎉</h3>
+            <p class="foot-lead">You now know how to build and deploy a full-stack React + Node.js + MongoDB app. The best next step is to build something of your own.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="#practice">Take the challenge
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="#software">Restart guide</a>
+              <a class="btn foot-ghost" href="#top">Back to top ↑</a>
+            </div>
+          </div>
+
+          <nav class="foot-nav" aria-label="Quick links">
+            <a href="#software">Setup</a>
+            <a href="#react-project">React</a>
+            <a href="#backend-project">Backend</a>
+            <a href="#cors">CORS</a>
+            <a href="#mongodb-atlas">MongoDB</a>
+            <a href="#project-notes">Projects</a>
+            <a href="#deploy-backend">Deploy</a>
+            <a href="#errors">Troubleshooting</a>
+          </nav>
+
+          <div class="foot-divider"></div>
+
+          <div class="foot-bottom">
+            <div class="foot-brand">
+              <span class="logo">FS</span>
+              <span>© <span data-year>2026</span> Full Stack Guide · All rights reserved.</span>
+            </div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="React guide — build UIs from components: JSX, props, state with useState, the useEffect/useMemo/useCallback/useContext hooks, routing & params, and three mini projects (counter, profile card, to-do list)." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>React · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>React</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>React</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>React</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">React basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#what" data-title="What is React"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(120 12 12)"/></svg></span> What is React</a>
+          <a class="nav-link" href="#setup" data-title="Setup & structure"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span> Setup &amp; structure</a>
+          <a class="nav-link" href="#components" data-title="Components & JSX"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span> Components &amp; JSX</a>
+          <a class="nav-link" href="#props" data-title="Props"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6M5.6 9 12 12l6.4-3M12 12v9M5 6.3 12 3l7 3.3v11.4L12 21l-7-3.3z"/></svg></span> Props</a>
+          <a class="nav-link" href="#reusable" data-title="Reusable components"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span> Reusable components</a>
+          <a class="nav-link" href="#usestate" data-title="State with useState"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span> State · useState</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Hooks</div>
+          <a class="nav-link" href="#useeffect" data-title="useEffect"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span> useEffect</a>
+          <a class="nav-link" href="#usememo" data-title="useMemo"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg></span> useMemo</a>
+          <a class="nav-link" href="#usecallback" data-title="useCallback"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 0 0-2 2v3c0 1-1 2-2 2 1 0 2 1 2 2v3a2 2 0 0 0 2 2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v3c0 1 1 2 2 2-1 0-2 1-2 2v3a2 2 0 0 1-2 2h-2"/></svg></span> useCallback</a>
+          <a class="nav-link" href="#usecontext" data-title="useContext"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span> useContext</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Navigation</div>
+          <a class="nav-link" href="#routing" data-title="Routing & params"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h6a3 3 0 0 0 3-3V8"/></svg></span> Routing &amp; params</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini projects</div>
+          <a class="nav-link" href="#project-counter" data-title="1 · Counter"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span> 1 · Counter</a>
+          <a class="nav-link" href="#project-profile" data-title="2 · Profile card"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="3"/><path d="M7 18a5 5 0 0 1 10 0"/></svg></span> 2 · Profile card</a>
+          <a class="nav-link" href="#project-todo" data-title="3 · To-do list"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> 3 · To-do list</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">FRONTEND · 01</span>
+        <h2 class="section-title">React</h2>
+        <p class="section-sub">Building a big UI with plain <a href="javascript.html">JavaScript</a> and the DOM gets messy fast. <strong>React</strong> lets you build interfaces from small, reusable <strong>components</strong> and keeps the screen in sync with your data automatically. It's the most popular way to build web apps today.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🧱</div>
+          <div><div class="ctitle">UIs from Lego bricks</div><p>A component is a Lego brick — a self-contained piece of UI (a button, a card, a navbar). You build small bricks, then snap them together into pages. Change one brick and React re-renders just what changed.</p></div>
+        </div>
+        <p>This guide builds on <a href="javascript.html">JavaScript</a> (functions, arrays, <code class="inline">map</code>). By the end you'll build a counter, a profile card, and a to-do app.</p>
+      </section>
+
+      <!-- WHAT -->
+      <section class="section reveal" id="what">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">What is React?</h2>
+        <p class="section-sub">React is a JavaScript <strong>library</strong> for building user interfaces. Three ideas make it tick:</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Component-based</strong> — the UI is a tree of reusable components.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Declarative</strong> — you describe what the UI <em>should</em> look like for a given state; React figures out the DOM changes.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>State-driven</strong> — when data (state) changes, the matching UI updates by itself. No manual <code class="inline">document.querySelector</code> juggling.</div></div>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Declarative vs imperative</div><p>Vanilla JS is <em>imperative</em>: "find this element, change its text." React is <em>declarative</em>: "the text is <code class="inline">count</code>." You change <code class="inline">count</code>, React updates the DOM. Less code, fewer bugs.</p></div>
+        </div>
+      </section>
+
+      <!-- SETUP & STRUCTURE -->
+      <section class="section reveal" id="setup">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Setup &amp; folder structure</h2>
+        <p class="section-sub">The fastest way to start a React app is <strong>Vite</strong> — a modern build tool. It scaffolds the project, runs a dev server with instant reload, and bundles for production.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm create vite@latest my-app -- --template react
+cd my-app
+npm install
+npm run dev      # → http://localhost:5173</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🗂️</span> The folder structure</h3>
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">my-app/<span class="lang">folders</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>my-app/
+├── index.html          # the single HTML page (has &lt;div id="root"&gt;)
+├── package.json
+├── vite.config.js
+└── src/
+    ├── main.jsx        # entry point — mounts &lt;App/&gt; into #root
+    ├── App.jsx         # your root component
+    ├── App.css
+    ├── index.css       # global styles
+    ├── assets/         # images, fonts
+    └── components/     # your reusable components
+        ├── Counter.jsx
+        └── ProfileCard.jsx</code></pre>
+        </div>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">src/main.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+
+// find &lt;div id="root"&gt; in index.html and render &lt;App/&gt; into it
+ReactDOM.createRoot(document.getElementById("root")).render(&lt;App /&gt;);</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Convention</div><p>Component files use <strong>PascalCase</strong> and a <code class="inline">.jsx</code> extension (<code class="inline">ProfileCard.jsx</code>). One component per file, grouped under <code class="inline">src/components/</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- COMPONENTS & JSX -->
+      <section class="section reveal" id="components">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">Components &amp; JSX</h2>
+        <p class="section-sub">A <strong>component</strong> is just a JavaScript function that returns <strong>JSX</strong> — HTML-like markup written inside JavaScript. The function name must start with a Capital letter.</p>
+
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Welcome.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>function Welcome() {
+  const name = "Ada";
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;Hello, {name}!&lt;/h2&gt;       {/* {} drops JS into JSX */}
+      &lt;p&gt;2 + 2 = {2 + 2}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Welcome;   // so other files can import it</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>JSX rule</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Return <strong>one</strong> parent element</td><td>Wrap siblings in a <code>&lt;div&gt;</code> or a <code>&lt;&gt;…&lt;/&gt;</code> fragment</td></tr>
+              <tr><td><code>className</code> not <code>class</code></td><td><code>class</code> is a reserved word in JS</td></tr>
+              <tr><td><code>{ }</code> for JavaScript</td><td>Variables, expressions, <code>map</code> all go inside braces</td></tr>
+              <tr><td>Close every tag</td><td>Even <code>&lt;img /&gt;</code> and <code>&lt;br /&gt;</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PROPS -->
+      <section class="section reveal" id="props">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">Props — passing data in</h2>
+        <p class="section-sub"><strong>Props</strong> (properties) let a parent pass data <em>down</em> into a child component — like attributes on an HTML tag. They make components reusable.</p>
+
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">props.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// child — receives props (destructured for clean code)
+function Greeting({ name, age }) {
+  return &lt;p&gt;Hi {name}, you are {age}.&lt;/p&gt;;
+}
+
+// parent — passes props like HTML attributes
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Greeting name="Ada" age={25} /&gt;     {/* strings in "", JS in {} */}
+      &lt;Greeting name="Alan" age={32} /&gt;    {/* reused with new data */}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Props flow one way &amp; are read-only</div><p>Data flows <strong>parent → child</strong> only, and a child must never change its own props. To change something over time, you need <strong>state</strong> (next).</p></div>
+        </div>
+      </section>
+
+      <!-- REUSABLE COMPONENTS -->
+      <section class="section reveal" id="reusable">
+        <span class="section-kicker k-4">05b</span>
+        <h2 class="section-title">Reusable components</h2>
+        <p class="section-sub">This is the whole point of React. A <strong>reusable component</strong> is a piece of UI you write <em>once</em> and use <em>many times</em> with different <a href="#props">props</a> — like a function you call with different arguments, but for the screen.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🔁</div>
+          <div><div class="ctitle">A function for UI</div><p>You wouldn't copy-paste the same 20 lines of math everywhere — you'd write one function and call it. A component is that, for markup: define <code class="inline">&lt;Button /&gt;</code> once, drop it in 50 places, change it in one spot.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> One Button, used everywhere</h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Button.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// write the button ONCE — props make it flexible
+function Button({ text, onClick, color = "#7c3aed" }) {
+  return (
+    &lt;button
+      onClick={onClick}
+      style={{ background: color, color: "#fff", border: "none",
+               padding: "10px 18px", borderRadius: "8px", cursor: "pointer" }}
+    &gt;
+      {text}
+    &lt;/button&gt;
+  );
+}
+
+// reuse it anywhere, configured by props
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Button text="Save" onClick={() =&gt; alert("Saved")} /&gt;
+      &lt;Button text="Delete" color="#f43f5e" onClick={() =&gt; alert("Deleted")} /&gt;
+      &lt;Button text="Cancel" color="#64748b" /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">📦</span> Composition with <code class="inline">children</code></h3>
+        <p>Components can <em>wrap</em> other content. The special <code class="inline">children</code> prop is whatever you put between the opening and closing tags — perfect for layout wrappers like cards and modals.</p>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Card.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>function Card({ title, children }) {
+  return (
+    &lt;div style={{ padding: "20px", borderRadius: "12px",
+                  boxShadow: "0 8px 20px rgba(0,0,0,.1)" }}&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      {children}                    {/* anything nested inside &lt;Card&gt;…&lt;/Card&gt; */}
+    &lt;/div&gt;
+  );
+}
+
+// usage — the &lt;p&gt; and &lt;Button&gt; become this Card's children
+&lt;Card title="Welcome"&gt;
+  &lt;p&gt;Thanks for joining!&lt;/p&gt;
+  &lt;Button text="Get started" /&gt;
+&lt;/Card&gt;</code></pre>
+        </div>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>DRY</strong> — don't repeat yourself; write the UI once.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Consistent</strong> — every button/card looks &amp; behaves the same.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Fix once</strong> — change the component and every use updates.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Composable</strong> — small components nest into bigger ones via <code class="inline">children</code>.</div></div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">You'll do this next</div><p>The <a href="#project-profile">Profile card</a> project is exactly this — one component reused with different props. Real apps are built almost entirely from reusable components.</p></div>
+        </div>
+      </section>
+
+      <!-- USESTATE -->
+      <section class="section reveal" id="usestate">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">State with useState</h2>
+        <p class="section-sub"><strong>State</strong> is data a component remembers and can change — and when it changes, React re-renders the component. The <code class="inline">useState</code> hook adds state to a function component.</p>
+
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">Counter.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useState } from "react";
+
+function Counter() {
+  // [ currentValue, setterFunction ] = useState(initialValue)
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;+1&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><code class="inline">useState(0)</code> returns a pair: the value and a function to update it.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Always update via the setter (<code class="inline">setCount</code>) — never assign <code class="inline">count = …</code> directly.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Calling the setter triggers a re-render with the new value.</div></div>
+        </div>
+      </section>
+
+      <!-- USEEFFECT -->
+      <section class="section reveal" id="useeffect">
+        <span class="section-kicker k-1">HOOKS · 07</span>
+        <h2 class="section-title">useEffect — side effects</h2>
+        <p class="section-sub"><code class="inline">useEffect</code> runs code <em>after</em> render — for things outside React's world: changing the document title, fetching data, timers, subscriptions. Here it keeps the browser tab title in sync with a counter.</p>
+
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">TitleCounter.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useState, useEffect } from "react";
+
+function TitleCounter() {
+  const [count, setCount] = useState(0);
+
+  // runs after render, but ONLY when `count` changes (the dependency array)
+  useEffect(() =&gt; {
+    document.title = `Clicked ${count} times`;
+  }, [count]);
+
+  return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Clicked {count}&lt;/button&gt;;
+}</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Dependency array</th><th>When the effect runs</th></tr></thead>
+            <tbody>
+              <tr><td><code>[count]</code></td><td>After render, whenever <code>count</code> changes</td></tr>
+              <tr><td><code>[]</code> (empty)</td><td>Once, after the first render (great for fetching data)</td></tr>
+              <tr><td>omitted</td><td>After <em>every</em> render (rarely what you want)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Cleanup</div><p>Return a function from the effect to clean up (clear a timer, remove a listener): <code class="inline">useEffect(() =&gt; { const id = setInterval(...); return () =&gt; clearInterval(id); }, [])</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- USEMEMO -->
+      <section class="section reveal" id="usememo">
+        <span class="section-kicker k-1">HOOKS · 08</span>
+        <h2 class="section-title">useMemo — cache a value</h2>
+        <p class="section-sub"><code class="inline">useMemo</code> remembers the <em>result</em> of an expensive calculation and only re-computes it when its inputs change — so it doesn't re-run on every render.</p>
+
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">useMemo.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useMemo, useState } from "react";
+
+function Cart({ items }) {
+  const [filter, setFilter] = useState("");
+
+  // re-computes ONLY when `items` changes — not when you type in the filter
+  const total = useMemo(() =&gt; {
+    console.log("calculating total…");
+    return items.reduce((sum, item) =&gt; sum + item.price, 0);
+  }, [items]);
+
+  return (
+    &lt;div&gt;
+      &lt;input value={filter} onChange={(e) =&gt; setFilter(e.target.value)} /&gt;
+      &lt;p&gt;Total: ${total}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">When to reach for it</div><p>Only for genuinely heavy calculations or to keep a stable reference for a child. Don't wrap every value — premature <code class="inline">useMemo</code> adds noise for no gain.</p></div>
+        </div>
+      </section>
+
+      <!-- USECALLBACK -->
+      <section class="section reveal" id="usecallback">
+        <span class="section-kicker k-1">HOOKS · 09</span>
+        <h2 class="section-title">useCallback — cache a function</h2>
+        <p class="section-sub">Functions are recreated on every render. <code class="inline">useCallback</code> keeps the <em>same function reference</em> between renders — useful when passing callbacks to memoized child components so they don't re-render needlessly.</p>
+
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">useCallback.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useCallback, useState } from "react";
+
+function TodoList() {
+  const [todos, setTodos] = useState([]);
+
+  // same function identity across renders (deps = []) → child won't re-render
+  const addTodo = useCallback((text) =&gt; {
+    setTodos((prev) =&gt; [...prev, text]);   // functional update
+  }, []);
+
+  return &lt;AddForm onAdd={addTodo} /&gt;;
+}</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">useMemo vs useCallback</div><p>They're cousins: <code class="inline">useMemo</code> caches a <strong>value</strong>, <code class="inline">useCallback</code> caches a <strong>function</strong>. In fact <code class="inline">useCallback(fn, deps)</code> is just <code class="inline">useMemo(() =&gt; fn, deps)</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- USECONTEXT -->
+      <section class="section reveal" id="usecontext">
+        <span class="section-kicker k-1">HOOKS · 10</span>
+        <h2 class="section-title">useContext — share data globally</h2>
+        <p class="section-sub">Passing props through many layers gets tedious ("prop drilling"). <strong>Context</strong> lets you share data — a theme, the logged-in user — with any component below, no props needed.</p>
+
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">theme.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { createContext, useContext } from "react";
+
+// 1. create the context
+const ThemeContext = createContext("light");
+
+// 2. provide a value at the top
+function App() {
+  return (
+    &lt;ThemeContext.Provider value="dark"&gt;
+      &lt;Toolbar /&gt;
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+// 3. consume it anywhere below — no props threaded through Toolbar
+function ThemedButton() {
+  const theme = useContext(ThemeContext);   // "dark"
+  return &lt;button className={theme}&gt;I'm {theme}&lt;/button&gt;;
+}</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Three steps</div><p><strong>create</strong> with <code class="inline">createContext</code>, <strong>provide</strong> with <code class="inline">&lt;Context.Provider value=…&gt;</code>, and <strong>consume</strong> with <code class="inline">useContext</code>. Any component inside the provider can read the value directly.</p></div>
+        </div>
+      </section>
+
+      <!-- ROUTING -->
+      <section class="section reveal" id="routing">
+        <span class="section-kicker k-1">NAVIGATION · 11</span>
+        <h2 class="section-title">Routing &amp; params</h2>
+        <p class="section-sub">React apps are <strong>single-page</strong> — one HTML file. <strong>React Router</strong> swaps which component shows based on the URL, with no full reload, and reads dynamic parts of the URL via <strong>params</strong>.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">install<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install react-router-dom</code></pre>
+        </div>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">App.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;nav&gt;
+        &lt;Link to="/"&gt;Home&lt;/Link&gt;
+        &lt;Link to="/user/42"&gt;User 42&lt;/Link&gt;   {/* no page reload */}
+      &lt;/nav&gt;
+
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/user/:id" element={&lt;User /&gt;} /&gt;   {/* :id = a param */}
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+
+function User() {
+  const { id } = useParams();        // read :id from the URL → "42"
+  return &lt;h2&gt;Profile of user #{id}&lt;/h2&gt;;
+}</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><code class="inline">&lt;Link&gt;</code> navigates without reloading (don't use plain <code class="inline">&lt;a&gt;</code>).</div></div>
+          <div class="kp"><span class="check">✓</span><div><code class="inline">:id</code> in the path is a <strong>param</strong>; read it with <code class="inline">useParams()</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>It's the same idea as the <a href="api.html">API guide</a>'s path params — now on the front end.</div></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 1 · COUNTER -->
+      <section class="section reveal" id="project-counter">
+        <span class="section-kicker k-2">PROJECT 1</span>
+        <h2 class="section-title">Counter app</h2>
+        <p class="section-sub">The "hello world" of React state — increment, decrement and reset a number. Pure <code class="inline">useState</code>.</p>
+
+        <h3><span class="h3-ico">⚙️</span> Counter.jsx</h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">src/Counter.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useState } from "react";
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  // inline styles — plain JS objects (camelCase keys, string values)
+  const btn = {
+    width: "56px", height: "48px", fontSize: "20px",
+    border: "none", borderRadius: "10px",
+    background: "#7c3aed", color: "#fff", cursor: "pointer",
+  };
+
+  return (
+    &lt;div style={{ textAlign: "center", fontFamily: "Arial, sans-serif" }}&gt;
+      &lt;h2 style={{ fontSize: "64px", margin: "0 0 16px" }}&gt;{count}&lt;/h2&gt;
+
+      &lt;div style={{ display: "flex", gap: "10px", justifyContent: "center" }}&gt;
+        &lt;button style={btn} onClick={() =&gt; setCount(count - 1)}&gt;−&lt;/button&gt;
+        &lt;button style={{ ...btn, width: "auto", padding: "0 18px", background: "#334" }}
+                onClick={() =&gt; setCount(0)}&gt;Reset&lt;/button&gt;
+        &lt;button style={btn} onClick={() =&gt; setCount(count + 1)}&gt;+&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <h3><span class="h3-ico">🧩</span> App.jsx</h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">src/App.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import Counter from "./Counter";
+
+export default function App() {
+  return &lt;Counter /&gt;;
+}</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>One piece of state (<code class="inline">count</code>) drives the whole UI.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Each button calls the setter; React re-renders with the new number.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Styles are <strong>inline</strong> — a JS object via <code class="inline">style={{…}}</code>, no CSS file needed.</div></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 2 · PROFILE CARD -->
+      <section class="section reveal" id="project-profile">
+        <span class="section-kicker k-4">PROJECT 2</span>
+        <h2 class="section-title">Profile card (props)</h2>
+        <p class="section-sub">One reusable <code class="inline">ProfileCard</code> component, rendered several times with different <strong>props</strong> — the core idea behind every component library.</p>
+
+        <h3><span class="h3-ico">⚙️</span> ProfileCard.jsx</h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">src/ProfileCard.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>export default function ProfileCard({ name, role, bio, avatar }) {
+  // one inline style object for the card
+  const card = {
+    width: "220px", padding: "24px", textAlign: "center",
+    background: "#fff", borderRadius: "16px",
+    boxShadow: "0 12px 30px rgba(0,0,0,.1)", fontFamily: "Arial, sans-serif",
+  };
+
+  return (
+    &lt;div style={card}&gt;
+      &lt;img src={avatar} alt={name}
+           style={{ width: "90px", height: "90px", borderRadius: "50%", objectFit: "cover" }} /&gt;
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      &lt;p style={{ color: "#7c3aed", fontSize: "14px", fontWeight: "bold" }}&gt;{role}&lt;/p&gt;
+      &lt;p style={{ color: "#666", fontSize: "14px" }}&gt;{bio}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <h3><span class="h3-ico">🧩</span> App.jsx — reuse it with different props</h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">src/App.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import ProfileCard from "./ProfileCard";
+
+export default function App() {
+  return (
+    &lt;div style={{ display: "flex", gap: "18px", flexWrap: "wrap", justifyContent: "center" }}&gt;
+      &lt;ProfileCard
+        name="Ada Lovelace"
+        role="Engineer"
+        bio="Wrote the first computer algorithm."
+        avatar="https://i.pravatar.cc/150?img=5"
+      /&gt;
+      &lt;ProfileCard
+        name="Alan Turing"
+        role="Mathematician"
+        bio="Father of computer science."
+        avatar="https://i.pravatar.cc/150?img=12"
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Write the card <em>once</em>; render it many times with different props.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Props are destructured in the function signature: <code class="inline">{ name, role, … }</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Styled with <strong>inline</strong> <code class="inline">style={{…}}</code> objects — self-contained, no CSS file.</div></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 3 · TO-DO LIST -->
+      <section class="section reveal" id="project-todo">
+        <span class="section-kicker k-1">PROJECT 3</span>
+        <h2 class="section-title">To-do list app</h2>
+        <p class="section-sub">The classic React project — it ties together <strong>state</strong>, a <strong>controlled input</strong>, <strong>events</strong>, and rendering a <strong>list</strong> with keys. Add, toggle and delete tasks.</p>
+
+        <h3><span class="h3-ico">⚙️</span> App.jsx</h3>
+        <div class="code" data-lang="jsx">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">src/App.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>import { useState } from "react";
+
+export default function App() {
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState("");
+
+  function addTodo() {
+    if (text.trim() === "") return;
+    // never mutate state — build a NEW array
+    setTodos([...todos, { id: Date.now(), text, done: false }]);
+    setText("");
+  }
+
+  function toggle(id) {
+    setTodos(todos.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  function remove(id) {
+    setTodos(todos.filter((t) =&gt; t.id !== id));
+  }
+
+  // inline style objects
+  const app   = { maxWidth: "420px", margin: "40px auto", fontFamily: "Arial, sans-serif" };
+  const addRow = { display: "flex", gap: "8px", marginBottom: "16px" };
+  const input = { flex: 1, padding: "12px", border: "1px solid #ddd", borderRadius: "8px" };
+  const addBtn = { padding: "12px 18px", border: "none", borderRadius: "8px",
+                   background: "#7c3aed", color: "#fff", cursor: "pointer" };
+  const item  = { display: "flex", justifyContent: "space-between", alignItems: "center",
+                  padding: "12px", borderBottom: "1px solid #eee" };
+
+  return (
+    &lt;div style={app}&gt;
+      &lt;h1&gt;My To-Do List&lt;/h1&gt;
+
+      &lt;div style={addRow}&gt;
+        &lt;input
+          style={input}
+          value={text}
+          onChange={(e) =&gt; setText(e.target.value)}
+          onKeyDown={(e) =&gt; e.key === "Enter" &amp;&amp; addTodo()}
+          placeholder="What needs doing?"
+        /&gt;
+        &lt;button style={addBtn} onClick={addTodo}&gt;Add&lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;ul style={{ listStyle: "none", padding: 0 }}&gt;
+        {todos.map((todo) =&gt; (
+          &lt;li key={todo.id} style={item}&gt;
+            &lt;span
+              onClick={() =&gt; toggle(todo.id)}
+              style={{ flex: 1, cursor: "pointer",
+                       textDecoration: todo.done ? "line-through" : "none",
+                       color: todo.done ? "#aaa" : "#000" }}
+            &gt;{todo.text}&lt;/span&gt;
+            &lt;button onClick={() =&gt; remove(todo.id)}
+                    style={{ border: "none", background: "none", color: "#f43f5e",
+                             cursor: "pointer", fontSize: "16px" }}&gt;✕&lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+
+      {todos.length === 0 &amp;&amp;
+        &lt;p style={{ textAlign: "center", color: "#999" }}&gt;Nothing yet — add a task!&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>The input is <strong>controlled</strong> — its value comes from state (<code class="inline">text</code>).</div></div>
+          <div class="kp"><span class="check">✓</span><div>Update state <strong>immutably</strong> — spread into a new array/object, never mutate.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Each list item needs a unique <code class="inline">key</code> so React tracks it efficiently.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Styled <strong>inline</strong> — note the <em>conditional</em> style on each item (line-through when done).</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>You can build interactive UIs now. Connect React to a backend you built in <a href="node.html">Node</a>/<a href="express.html">Express</a>/<a href="mongodb.html">MongoDB</a> and you've got a full app — that's the <a href="fullstack.html"><strong>Full-Stack capstone</strong></a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="javascript.html" class="prev"><span class="dir">← Related</span><span class="ttl">JavaScript</span></a>
+          <a href="fullstack.html" class="next"><span class="dir">Capstone →</span><span class="ttl">Full Stack Guide</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> React complete</span>
+            <h3 class="foot-title">You build with <span class="grad">components</span> now</h3>
+            <p class="foot-lead">JSX, props, state, the core hooks, routing, and three real apps. Time to go full-stack.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="fullstack.html">Build the full stack
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

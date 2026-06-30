@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="APIs & REST guide — how apps exchange data: endpoints, HTTP methods, CRUD, status codes, JSON, and calling APIs with fetch. Ends with a GitHub user-finder mini project." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>APIs & REST · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>APIs & REST</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>APIs & REST</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>APIs & REST</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">API basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#what-is-api" data-title="What is an API"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H4v5M15 3h5v5M9 21H4v-5M15 21h5v-5"/><circle cx="12" cy="12" r="3"/></svg></span> What is an API</a>
+          <a class="nav-link" href="#rest" data-title="REST principles"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 7.5l9-4.5 9 4.5M3 7.5v9l9 4.5 9-4.5v-9"/></svg></span> REST principles</a>
+          <a class="nav-link" href="#endpoints" data-title="Endpoints & resources"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 12h6M13 12l4-5M13 12l4 5"/></svg></span> Endpoints</a>
+          <a class="nav-link" href="#methods" data-title="HTTP methods (CRUD)"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span> HTTP methods</a>
+          <a class="nav-link" href="#status" data-title="Status codes"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></span> Status codes</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Requests & data</div>
+          <a class="nav-link" href="#request" data-title="Request anatomy"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span> Request anatomy</a>
+          <a class="nav-link" href="#json" data-title="JSON"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4C5 4 6 9 4 11c0 0-1 1 0 2 2 2 1 7 4 7M16 4c3 0 2 5 4 7 0 0 1 1 0 2-2 2-1 7-4 7"/></svg></span> JSON</a>
+          <a class="nav-link" href="#calling" data-title="Calling an API"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></span> Calling an API</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="GitHub user finder"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19.9 5 4.9 4.9 0 0 0 19.8 1.4S18.7 1 16 2.8a13.4 13.4 0 0 0-7 0C6.3 1 5.2 1.4 5.2 1.4A4.9 4.9 0 0 0 5.1 5a5.2 5.2 0 0 0-1.4 3.6c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-1 2.6V22"/></svg></span> GitHub finder</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">FUNDAMENTALS · 01</span>
+        <h2 class="section-title">APIs &amp; REST</h2>
+        <p class="section-sub">An <strong>API</strong> is how two programs talk to each other. Almost every app you use is constantly calling APIs — to log you in, load your feed, show the weather, take a payment. This guide explains what they are and how to use them.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🍽️</div>
+          <div><div class="ctitle">The restaurant analogy</div><p>You (the <strong>app</strong>) don't walk into the kitchen. You give your order to a <strong>waiter</strong> (the API), who takes it to the kitchen (the <strong>server</strong>) and brings back your food (the <strong>data</strong>). The menu is the list of things you're allowed to ask for.</p></div>
+        </div>
+        <p>This guide builds on <a href="javascript.html">JavaScript</a> (you'll use <code class="inline">fetch</code> and <code class="inline">async/await</code>). By the end you'll build a <strong>GitHub user finder</strong> that calls a real REST API.</p>
+      </section>
+
+      <!-- WHAT IS AN API -->
+      <section class="section reveal" id="what-is-api">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">What is an API?</h2>
+        <p class="section-sub"><strong>API</strong> = <em>Application Programming Interface</em>. It's a set of rules that lets one piece of software request data or actions from another — without knowing how that other software works inside.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">📤</div>
+            <h4>You send a request</h4>
+            <p>"Give me the weather for Madurai." A message goes over the internet to a server.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-mint">📥</div>
+            <h4>It sends a response</h4>
+            <p>The server replies with data — usually <strong>JSON</strong> — and your app shows it.</p>
+          </div>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">The key idea: a contract</div><p>An API is a <strong>promise</strong>: "send me a request shaped like <em>this</em>, and I'll send back data shaped like <em>that</em>." You don't need the server's code — just its rules (its <em>documentation</em>).</p></div>
+        </div>
+        <p><strong>Web APIs</strong> (the kind here) work over <strong>HTTP</strong> — the same protocol your browser uses for web pages. Real examples: OpenWeatherMap (weather), the GitHub API (repos &amp; users), Stripe/Razorpay (payments), Google Maps (locations).</p>
+      </section>
+
+      <!-- REST -->
+      <section class="section reveal" id="rest">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">REST principles</h2>
+        <p class="section-sub"><strong>REST</strong> is the most common <em>style</em> for designing web APIs. It's not a technology — it's a set of conventions that make APIs predictable. An API that follows them is called <strong>RESTful</strong>.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Everything is a resource</strong> — users, posts, products. Each has its own URL.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Use HTTP methods</strong> — <code class="inline">GET</code> to read, <code class="inline">POST</code> to create, etc. (next section).</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Stateless</strong> — each request stands alone; the server doesn't remember the last one. You send everything it needs each time (like a token).</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Data as JSON</strong> — requests and responses carry JSON.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Status codes</strong> — every response says how it went (<code class="inline">200</code> ok, <code class="inline">404</code> not found…).</div></div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">In one sentence</div><p>A RESTful API exposes <strong>resources at URLs</strong>, and you act on them with <strong>HTTP methods</strong>, exchanging <strong>JSON</strong>. Learn that pattern once and almost every API feels familiar.</p></div>
+        </div>
+      </section>
+
+      <!-- ENDPOINTS -->
+      <section class="section reveal" id="endpoints">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">Endpoints &amp; resources</h2>
+        <p class="section-sub">An <strong>endpoint</strong> is a URL you can call. It's made of a <strong>base URL</strong> plus a <strong>path</strong> that names a resource. Resources are <em>nouns</em> (things), not verbs.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">an endpoint, broken down<span class="lang">url</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>https://api.github.com/users/torvalds
+└──────┬───────────┘ └──┬──┘ └───┬───┘
+   base URL          resource    item
+                   (collection)  (one user)</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Endpoint</th><th>Means</th></tr></thead>
+            <tbody>
+              <tr><td><code>/users</code></td><td>The whole <strong>collection</strong> of users</td></tr>
+              <tr><td><code>/users/torvalds</code></td><td>One specific user (an <strong>item</strong>)</td></tr>
+              <tr><td><code>/users/torvalds/repos</code></td><td>That user's repositories (a sub-collection)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">RESTful URLs use nouns</div><p>Good: <code class="inline">GET /users/5</code>. Avoid putting the action in the URL like <code class="inline">/getUser?id=5</code> or <code class="inline">/deleteUser</code> — the <em>method</em> (GET, DELETE) already says the action.</p></div>
+        </div>
+      </section>
+
+      <!-- METHODS -->
+      <section class="section reveal" id="methods">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">HTTP methods → CRUD</h2>
+        <p class="section-sub">The same URL can do different things depending on the <strong>method</strong> (also called the <em>verb</em>). The four basic data operations — <strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete (CRUD) — map directly onto HTTP methods.</p>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Method</th><th>CRUD</th><th>Does</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td>Read</td><td>Fetch data (never changes anything)</td><td><code>GET /posts</code></td></tr>
+              <tr><td><code>POST</code></td><td>Create</td><td>Add a new item (data in the body)</td><td><code>POST /posts</code></td></tr>
+              <tr><td><code>PUT</code></td><td>Update</td><td>Replace an existing item</td><td><code>PUT /posts/1</code></td></tr>
+              <tr><td><code>PATCH</code></td><td>Update</td><td>Change <em>part</em> of an item</td><td><code>PATCH /posts/1</code></td></tr>
+              <tr><td><code>DELETE</code></td><td>Delete</td><td>Remove an item</td><td><code>DELETE /posts/1</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Here's all four against the free practice API <code class="inline">jsonplaceholder.typicode.com</code>:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">crud.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const BASE = "https://jsonplaceholder.typicode.com";
+
+// READ — get all posts
+await fetch(`${BASE}/posts`);
+
+// READ — get one post
+await fetch(`${BASE}/posts/1`);
+
+// CREATE — add a post (data goes in the body)
+await fetch(`${BASE}/posts`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ title: "Hello", body: "My first post" })
+});
+
+// UPDATE — change a post
+await fetch(`${BASE}/posts/1`, {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ title: "Edited" })
+});
+
+// DELETE — remove a post
+await fetch(`${BASE}/posts/1`, { method: "DELETE" });</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">GET is "safe", the others change data</div><p><code class="inline">GET</code> only reads — calling it twice is harmless. <code class="inline">POST</code>/<code class="inline">PUT</code>/<code class="inline">DELETE</code> change server data, so they need a method, usually headers, and (for POST/PUT) a body.</p></div>
+        </div>
+      </section>
+
+      <!-- STATUS CODES -->
+      <section class="section reveal" id="status">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Status codes</h2>
+        <p class="section-sub">Every response comes with a 3-digit <strong>status code</strong> telling you how it went. The first digit is the category.</p>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Range</th><th>Meaning</th><th>Common ones</th></tr></thead>
+            <tbody>
+              <tr><td><code>2xx</code></td><td>✅ Success</td><td><code>200</code> OK · <code>201</code> Created</td></tr>
+              <tr><td><code>3xx</code></td><td>↪️ Redirect</td><td><code>301</code> Moved · <code>304</code> Not Modified</td></tr>
+              <tr><td><code>4xx</code></td><td>🙋 You messed up</td><td><code>400</code> Bad Request · <code>401</code> Unauthorized · <code>403</code> Forbidden · <code>404</code> Not Found</td></tr>
+              <tr><td><code>5xx</code></td><td>🔥 Server messed up</td><td><code>500</code> Server Error · <code>503</code> Unavailable</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>With <code class="inline">fetch</code>, check <code class="inline">response.ok</code> (true for any 2xx) or <code class="inline">response.status</code>:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">status.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const res = await fetch(url);
+
+if (!res.ok) {                 // any 4xx or 5xx
+  console.log("Failed:", res.status);   // e.g. 404
+  return;
+}
+const data = await res.json();   // only read the body when it succeeded</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Go deeper</div><p>There's a whole guide on these — see <a href="http-status-codes.html">HTTP status codes</a> for the full list and when each one applies.</p></div>
+        </div>
+      </section>
+
+      <!-- REQUEST ANATOMY -->
+      <section class="section reveal" id="request">
+        <span class="section-kicker k-1">DATA · 07</span>
+        <h2 class="section-title">Anatomy of a request</h2>
+        <p class="section-sub">A request is more than a URL. It has four parts — and you'll set each of them when you call an API.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">1</span><div><strong>Method</strong> — GET, POST, PUT, DELETE (what to do).</div></div>
+          <div class="kp"><span class="check">2</span><div><strong>URL</strong> — which resource, plus any params (which one).</div></div>
+          <div class="kp"><span class="check">3</span><div><strong>Headers</strong> — extra info like <code class="inline">Content-Type: application/json</code> or an <code class="inline">Authorization</code> token.</div></div>
+          <div class="kp"><span class="check">4</span><div><strong>Body</strong> — the data you're sending (POST/PUT only), as JSON.</div></div>
+        </div>
+
+        <h3><span class="h3-ico">🔗</span> Path params vs query params</h3>
+        <p>Two ways to pass info <em>in the URL</em>:</p>
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">params<span class="lang">url</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>/users/42            ← PATH param: WHICH resource (user 42)
+
+/search?q=react&page=2   ← QUERY params: options after the "?"
+                            (search for "react", page 2)</code></pre>
+        </div>
+        <ul>
+          <li><strong>Path param</strong> (<code class="inline">/users/42</code>) identifies <em>a specific resource</em>.</li>
+          <li><strong>Query params</strong> (<code class="inline">?q=react&amp;page=2</code>) tweak the request — search terms, filters, paging. They start with <code class="inline">?</code> and join with <code class="inline">&amp;</code>.</li>
+        </ul>
+      </section>
+
+      <!-- JSON -->
+      <section class="section reveal" id="json">
+        <span class="section-kicker k-1">DATA · 08</span>
+        <h2 class="section-title">JSON — the data format</h2>
+        <p class="section-sub"><strong>JSON</strong> (JavaScript Object Notation) is how APIs send data. It looks just like JavaScript objects and arrays — easy for humans to read and for code to parse.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">example.json<span class="lang">json</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>{
+  "name": "Linus Torvalds",
+  "public_repos": 6,
+  "followers": 220000,
+  "languages": ["C", "Shell"],
+  "company": null
+}</code></pre>
+        </div>
+        <p>JSON is <em>text</em>. JavaScript converts between text and real objects with two functions:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">json.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// object → JSON text  (to SEND it in a request body)
+JSON.stringify({ name: "Ada" });   // '{"name":"Ada"}'
+
+// JSON text → object  (to USE what an API sent back)
+JSON.parse('{"name":"Ada"}');      // { name: "Ada" }
+
+// with fetch, response.json() does the parsing for you:
+const data = await res.json();</code></pre>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">JSON is strict</div><p>Keys must be in <strong>double quotes</strong>, no trailing commas, and no comments. <code class="inline">{ name: "Ada" }</code> is valid JS but <em>not</em> valid JSON — it must be <code class="inline">{ "name": "Ada" }</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- CALLING AN API -->
+      <section class="section reveal" id="calling">
+        <span class="section-kicker k-1">DATA · 09</span>
+        <h2 class="section-title">Calling an API</h2>
+        <p class="section-sub">In the browser, the built-in <code class="inline">fetch</code> is all you need. Here's the full pattern, with error handling — this is exactly what the mini project uses.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">call.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>async function getUser(username) {
+  try {
+    const res = await fetch(`https://api.github.com/users/${username}`);
+
+    if (!res.ok) throw new Error("User not found");   // handle 404 etc.
+
+    const data = await res.json();
+    console.log(data.name, data.public_repos);
+  } catch (err) {
+    console.log("Error:", err.message);
+  }
+}
+getUser("torvalds");</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🧰</span> Axios &amp; Postman</h3>
+        <p>Two tools you'll meet:</p>
+        <ul>
+          <li><strong>Axios</strong> — a popular library (used a lot in <a href="react.html">React</a>/<a href="node.html">Node</a>) that's a little shorter than fetch and parses JSON automatically: <code class="inline">const { data } = await axios.get(url)</code>.</li>
+          <li><strong>Postman</strong> (or the VS Code <em>REST Client</em>) — apps to <em>try</em> an API by hand before writing code: set the method, URL, headers and body, hit Send, see the response. Great for exploring.</li>
+        </ul>
+        <div class="callout warning">
+          <div class="ci">🔑</div>
+          <div><div class="ctitle">CORS &amp; secret keys</div><p>Some APIs block browser calls (a security rule called <strong>CORS</strong>) or need a secret key. Those calls belong on a <strong>backend</strong> server, not in front-end JS — you'll build one in the <a href="node.html">Node</a> &amp; <a href="express.html">Express</a> guides.</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">GitHub user finder</h2>
+        <p class="section-sub">Put it all together: type a GitHub username and fetch their public profile from a <strong>real REST API</strong> — <code class="inline">https://api.github.com/users/{username}</code>. No API key needed.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">What it shows off</div><p>A real <strong>endpoint</strong> with a <strong>path param</strong>, a <code class="inline">GET</code> request, <strong>status-code</strong> handling (404 = no such user), and reading <strong>JSON</strong> — every concept from this guide in ~30 lines.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> HTML</h3>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;div class="finder"&gt;
+  &lt;h1&gt;🔍 GitHub Finder&lt;/h1&gt;
+
+  &lt;div class="search-box"&gt;
+    &lt;input type="text" id="username" placeholder="github username..." /&gt;
+    &lt;button onclick="getUser()"&gt;Search&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;div id="result"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🎨</span> CSS</h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #0d1117;
+  font-family: Arial, sans-serif;
+}
+
+.finder {
+  width: 340px;
+  background: #161b22;
+  color: white;
+  padding: 28px;
+  border-radius: 14px;
+  text-align: center;
+  border: 1px solid #30363d;
+}
+.finder h1 { font-size: 22px; margin-bottom: 22px; }
+
+.search-box { display: flex; gap: 10px; margin-bottom: 22px; }
+.search-box input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  background: #0d1117;
+  color: white;
+  outline: none;
+}
+.search-box button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 6px;
+  background: #238636;
+  color: white;
+  cursor: pointer;
+}
+
+#result img { width: 100px; border-radius: 50%; margin-bottom: 12px; }
+#result h2  { margin: 6px 0; }
+#result .stats { display: flex; justify-content: center; gap: 18px; color: #8b949e; }</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> JavaScript</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">script.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>async function getUser() {
+  const username = document.getElementById("username").value;
+  const result = document.getElementById("result");
+
+  if (username === "") {
+    result.innerHTML = "&lt;p&gt;Enter a username 👆&lt;/p&gt;";
+    return;
+  }
+
+  result.innerHTML = "&lt;p&gt;Loading... ⏳&lt;/p&gt;";
+
+  try {
+    // the endpoint: base URL + /users/ + the path param
+    const res = await fetch(`https://api.github.com/users/${username}`);
+
+    if (!res.ok) {                  // 404 = no such user
+      result.innerHTML = "&lt;p&gt;User not found ❌&lt;/p&gt;";
+      return;
+    }
+
+    const user = await res.json();  // parse the JSON response
+
+    result.innerHTML = `
+      &lt;img src="${user.avatar_url}" alt="${user.login}" /&gt;
+      &lt;h2&gt;${user.name || user.login}&lt;/h2&gt;
+      &lt;p&gt;${user.bio || ""}&lt;/p&gt;
+      &lt;div class="stats"&gt;
+        &lt;span&gt;📦 ${user.public_repos} repos&lt;/span&gt;
+        &lt;span&gt;👥 ${user.followers} followers&lt;/span&gt;
+      &lt;/div&gt;
+    `;
+  } catch (err) {
+    result.innerHTML = "&lt;p&gt;Something went wrong ❌&lt;/p&gt;";
+  }
+}</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>The username becomes a <strong>path param</strong> in the endpoint URL.</div></div>
+          <div class="kp"><span class="check">✓</span><div><code class="inline">!res.ok</code> catches a <strong>404</strong> before trying to read the body.</div></div>
+          <div class="kp"><span class="check">✓</span><div><code class="inline">user.name || user.login</code> falls back gracefully when a field is empty.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>You can now consume any REST API. Next, learn to <strong>build</strong> one: head to <a href="node.html">Node</a> and <a href="express.html">Express</a>, then store its data in <a href="mongodb.html">MongoDB</a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="javascript.html" class="prev"><span class="dir">← Related</span><span class="ttl">JavaScript</span></a>
+          <a href="node.html" class="next"><span class="dir">Next guide →</span><span class="ttl">Node.js</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> APIs &amp; REST complete</span>
+            <h3 class="foot-title">You speak <span class="grad">HTTP</span> now</h3>
+            <p class="foot-lead">Endpoints, methods, status codes and JSON. Next: build your own API with Node &amp; Express.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="node.html">Continue to Node.js
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

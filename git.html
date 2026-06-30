@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Git & GitHub guide — version control from scratch: init/clone, staging & commits, branches & merging, push/pull, .gitignore and resolving conflicts. Ends with putting a project on GitHub." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Git & GitHub · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Git & GitHub</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>Git & GitHub</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Git & GitHub</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Git basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#vcs" data-title="Version control"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5"/><circle cx="12" cy="14" r="3"/></svg></span> Version control</a>
+          <a class="nav-link" href="#setup" data-title="Setup & a repo"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 2.6 14H2a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4 7.6l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span> Setup &amp; a repo</a>
+          <a class="nav-link" href="#staging" data-title="Staging & commits"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/></svg></span> Staging &amp; commits</a>
+          <a class="nav-link" href="#history" data-title="History & status"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg></span> History &amp; status</a>
+          <a class="nav-link" href="#branches" data-title="Branches & merging"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-4 2.5-6 4.5"/></svg></span> Branches &amp; merging</a>
+          <a class="nav-link" href="#remotes" data-title="Push & pull"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span> Push &amp; pull</a>
+          <a class="nav-link" href="#gitignore" data-title=".gitignore"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span> .gitignore</a>
+          <a class="nav-link" href="#conflicts" data-title="Resolving conflicts"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h0"/><path d="M10.3 3.3a2 2 0 0 1 3.4 0l8 14a2 2 0 0 1-1.7 3H4a2 2 0 0 1-1.7-3z"/></svg></span> Resolving conflicts</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="Push to GitHub"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19.9 5 4.9 4.9 0 0 0 19.8 1.4S18.7 1 16 2.8a13.4 13.4 0 0 0-7 0C6.3 1 5.2 1.4 5.2 1.4A4.9 4.9 0 0 0 5.1 5a5.2 5.2 0 0 0-1.4 3.6c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-1 2.6V22"/></svg></span> Push to GitHub</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">TOOLING · 01</span>
+        <h2 class="section-title">Git &amp; GitHub</h2>
+        <p class="section-sub"><strong>Git</strong> is the tool that saves snapshots of your code over time, so you can undo mistakes, work on features in parallel, and collaborate without overwriting each other. <strong>GitHub</strong> is where you store those snapshots online. Every developer uses them, every day.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🎮</div>
+          <div><div class="ctitle">Save points for code</div><p>Git is like the save system in a game. Each <strong>commit</strong> is a save point you can return to. Branches let you explore a risky path, and if it goes wrong, you reload your last good save — your real work is never lost.</p></div>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚖️</div>
+          <div><div class="ctitle">Git ≠ GitHub</div><p><strong>Git</strong> is the version-control program on your computer. <strong>GitHub</strong> (also GitLab, Bitbucket) is a website that hosts Git repositories so you can back them up and share. You can use Git with no GitHub at all.</p></div>
+        </div>
+      </section>
+
+      <!-- VERSION CONTROL -->
+      <section class="section reveal" id="vcs">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">What is version control?</h2>
+        <p class="section-sub">Without it, you end up with <code class="inline">project-final.zip</code>, <code class="inline">project-final-v2.zip</code>, <code class="inline">project-FINAL-really.zip</code>. Version control replaces all that with a clean, searchable history of every change.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>History</strong> — see exactly what changed, when, and who changed it.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Undo</strong> — roll any file (or the whole project) back to a previous state.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Branching</strong> — try new ideas in isolation without breaking the working version.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Collaboration</strong> — many people edit the same project and merge their work safely.</div></div>
+        </div>
+      </section>
+
+      <!-- SETUP & A REPO -->
+      <section class="section reveal" id="setup">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Setup &amp; creating a repo</h2>
+        <p class="section-sub">Install Git from <code class="inline">git-scm.com</code>, then set your name and email once (they get stamped on every commit).</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">one-time setup<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>git --version                      # check it's installed
+
+git config --global user.name  "Your Name"
+git config --global user.email "you@example.com"</code></pre>
+        </div>
+        <p>A Git project is called a <strong>repository</strong> (repo). There are two ways to get one:</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">start a repo<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># A) turn an existing folder into a repo
+cd my-project
+git init
+
+# B) copy an existing repo from GitHub onto your machine
+git clone https://github.com/user/repo.git</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">The hidden .git folder</div><p><code class="inline">git init</code> creates a hidden <code class="inline">.git</code> folder — that's where Git stores your entire history. Delete it and the folder becomes a normal, un-tracked directory again.</p></div>
+        </div>
+      </section>
+
+      <!-- STAGING & COMMITS -->
+      <section class="section reveal" id="staging">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">Staging &amp; committing</h2>
+        <p class="section-sub">Saving a change in Git is a two-step move: <strong>stage</strong> the changes you want (<code class="inline">git add</code>), then <strong>commit</strong> them with a message (<code class="inline">git commit</code>). This lets you choose <em>exactly</em> what goes into each snapshot.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">the three areas<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>Working dir   ──git add──▶   Staging area   ──git commit──▶   Repository
+(your edits)                 (ready to save)                  (saved history)</code></pre>
+        </div>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">save a change<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>git add index.html         # stage one file
+git add .                  # or stage everything changed
+
+git commit -m "Add hero section"   # save a snapshot with a message</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Write good commit messages</div><p>Short, present-tense, and describing <em>what the change does</em>: "Add login form", "Fix navbar on mobile". Your future self (and teammates) will thank you when reading the history.</p></div>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section class="section reveal" id="history">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">Seeing what's going on</h2>
+        <p class="section-sub">Three commands you'll run constantly to understand the state of your repo.</p>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Command</th><th>Shows</th></tr></thead>
+            <tbody>
+              <tr><td><code>git status</code></td><td>What's changed, staged, or untracked right now</td></tr>
+              <tr><td><code>git log</code></td><td>The history of commits (newest first)</td></tr>
+              <tr><td><code>git log --oneline</code></td><td>The same, one compact line per commit</td></tr>
+              <tr><td><code>git diff</code></td><td>The exact lines you've changed but not staged</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">git status<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>$ git status
+On branch main
+Changes not staged for commit:
+  modified:   index.html
+Untracked files:
+  style.css</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">When in doubt, run git status</div><p>It's the most useful command in Git — it tells you what state you're in and usually hints at the next command to run.</p></div>
+        </div>
+      </section>
+
+      <!-- BRANCHES -->
+      <section class="section reveal" id="branches">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Branches &amp; merging</h2>
+        <p class="section-sub">A <strong>branch</strong> is an independent line of work. You branch off <code class="inline">main</code>, build a feature in peace, then <strong>merge</strong> it back when it's ready — <code class="inline">main</code> stays stable the whole time.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">branching<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>git branch                     # list branches (* marks current)
+git switch -c feature-login    # create AND switch to a new branch
+                               # (older syntax: git checkout -b feature-login)
+
+# ...do your work, add & commit on this branch...
+
+git switch main                # go back to main
+git merge feature-login        # bring the feature's commits into main
+
+git branch -d feature-login    # delete the branch once merged</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Why branch?</div><p>So unfinished or experimental work never breaks the version everyone relies on. On teams, every feature or fix gets its own branch, reviewed via a <strong>Pull Request</strong> before merging.</p></div>
+        </div>
+      </section>
+
+      <!-- REMOTES -->
+      <section class="section reveal" id="remotes">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">Push &amp; pull (remotes)</h2>
+        <p class="section-sub">A <strong>remote</strong> is a copy of your repo hosted elsewhere — usually GitHub, nicknamed <code class="inline">origin</code>. <strong>Push</strong> sends your commits up; <strong>pull</strong> brings others' commits down.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">remotes<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># connect your local repo to a GitHub repo (done once)
+git remote add origin https://github.com/you/repo.git
+
+git push -u origin main    # first push (sets the upstream)
+git push                   # every push after that
+
+git pull                   # fetch + merge others' changes into yours</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Command</th><th>Direction</th></tr></thead>
+            <tbody>
+              <tr><td><code>git push</code></td><td>⬆️ Local commits → GitHub</td></tr>
+              <tr><td><code>git pull</code></td><td>⬇️ GitHub commits → Local</td></tr>
+              <tr><td><code>git clone</code></td><td>⬇️ A whole repo → a new local copy</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Pull before you push</div><p>If teammates pushed while you worked, <code class="inline">git pull</code> first to bring their changes in — then push. This avoids most "rejected" push errors.</p></div>
+        </div>
+      </section>
+
+      <!-- .gitignore -->
+      <section class="section reveal" id="gitignore">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">.gitignore</h2>
+        <p class="section-sub">Some files should <em>never</em> be committed — huge dependency folders, secret keys, build output. List them in a <code class="inline">.gitignore</code> file and Git will pretend they don't exist.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">.gitignore<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># dependencies
+node_modules/
+
+# secrets &amp; env
+.env
+
+# build output
+dist/
+build/
+
+# OS / editor junk
+.DS_Store
+*.log</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🔑</div>
+          <div><div class="ctitle">Never commit secrets</div><p>API keys, passwords and <code class="inline">.env</code> files must be in <code class="inline">.gitignore</code> <em>before</em> your first commit. Once a secret is pushed to GitHub it's in the history forever — treat it as leaked and rotate it.</p></div>
+        </div>
+      </section>
+
+      <!-- CONFLICTS -->
+      <section class="section reveal" id="conflicts">
+        <span class="section-kicker k-1">09</span>
+        <h2 class="section-title">Resolving merge conflicts</h2>
+        <p class="section-sub">A <strong>conflict</strong> happens when two branches changed the <em>same lines</em> and Git can't decide which to keep. It's not an error — it just needs a human to choose. It looks like this:</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a conflict in a file<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;h1&gt;Welcome to my site&lt;/h1&gt;        ← your version (current branch)
+=======
+&lt;h1&gt;Hello and welcome!&lt;/h1&gt;        ← their version (incoming branch)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-login</code></pre>
+        </div>
+        <p>To resolve it: edit the file to keep what you want, <strong>delete the <code class="inline">&lt;&lt;&lt;</code> / <code class="inline">===</code> / <code class="inline">&gt;&gt;&gt;</code> markers</strong>, then stage and commit:</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">finish the merge<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>git add index.html      # mark the conflict as resolved
+git commit              # complete the merge</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Your editor helps</div><p>VS Code highlights conflicts and shows buttons — <em>Accept Current</em>, <em>Accept Incoming</em>, <em>Accept Both</em> — so you rarely edit the markers by hand.</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">Put a project on GitHub</h2>
+        <p class="section-sub">Take any project you've built — one of the mini projects from the <a href="html.html">HTML</a>/<a href="css.html">CSS</a>/<a href="javascript.html">JS</a> guides — and publish it to GitHub from scratch.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">Goal</div><p>Go from a plain folder to a live GitHub repo with your code in it, using everything from this guide.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🪜</span> Steps</h3>
+        <div class="key-points">
+          <div class="kp"><span class="check">1</span><div>On <strong>github.com</strong>, click <strong>New repository</strong>, name it, and create it <em>empty</em> (no README).</div></div>
+          <div class="kp"><span class="check">2</span><div>In your project folder, run the commands below.</div></div>
+          <div class="kp"><span class="check">3</span><div>Refresh the GitHub page — your files are there!</div></div>
+        </div>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">publish.sh<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>cd my-project
+
+git init                          # 1. start tracking
+echo "node_modules/" &gt; .gitignore  # 2. ignore junk (if any)
+
+git add .                         # 3. stage everything
+git commit -m "Initial commit"    # 4. first snapshot
+
+git branch -M main                # 5. name the branch main
+git remote add origin https://github.com/you/my-project.git   # 6. link GitHub
+git push -u origin main           # 7. push it up 🚀</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>From now on, the cycle is just: <code class="inline">git add .</code> → <code class="inline">git commit -m "…"</code> → <code class="inline">git push</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Add a <code class="inline">README.md</code> describing your project — it shows on the repo's front page.</div></div>
+          <div class="kp"><span class="check">✓</span><div>GitHub repos double as a <strong>portfolio</strong> — share the link on your CV.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>With Git in your toolkit, dive into a framework — <a href="react.html"><strong>React</strong></a> — or build a backend with <a href="node.html">Node</a>. You'll commit and push the whole way.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="index.html" class="prev"><span class="dir">← All guides</span><span class="ttl">DevGuides</span></a>
+          <a href="react.html" class="next"><span class="dir">Next guide →</span><span class="ttl">React</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Git &amp; GitHub complete</span>
+            <h3 class="foot-title">Your work is <span class="grad">safe</span> now</h3>
+            <p class="foot-lead">Commit, branch, merge, push. The habits that make every other guide easier.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="react.html">Continue to React
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

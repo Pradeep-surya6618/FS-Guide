@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Express.js guide — build web servers & JSON APIs the easy way: routes, req & res, middleware, route & query params, error handling and clean structure. Ends with a Tasks REST API." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Express.js · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Express.js</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>Express.js</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Express.js</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Express basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#setup" data-title="Setting up Express"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span> Setting up</a>
+          <a class="nav-link" href="#routes" data-title="Routes & methods"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h7a3 3 0 0 1 3 3v7"/></svg></span> Routes &amp; methods</a>
+          <a class="nav-link" href="#req-res" data-title="req & res"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></span> req &amp; res</a>
+          <a class="nav-link" href="#params" data-title="Route & query params"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span> Params</a>
+          <a class="nav-link" href="#middleware" data-title="Middleware"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M10 6.5h4a2 2 0 0 1 2 2V14"/></svg></span> Middleware</a>
+          <a class="nav-link" href="#errors" data-title="Error handling"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h0"/></svg></span> Error handling</a>
+          <a class="nav-link" href="#structure" data-title="Controllers & structure"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span> Structure</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="Tasks REST API"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> Tasks REST API</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">BACKEND · 01</span>
+        <h2 class="section-title">Express.js</h2>
+        <p class="section-sub"><strong>Express</strong> is the most popular framework for building servers in <a href="node.html">Node</a>. It turns the tedious raw-<code class="inline">http</code> work from the last guide into a few clean, readable lines — routes, JSON, middleware, all built in.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🛣️</div>
+          <div><div class="ctitle">From dirt track to highway</div><p>The bare Node server made you check <code class="inline">req.url</code> and <code class="inline">req.method</code> by hand for every route. Express gives you <code class="inline">app.get(...)</code>, <code class="inline">app.post(...)</code> — a clean road system for requests.</p></div>
+        </div>
+        <p>By the end you'll build a <strong>Tasks REST API</strong> with full CRUD. In the <a href="mongodb.html">MongoDB</a> guide you'll give it a real database; in the <a href="fullstack.html">Full-Stack</a> guide a React front-end talks to it.</p>
+      </section>
+
+      <!-- SETUP -->
+      <section class="section reveal" id="setup">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">Setting up Express</h2>
+        <p class="section-sub">Create a project, install Express, and write the smallest possible server.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">setup<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm init -y
+npm install express</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">app.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const express = require("express");
+const app = express();
+
+app.use(express.json());   // lets the app read JSON request bodies
+
+app.get("/", (req, res) =&gt; {
+  res.send("Hello from Express!");
+});
+
+const PORT = 3000;
+app.listen(PORT, () =&gt; console.log(`Running on http://localhost:${PORT}`));</code></pre>
+        </div>
+        <p>Run <code class="inline">node app.js</code> and visit <code class="inline">http://localhost:3000</code>. Compare it to the raw Node server — same result, far less code.</p>
+      </section>
+
+      <!-- ROUTES -->
+      <section class="section reveal" id="routes">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Routes &amp; HTTP methods</h2>
+        <p class="section-sub">A <strong>route</strong> ties an HTTP method + URL path to a handler function. Express has one method per HTTP verb — straight from the <a href="api.html">REST</a> guide.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">routes.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>app.get("/users", (req, res) =&gt; { /* read all */ });
+app.get("/users/:id", (req, res) =&gt; { /* read one */ });
+app.post("/users", (req, res) =&gt; { /* create */ });
+app.put("/users/:id", (req, res) =&gt; { /* update */ });
+app.delete("/users/:id", (req, res) =&gt; { /* delete */ });</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Express</th><th>Does (CRUD)</th></tr></thead>
+            <tbody>
+              <tr><td><code>app.get()</code></td><td>Read</td></tr>
+              <tr><td><code>app.post()</code></td><td>Create</td></tr>
+              <tr><td><code>app.put()</code> / <code>app.patch()</code></td><td>Update</td></tr>
+              <tr><td><code>app.delete()</code></td><td>Delete</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- REQ & RES -->
+      <section class="section reveal" id="req-res">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">req &amp; res objects</h2>
+        <p class="section-sub">Every handler gets two arguments: <code class="inline">req</code> (the incoming request — what the client sent) and <code class="inline">res</code> (the response — how you reply).</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">📥</div>
+            <h4>req — read from it</h4>
+            <p><code class="inline">req.params</code> (URL params), <code class="inline">req.query</code> (?query), <code class="inline">req.body</code> (JSON sent), <code class="inline">req.headers</code>.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-mint">📤</div>
+            <h4>res — reply with it</h4>
+            <p><code class="inline">res.json(data)</code>, <code class="inline">res.send(text)</code>, <code class="inline">res.status(code)</code>, <code class="inline">res.sendFile(...)</code>.</p>
+          </div>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">handler.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>app.post("/users", (req, res) =&gt; {
+  const newUser = req.body;            // the JSON the client sent
+
+  // ...save it...
+
+  res.status(201).json({              // reply with a 201 + JSON
+    message: "Created",
+    user: newUser
+  });
+});</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Don't forget express.json()</div><p><code class="inline">req.body</code> is <code class="inline">undefined</code> until you add <code class="inline">app.use(express.json())</code>. That middleware parses incoming JSON into a JS object for you.</p></div>
+        </div>
+      </section>
+
+      <!-- PARAMS -->
+      <section class="section reveal" id="params">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">Route &amp; query params</h2>
+        <p class="section-sub">Two ways the client passes data in the URL — and how Express reads each.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">params.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// ROUTE param — part of the path, marked with :name
+// GET /users/42
+app.get("/users/:id", (req, res) =&gt; {
+  res.json({ id: req.params.id });     // "42"
+});
+
+// QUERY params — after the ? , for options/filters
+// GET /search?term=react&amp;page=2
+app.get("/search", (req, res) =&gt; {
+  const { term, page } = req.query;    // "react", "2"
+  res.json({ term, page });
+});</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Which to use?</div><p><code class="inline">:id</code> route params identify <em>a specific resource</em>. Query params (<code class="inline">?sort=...</code>) tweak a request — filtering, sorting, paging. Same distinction as in the <a href="api.html">API guide</a>.</p></div>
+        </div>
+      </section>
+
+      <!-- MIDDLEWARE -->
+      <section class="section reveal" id="middleware">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Middleware</h2>
+        <p class="section-sub"><strong>Middleware</strong> is a function that runs <em>between</em> the request arriving and your route handler. It can inspect or change <code class="inline">req</code>/<code class="inline">res</code>, then call <code class="inline">next()</code> to pass control along.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">middleware.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// a custom logger — runs on EVERY request
+app.use((req, res, next) =&gt; {
+  console.log(`${req.method} ${req.url}`);
+  next();   // hand off to the next middleware / route
+});
+
+// built-in & third-party middleware
+app.use(express.json());          // parse JSON bodies
+app.use(express.static("public")); // serve files from /public
+// app.use(cors());               // allow cross-origin requests (npm i cors)</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">A pipeline of steps</div><p>Think of middleware as a relay: each runs in order, doing one job — logging, parsing, auth checks — then calls <code class="inline">next()</code>. Forget <code class="inline">next()</code> and the request hangs forever.</p></div>
+        </div>
+      </section>
+
+      <!-- ERRORS -->
+      <section class="section reveal" id="errors">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">Error handling</h2>
+        <p class="section-sub">Return the right <a href="http-status-codes.html">status code</a> for each failure, and use a central error handler (a middleware with <strong>four</strong> arguments) to catch everything else.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">errors.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>app.get("/users/:id", (req, res) =&gt; {
+  const user = findUser(req.params.id);
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  res.json(user);
+});
+
+// 404 for any unmatched route (put AFTER all routes)
+app.use((req, res) =&gt; res.status(404).json({ error: "Route not found" }));
+
+// central error handler — 4 args tells Express it's for errors
+app.use((err, req, res, next) =&gt; {
+  console.error(err);
+  res.status(500).json({ error: "Something went wrong" });
+});</code></pre>
+        </div>
+      </section>
+
+      <!-- STRUCTURE -->
+      <section class="section reveal" id="structure">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">Controllers &amp; structure</h2>
+        <p class="section-sub">As an app grows, don't pile every route into <code class="inline">app.js</code>. Split it: <strong>routers</strong> group related routes, <strong>controllers</strong> hold the logic.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a tidy project<span class="lang">folders</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>my-api/
+├── app.js                 # creates the app, mounts routers
+├── routes/
+│   └── tasks.routes.js    # defines the URLs
+├── controllers/
+│   └── tasks.controller.js # the logic for each route
+└── models/                # data models (MongoDB guide)</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">routes/tasks.routes.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const express = require("express");
+const router = express.Router();
+const { getTasks, addTask } = require("../controllers/tasks.controller");
+
+router.get("/", getTasks);
+router.post("/", addTask);
+
+module.exports = router;
+
+// in app.js:
+app.use("/tasks", require("./routes/tasks.routes"));   // mounts at /tasks</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Why bother</div><p>Separating routes from logic keeps files small and testable, and means two people can work on different features without colliding. It's the standard layout for real Express apps.</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">Tasks REST API</h2>
+        <p class="section-sub">Build a complete CRUD API for a to-do list. It stores tasks in an array for now — in the <a href="mongodb.html">MongoDB</a> guide you'll swap that array for a real database without changing the routes.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">The endpoints</div><p><code class="inline">GET /tasks</code> · <code class="inline">POST /tasks</code> · <code class="inline">PUT /tasks/:id</code> · <code class="inline">DELETE /tasks/:id</code> — the four CRUD operations over HTTP.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> app.js</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">app.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const express = require("express");
+const app = express();
+app.use(express.json());
+
+let tasks = [{ id: 1, title: "Learn Express", done: false }];
+let nextId = 2;
+
+// READ all
+app.get("/tasks", (req, res) =&gt; {
+  res.json(tasks);
+});
+
+// CREATE
+app.post("/tasks", (req, res) =&gt; {
+  const { title } = req.body;
+  if (!title) return res.status(400).json({ error: "Title is required" });
+
+  const task = { id: nextId++, title, done: false };
+  tasks.push(task);
+  res.status(201).json(task);
+});
+
+// UPDATE (toggle done / change title)
+app.put("/tasks/:id", (req, res) =&gt; {
+  const task = tasks.find((t) =&gt; t.id === Number(req.params.id));
+  if (!task) return res.status(404).json({ error: "Task not found" });
+
+  if (req.body.title !== undefined) task.title = req.body.title;
+  if (req.body.done  !== undefined) task.done  = req.body.done;
+  res.json(task);
+});
+
+// DELETE
+app.delete("/tasks/:id", (req, res) =&gt; {
+  tasks = tasks.filter((t) =&gt; t.id !== Number(req.params.id));
+  res.status(204).end();   // 204 = success, no content
+});
+
+app.listen(3000, () =&gt; console.log("API on http://localhost:3000"));</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🧪</span> Try it</h3>
+        <p>With the server running, test it from another terminal with <code class="inline">curl</code> (or use Postman):</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">test.sh<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># list tasks
+curl http://localhost:3000/tasks
+
+# create one
+curl -X POST http://localhost:3000/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Build an API"}'
+
+# delete task 1
+curl -X DELETE http://localhost:3000/tasks/1</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Each route returns the right status: <code class="inline">201</code> created, <code class="inline">400</code> bad input, <code class="inline">404</code> missing, <code class="inline">204</code> deleted.</div></div>
+          <div class="kp"><span class="check">✓</span><div><code class="inline">req.body</code> carries the JSON; <code class="inline">req.params.id</code> picks the task.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The data is in memory — it resets when the server restarts. Persistence is next.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>Your API works but forgets everything on restart. In <a href="mongodb.html"><strong>MongoDB</strong></a> you'll store tasks in a real database — same routes, permanent data.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="node.html" class="prev"><span class="dir">← Previous</span><span class="ttl">Node.js</span></a>
+          <a href="mongodb.html" class="next"><span class="dir">Next guide →</span><span class="ttl">MongoDB</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Express.js complete</span>
+            <h3 class="foot-title">You can build <span class="grad">APIs</span> now</h3>
+            <p class="foot-lead">Routes, middleware, params, error handling, a full CRUD API. Next: give it a database.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="mongodb.html">Continue to MongoDB
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

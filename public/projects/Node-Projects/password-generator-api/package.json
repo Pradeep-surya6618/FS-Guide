@@ -1,0 +1,16 @@
+{
+  "name": "password-generator-api",
+  "version": "1.0.0",
+  "description": "A Node.js + Express API that generates secure random passwords. No database.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": ["password", "generator", "api", "express", "node"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

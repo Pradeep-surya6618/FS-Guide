@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HTML guide — the structure of every web page: elements, attributes, text, links, images, lists, tables, forms and semantic layout. Ends with a landing-page mini project." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>HTML · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>HTML</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>HTML</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>HTML</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">HTML basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#boilerplate" data-title="The boilerplate"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span> The boilerplate</a>
+          <a class="nav-link" href="#folders" data-title="Folder structure"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span> Folder structure</a>
+          <a class="nav-link" href="#tags" data-title="Tags & attributes"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V5a2 2 0 0 1 2-2h7l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span> Tags &amp; attributes</a>
+          <a class="nav-link" href="#block-inline" data-title="Block vs inline"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><path d="M4 14h5M11 14h3M16 14h4M4 18h7M13 18h7"/></svg></span> Block vs inline</a>
+          <a class="nav-link" href="#id-class" data-title="id & class"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4 8 20M16 4l-2 16M5 9h15M4 15h15"/></svg></span> id &amp; class</a>
+          <a class="nav-link" href="#text" data-title="Text & headings"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></svg></span> Text &amp; headings</a>
+          <a class="nav-link" href="#links-images" data-title="Links & images"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg></span> Links &amp; images</a>
+          <a class="nav-link" href="#routing" data-title="Navigation & routing"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12a3 3 0 0 0 3 3h9"/><path d="m15 15 3 3-3 3M6 3 3 6m3-3 3 3"/></svg></span> Navigation &amp; routing</a>
+          <a class="nav-link" href="#icons-fonts" data-title="Icons & fonts"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z"/></svg></span> Icons &amp; fonts</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Structure</div>
+          <a class="nav-link" href="#lists" data-title="Lists"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span> Lists</a>
+          <a class="nav-link" href="#tables" data-title="Tables"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></span> Tables</a>
+          <a class="nav-link" href="#forms" data-title="Forms & inputs"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h7M7 13h10"/></svg></span> Forms &amp; inputs</a>
+          <a class="nav-link" href="#semantic" data-title="Semantic layout"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span> Semantic layout</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Layout with CSS</div>
+          <a class="nav-link" href="#layout" data-title="Box model & display"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg></span> Box model &amp; display</a>
+          <a class="nav-link" href="#flexbox" data-title="Flexbox"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/></svg></span> Flexbox</a>
+          <a class="nav-link" href="#grid" data-title="CSS Grid"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span> CSS Grid</a>
+          <a class="nav-link" href="#position" data-title="Position"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></span> Position</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini projects</div>
+          <a class="nav-link" href="#project" data-title="1 · Landing page"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></span> 1 · Landing page</a>
+          <a class="nav-link" href="#project-card" data-title="2 · Profile card"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="3"/><path d="M7 18a5 5 0 0 1 10 0"/></svg></span> 2 · Profile card</a>
+          <a class="nav-link" href="#project-navbar" data-title="3 · Responsive navbar"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M7 14h10M7 18h10"/></svg></span> 3 · Responsive navbar</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">FUNDAMENTALS · 01</span>
+        <h2 class="section-title">HTML — the structure of the web</h2>
+        <p class="section-sub">HTML (HyperText Markup Language) is the language that describes <strong>what's on a page</strong> — headings, paragraphs, images, links, buttons. It's not a programming language; it's a way to <em>label</em> content so the browser knows what each piece is.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🏗️</div>
+          <div><div class="ctitle">Analogy</div><p>If a web page were a house: <strong>HTML is the framing and walls</strong> (structure), <strong>CSS</strong> is the paint and furniture (style), and <strong>JavaScript</strong> is the electricity and plumbing (behaviour). HTML always comes first.</p></div>
+        </div>
+
+        <div class="callout why">
+          <div class="ci">❓</div>
+          <div><div class="ctitle">Why learn HTML first?</div><p>Every website — no matter how fancy — is HTML underneath. You can't style or add behaviour to elements that don't exist yet. Master HTML and the rest of the stack has something to build on.</p></div>
+        </div>
+
+        <p>You only need two free tools: a code editor (<strong>VS Code</strong>) and a <strong>browser</strong>. Create a file ending in <code class="inline">.html</code>, write the markup below, and open it in your browser.</p>
+      </section>
+
+      <!-- BOILERPLATE -->
+      <section class="section reveal" id="boilerplate">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">The HTML boilerplate</h2>
+        <p class="section-sub">Every HTML page starts with the same skeleton. Type this into <code class="inline">index.html</code> — it's the foundation you'll reuse forever.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, world!&lt;/h1&gt;
+    &lt;p&gt;This is my first web page.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔍</span> Line by line</h3>
+        <ul>
+          <li><code class="inline">&lt;!DOCTYPE html&gt;</code> — tells the browser "this is a modern HTML5 document". Always the first line.</li>
+          <li><code class="inline">&lt;html lang="en"&gt;</code> — the root element that wraps the whole page. <code class="inline">lang="en"</code> says the content is in English (good for accessibility &amp; search engines).</li>
+          <li><code class="inline">&lt;head&gt;</code> — <strong>invisible</strong> info <em>about</em> the page: its title, character set, links to CSS. Nothing here shows on the page itself.</li>
+          <li><code class="inline">&lt;meta charset="UTF-8"&gt;</code> — lets the page show any character/emoji correctly.</li>
+          <li><code class="inline">&lt;meta name="viewport"&gt;</code> — makes the page scale properly on phones. Essential for responsive design.</li>
+          <li><code class="inline">&lt;title&gt;</code> — the text shown on the browser tab.</li>
+          <li><code class="inline">&lt;body&gt;</code> — <strong>everything you can see</strong> goes here: headings, text, images, buttons.</li>
+        </ul>
+
+        <div class="callout output">
+          <div class="ci">🖨️</div>
+          <div><div class="ctitle">Expected output</div><p>Open the file in your browser: the tab says "My First Page", and you see a big <strong>Hello, world!</strong> heading with a line of text under it.</p></div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">VS Code shortcut</div><p>Type <code class="inline">!</code> then press <kbd>Tab</kbd> in an empty <code class="inline">.html</code> file — VS Code generates this whole boilerplate for you (Emmet).</p></div>
+        </div>
+      </section>
+
+      <!-- FOLDER STRUCTURE -->
+      <section class="section reveal" id="folders">
+        <span class="section-kicker k-3">SETUP</span>
+        <h2 class="section-title">Project folder structure</h2>
+        <p class="section-sub">Before you write much, organise your files. A simple, tidy structure keeps your project easy to navigate as it grows.</p>
+
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">my-website/<span class="lang">folders</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>my-website/
+├── index.html        # home page — the entry point
+├── about.html        # another page
+├── contact.html      # another page
+├── style.css         # all your styles (CSS guide)
+├── script.js         # your JavaScript (JS guide)
+└── public/           # images & static files
+    ├── logo.png
+    ├── hero.jpg
+    └── icons/
+        └── menu.svg</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🗂️</span> What each part is for</h3>
+        <ul>
+          <li><strong><code class="inline">index.html</code></strong> — the <em>home page</em>. It's special: when someone opens your folder (or your site's root URL), the browser loads <code class="inline">index.html</code> automatically.</li>
+          <li><strong>Other <code class="inline">.html</code> files</strong> — one file per page (<code class="inline">about.html</code>, <code class="inline">contact.html</code>). Link between them with <code class="inline">&lt;a href="about.html"&gt;</code>.</li>
+          <li><strong><code class="inline">style.css</code></strong> — your styles, linked from the HTML <code class="inline">&lt;head&gt;</code>.</li>
+          <li><strong><code class="inline">script.js</code></strong> — your JavaScript.</li>
+          <li><strong><code class="inline">public/</code></strong> (some people call it <code class="inline">assets/</code> or <code class="inline">images/</code>) — a folder for images, fonts and other static files, so the root stays clean.</li>
+        </ul>
+
+        <div class="callout what">
+          <div class="ci">🧭</div>
+          <div><div class="ctitle">Relative paths — how files find each other</div><p>Paths are written <strong>relative to the current file</strong>:</p>
+            <p>• <code class="inline">public/hero.jpg</code> → look <em>inside</em> the <code class="inline">public</code> folder next to me.<br/>• <code class="inline">../style.css</code> → go <em>up</em> one folder, then find <code class="inline">style.css</code>.<br/>• <code class="inline">/logo.png</code> → start from the site root.</p>
+          </div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div><p>• Naming the home page <code class="inline">Index.html</code> or <code class="inline">home.html</code> — use lowercase <code class="inline">index.html</code> so it loads by default. • Spaces in file names (<code class="inline">my photo.jpg</code>) break links — use <code class="inline">my-photo.jpg</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- TAGS & ATTRIBUTES -->
+      <section class="section reveal" id="tags">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Tags, elements &amp; attributes</h2>
+        <p class="section-sub">These three words describe almost everything in HTML. Get them straight and the rest is easy.</p>
+
+        <div class="grid cols-3">
+          <div class="card"><div class="card-ico bg-violet">&lt;&gt;</div><h4>Tag</h4><p>A keyword in angle brackets, like <code class="inline">&lt;p&gt;</code>. Most come in pairs: an <strong>opening</strong> <code class="inline">&lt;p&gt;</code> and a <strong>closing</strong> <code class="inline">&lt;/p&gt;</code>.</p></div>
+          <div class="card"><div class="card-ico bg-cool">📦</div><h4>Element</h4><p>The opening tag + content + closing tag together: <code class="inline">&lt;p&gt;Hello&lt;/p&gt;</code> is a paragraph element.</p></div>
+          <div class="card"><div class="card-ico bg-mint">⚙️</div><h4>Attribute</h4><p>Extra info on the opening tag, written as <code class="inline">name="value"</code> — e.g. <code class="inline">&lt;a href="..."&gt;</code>.</p></div>
+        </div>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">anatomy.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;a href="https://google.com" target="_blank"&gt;Visit Google&lt;/a&gt;
+&lt;!--  ↑tag  ↑attribute name  ↑value        ↑content     ↑closing tag --&gt;</code></pre>
+        </div>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Self-closing tags</div><p>A few elements have no content and no closing tag — they close themselves, like <code class="inline">&lt;img /&gt;</code>, <code class="inline">&lt;br /&gt;</code> and <code class="inline">&lt;input /&gt;</code>.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div><p>• Forgetting the closing tag (<code class="inline">&lt;/p&gt;</code>) — the page renders oddly. • Quotes missing around attribute values. • Wrong nesting: <code class="inline">&lt;b&gt;&lt;i&gt;text&lt;/b&gt;&lt;/i&gt;</code> should be <code class="inline">&lt;b&gt;&lt;i&gt;text&lt;/i&gt;&lt;/b&gt;</code> (close in reverse order).</p></div>
+        </div>
+      </section>
+
+      <!-- BLOCK VS INLINE -->
+      <section class="section reveal" id="block-inline">
+        <span class="section-kicker k-2">ELEMENTS</span>
+        <h2 class="section-title">Block vs inline elements</h2>
+        <p class="section-sub">Every HTML element is one of two kinds, and it decides how the element sits on the page. Knowing the difference clears up a <em>lot</em> of layout confusion.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">▭</div>
+            <h4>Block-level</h4>
+            <p>Starts on a <strong>new line</strong> and takes the <strong>full width</strong> available — boxes stack vertically. You can set width &amp; height.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-cool">—</div>
+            <h4>Inline</h4>
+            <p>Flows <strong>within a line</strong>, only as <strong>wide as its content</strong> — items sit side by side. Width/height are ignored.</p>
+          </div>
+        </div>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">See it in action</div><p>Two <code class="inline">&lt;div&gt;</code>s (block) stack on top of each other. Two <code class="inline">&lt;span&gt;</code>s (inline) sit next to each other on the same line.</p></div>
+        </div>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">elements.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;!-- BLOCK: each div is on its own line, full width --&gt;
+&lt;div&gt;First block&lt;/div&gt;
+&lt;div&gt;Second block&lt;/div&gt;
+
+&lt;!-- INLINE: spans sit side by side, in the flow of text --&gt;
+&lt;p&gt;This is &lt;span&gt;one&lt;/span&gt; &lt;span&gt;line&lt;/span&gt; of text.&lt;/p&gt;</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>&nbsp;</th><th>Block-level</th><th>Inline</th></tr></thead>
+            <tbody>
+              <tr><td>Starts a new line?</td><td>Yes</td><td>No</td></tr>
+              <tr><td>Width</td><td>Full width by default</td><td>Only as wide as content</td></tr>
+              <tr><td>Can set width / height?</td><td>Yes</td><td>No (ignored)</td></tr>
+              <tr><td>Common tags</td><td><code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;form&gt;</code></td><td><code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;label&gt;</code>, <code>&lt;code&gt;</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">You can change it with CSS</div><p>The block/inline behaviour is just the element's default <code class="inline">display</code>. CSS can flip it: <code class="inline">display: inline-block</code> (flows inline but accepts width/height), <code class="inline">display: block</code>, or <code class="inline">display: none</code> to hide it. More in the <a href="#layout">Box model &amp; display</a> section.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistake</div><p>Setting <code class="inline">width</code> or <code class="inline">height</code> on an inline element like <code class="inline">&lt;a&gt;</code> or <code class="inline">&lt;span&gt;</code> and wondering why nothing happens — inline elements ignore them. Make it <code class="inline">display: inline-block</code> first.</p></div>
+        </div>
+      </section>
+
+      <!-- ID & CLASS -->
+      <section class="section reveal" id="id-class">
+        <span class="section-kicker k-2">ATTRIBUTES</span>
+        <h2 class="section-title">id &amp; class — naming your elements</h2>
+        <p class="section-sub">Two special attributes you'll put on elements constantly. They don't change how something looks on their own — they're <strong>labels</strong> that CSS, JavaScript and links use to find elements.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">.</div>
+            <h4>class — reusable</h4>
+            <p>A label you can put on <strong>as many elements as you like</strong>. Perfect for styling lots of things the same way. An element can have several classes.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-cool">#</div>
+            <h4>id — unique</h4>
+            <p>A label that must be <strong>used by only one element</strong> on the page. Used for anchor links, labels, and JavaScript hooks.</p>
+          </div>
+        </div>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">id-class.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;!-- class: reused on many elements; an element can have several --&gt;
+&lt;button class="btn"&gt;Save&lt;/button&gt;
+&lt;button class="btn primary"&gt;Send&lt;/button&gt;
+
+&lt;!-- id: unique — only ONE element should have id="hero" --&gt;
+&lt;section id="hero"&gt;...&lt;/section&gt;</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🎯</span> How CSS &amp; JS use them</h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.btn  { padding: 10px; }   /* a DOT targets a class */
+#hero { height: 100vh; }   /* a HASH targets an id */</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>&nbsp;</th><th>class</th><th>id</th></tr></thead>
+            <tbody>
+              <tr><td>HTML</td><td><code>class="btn"</code></td><td><code>id="hero"</code></td></tr>
+              <tr><td>How many?</td><td>Many elements, many classes each</td><td>One element, unique per page</td></tr>
+              <tr><td>CSS selector</td><td><code>.btn</code></td><td><code>#hero</code></td></tr>
+              <tr><td>JavaScript</td><td><code>querySelectorAll('.btn')</code></td><td><code>getElementById('hero')</code></td></tr>
+              <tr><td>Best for</td><td>Styling, reusable components</td><td>Anchor links, form labels, one-off JS hooks</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Rule of thumb</div><p>Reach for <strong>class</strong> almost always — it's reusable and easy to override. Use <strong>id</strong> only when you need a <em>unique</em> hook: a scroll target (<code class="inline">#contact</code>), a <code class="inline">&lt;label for&gt;</code>, or one specific element in JavaScript.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistake</div><p>Re-using the same <code class="inline">id</code> on two elements. It's invalid — anchor links and <code class="inline">getElementById</code> will only ever find the first one. Need it on many elements? Use a <strong>class</strong>.</p></div>
+        </div>
+      </section>
+
+      <!-- TEXT -->
+      <section class="section reveal" id="text">
+        <span class="section-kicker k-3">04</span>
+        <h2 class="section-title">Text &amp; headings</h2>
+        <p class="section-sub">The most common job in HTML: showing text. Here are the tags you'll use every day.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">text.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;h1&gt;Biggest heading&lt;/h1&gt;
+&lt;h2&gt;Section heading&lt;/h2&gt;
+&lt;h3&gt;Smaller heading&lt;/h3&gt;
+
+&lt;p&gt;A paragraph of normal text. You can make a word
+   &lt;strong&gt;bold &amp; important&lt;/strong&gt; or &lt;em&gt;italic / emphasised&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;First line.&lt;br /&gt;Second line after a line break.&lt;/p&gt;
+
+&lt;hr /&gt;  &lt;!-- a horizontal divider line --&gt;</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Tag</th><th>Use it for</th></tr></thead>
+            <tbody>
+              <tr><td><code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code></td><td>Headings, biggest to smallest. Use <strong>one</strong> <code>&lt;h1&gt;</code> per page.</td></tr>
+              <tr><td><code>&lt;p&gt;</code></td><td>A paragraph of text.</td></tr>
+              <tr><td><code>&lt;strong&gt;</code></td><td>Important text (bold).</td></tr>
+              <tr><td><code>&lt;em&gt;</code></td><td>Emphasised text (italic).</td></tr>
+              <tr><td><code>&lt;br /&gt;</code></td><td>A single line break.</td></tr>
+              <tr><td><code>&lt;hr /&gt;</code></td><td>A thematic divider line.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Headings are for structure, not size</div><p>Don't pick <code class="inline">&lt;h1&gt;</code> just because it looks big — use the right <em>level</em> for the content's importance, then resize with CSS. Screen readers and Google rely on heading order.</p></div>
+        </div>
+      </section>
+
+      <!-- LINKS & IMAGES -->
+      <section class="section reveal" id="links-images">
+        <span class="section-kicker k-3">05</span>
+        <h2 class="section-title">Links &amp; images</h2>
+        <p class="section-sub">Two of the most important tags — links connect pages (the "hyper" in HyperText), and images bring pages to life.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">media.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;!-- A link (anchor): href is where it goes --&gt;
+&lt;a href="about.html"&gt;About us&lt;/a&gt;
+&lt;a href="https://github.com" target="_blank"&gt;Open GitHub in a new tab&lt;/a&gt;
+
+&lt;!-- An image: src is the file, alt describes it --&gt;
+&lt;img src="public/Hero-img.png" alt="A delivery van on a city street" /&gt;</code></pre>
+        </div>
+
+        <ul>
+          <li><code class="inline">href</code> — the link's destination (another page, a website, or <code class="inline">#section</code> on the same page).</li>
+          <li><code class="inline">target="_blank"</code> — opens the link in a new tab.</li>
+          <li><code class="inline">src</code> — the image file's path (relative to your page, or a full URL).</li>
+          <li><code class="inline">alt</code> — text shown if the image fails to load, and read aloud by screen readers. <strong>Always include it.</strong></li>
+        </ul>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistake</div><p>Broken images usually mean the <code class="inline">src</code> path is wrong. Paths are relative to the HTML file: <code class="inline">public/logo.png</code> looks inside a <code class="inline">public</code> folder next to your page.</p></div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION & ROUTING -->
+      <section class="section reveal" id="routing">
+        <span class="section-kicker k-2">NAVIGATION</span>
+        <h2 class="section-title">Navigation &amp; routing</h2>
+        <p class="section-sub">How do users move around your site? There are two classic approaches — separate pages, or one long page with scrolling sections. Both are just <code class="inline">&lt;a&gt;</code> links.</p>
+
+        <h3><span class="h3-ico">📄</span> 1 · Multi-page routing</h3>
+        <p>Each "page" is a separate <code class="inline">.html</code> file. A link's <code class="inline">href</code> points to another file; clicking it <strong>loads a whole new page</strong>. This is how most traditional websites work.</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">nav (multi-page)<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;nav&gt;
+  &lt;a href="index.html"&gt;Home&lt;/a&gt;
+  &lt;a href="about.html"&gt;About&lt;/a&gt;
+  &lt;a href="contact.html"&gt;Contact&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;!-- Each file is its own page in your folder:
+     index.html · about.html · contact.html --&gt;</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔗</span> 2 · Single-page scrolling sections</h3>
+        <p>One HTML file. Each section has an <code class="inline">id</code>, and links use <code class="inline">href="#id"</code> to <strong>scroll smoothly to that section</strong> instead of loading a new page. Perfect for landing pages.</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">nav (single-page)<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;nav&gt;
+  &lt;a href="#features"&gt;Features&lt;/a&gt;   &lt;!-- jumps to id="features" --&gt;
+  &lt;a href="#pricing"&gt;Pricing&lt;/a&gt;
+  &lt;a href="#contact"&gt;Contact&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;section id="features"&gt;...&lt;/section&gt;
+&lt;section id="pricing"&gt;...&lt;/section&gt;
+&lt;section id="contact"&gt;...&lt;/section&gt;</code></pre>
+        </div>
+        <p>The link target is just the section's <code class="inline">id</code> with a <code class="inline">#</code> in front. <code class="inline">href="#top"</code> (or <code class="inline">href="#"</code>) jumps back to the top.</p>
+
+        <h3><span class="h3-ico">✨</span> Make it scroll smoothly</h3>
+        <p>By default the jump is instant. One line of CSS turns it into a smooth glide:</p>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>html { scroll-behavior: smooth; }
+
+/* If you have a fixed navbar, stop sections hiding behind it: */
+section { scroll-margin-top: 80px; }</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>&nbsp;</th><th>Multi-page</th><th>Single-page sections</th></tr></thead>
+            <tbody>
+              <tr><td>Files</td><td>Many <code>.html</code> files</td><td>One <code>.html</code> file</td></tr>
+              <tr><td>Link looks like</td><td><code>href="about.html"</code></td><td><code>href="#about"</code></td></tr>
+              <tr><td>On click</td><td>Loads a new page</td><td>Scrolls to a section</td></tr>
+              <tr><td>Best for</td><td>Sites with lots of content (blog, shop, docs)</td><td>Landing pages, portfolios</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What about "real" SPAs?</div><p>Frameworks like <a href="react.html">React</a> add a third kind — a <strong>single-page app</strong> where JavaScript swaps the content and updates the URL <em>without</em> reloading. That's covered in the React &amp; Full-Stack guides; for plain HTML, the two approaches above are all you need.</p></div>
+        </div>
+      </section>
+
+      <!-- ICONS & FONTS -->
+      <section class="section reveal" id="icons-fonts">
+        <span class="section-kicker k-3">EXTERNAL</span>
+        <h2 class="section-title">External icons &amp; fonts</h2>
+        <p class="section-sub">You don't have to draw icons or ship font files yourself — link a free library in your <code class="inline">&lt;head&gt;</code> and use it everywhere. The two you'll reach for most: <strong>Google Fonts</strong> and <strong>Font Awesome</strong> (icons).</p>
+
+        <h3><span class="h3-ico">🔤</span> Google Fonts</h3>
+        <p>Pick a font at <code class="inline">fonts.google.com</code>, copy its <code class="inline">&lt;link&gt;</code> into your <code class="inline">&lt;head&gt;</code>, then use the font name in CSS.</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;head&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap"
+        rel="stylesheet" /&gt;
+&lt;/head&gt;</code></pre>
+        </div>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>body { font-family: "Poppins", sans-serif; }   /* now everything uses Poppins */</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">⭐</span> Font Awesome (icons)</h3>
+        <p>Link the Font Awesome CDN once, then drop an <code class="inline">&lt;i&gt;</code> with the icon's class anywhere. The icon inherits the surrounding text's <code class="inline">color</code> and <code class="inline">font-size</code>.</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;head&gt;
+  &lt;link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;i class="fa-solid fa-house"&gt;&lt;/i&gt;     &lt;!-- a house icon --&gt;
+  &lt;i class="fa-solid fa-star"&gt;&lt;/i&gt;      &lt;!-- a star --&gt;
+  &lt;i class="fa-brands fa-twitter"&gt;&lt;/i&gt;  &lt;!-- the Twitter logo --&gt;
+&lt;/body&gt;</code></pre>
+        </div>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.fa-star { color: gold; font-size: 24px; }   /* style icons like text */</code></pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Other ways to get icons</div><p>• <strong>Emoji</strong> — zero setup, just type ⭐🚀🍃 in your HTML. • <strong>SVG</strong> — paste an <code class="inline">&lt;svg&gt;</code> (from sites like Lucide or Heroicons) directly; crisp, colourable, no extra request. Font Awesome is the easiest when you need lots of named icons.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div><p>• Icons not showing → the CDN <code class="inline">&lt;link&gt;</code> is missing or the class is wrong (it's <code class="inline">fa-solid</code> + <code class="inline">fa-house</code>). • Fonts not applying → you linked the font but forgot to set <code class="inline">font-family</code> in CSS, or the name is misspelt.</p></div>
+        </div>
+      </section>
+
+      <!-- LISTS -->
+      <section class="section reveal" id="lists">
+        <span class="section-kicker k-4">06</span>
+        <h2 class="section-title">Lists</h2>
+        <p class="section-sub">Use lists for anything that's… a list — nav menus, features, steps. Two kinds: unordered (bullets) and ordered (numbers).</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">lists.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;!-- Unordered list (bullets) --&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTML&lt;/li&gt;
+  &lt;li&gt;CSS&lt;/li&gt;
+  &lt;li&gt;JavaScript&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Ordered list (numbers) --&gt;
+&lt;ol&gt;
+  &lt;li&gt;Plan&lt;/li&gt;
+  &lt;li&gt;Build&lt;/li&gt;
+  &lt;li&gt;Ship&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+        </div>
+        <p><code class="inline">&lt;ul&gt;</code> = unordered list, <code class="inline">&lt;ol&gt;</code> = ordered list, and every item inside is an <code class="inline">&lt;li&gt;</code> (list item).</p>
+      </section>
+
+      <!-- TABLES -->
+      <section class="section reveal" id="tables">
+        <span class="section-kicker k-4">07</span>
+        <h2 class="section-title">Tables</h2>
+        <p class="section-sub">Tables show data in rows and columns. Use them for actual tabular data (prices, schedules) — not for page layout.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">table.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Role&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ada&lt;/td&gt;
+      &lt;td&gt;Engineer&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+        </div>
+        <ul>
+          <li><code class="inline">&lt;tr&gt;</code> — a table row.</li>
+          <li><code class="inline">&lt;th&gt;</code> — a header cell (bold, for column titles).</li>
+          <li><code class="inline">&lt;td&gt;</code> — a normal data cell.</li>
+        </ul>
+      </section>
+
+      <!-- FORMS -->
+      <section class="section reveal" id="forms">
+        <span class="section-kicker k-4">08</span>
+        <h2 class="section-title">Forms &amp; inputs</h2>
+        <p class="section-sub">Forms collect input from users — logins, search boxes, contact forms. This is how every interactive site takes data.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">form.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;form&gt;
+  &lt;label for="name"&gt;Name&lt;/label&gt;
+  &lt;input type="text" id="name" placeholder="Your name" /&gt;
+
+  &lt;label for="email"&gt;Email&lt;/label&gt;
+  &lt;input type="email" id="email" required /&gt;
+
+  &lt;label for="msg"&gt;Message&lt;/label&gt;
+  &lt;textarea id="msg" rows="4"&gt;&lt;/textarea&gt;
+
+  &lt;button type="submit"&gt;Send&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Element / attribute</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>&lt;input type="text"&gt;</code></td><td>A single-line text box. Change <code>type</code> to <code>email</code>, <code>password</code>, <code>number</code>, <code>checkbox</code>…</td></tr>
+              <tr><td><code>&lt;label&gt;</code></td><td>A caption for an input. <code>for="id"</code> links it so clicking the label focuses the input.</td></tr>
+              <tr><td><code>placeholder</code></td><td>Faint hint text shown when the box is empty.</td></tr>
+              <tr><td><code>required</code></td><td>The form won't submit until this field is filled.</td></tr>
+              <tr><td><code>&lt;textarea&gt;</code></td><td>A multi-line text box.</td></tr>
+              <tr><td><code>&lt;button&gt;</code></td><td>A clickable button (use <code>type="submit"</code> to submit the form).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Connect labels to inputs</div><p>Always match a <code class="inline">&lt;label for="x"&gt;</code> with an <code class="inline">&lt;input id="x"&gt;</code>. It's better for accessibility and gives users a bigger tap target.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⌨️</span> Every input type</h3>
+        <p>One element — <code class="inline">&lt;input&gt;</code> — becomes a completely different control depending on its <code class="inline">type</code>. Pick the right one and the browser gives you the right keyboard, validation and picker for free.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">inputs.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;input type="text" placeholder="Your name" /&gt;
+&lt;input type="email" placeholder="you@mail.com" /&gt;
+&lt;input type="password" /&gt;
+&lt;input type="number" min="0" max="10" /&gt;
+&lt;input type="tel" /&gt;
+&lt;input type="date" /&gt;
+&lt;input type="color" /&gt;
+&lt;input type="range" min="0" max="100" /&gt;
+&lt;input type="checkbox" id="agree" /&gt; &lt;label for="agree"&gt;I agree&lt;/label&gt;
+&lt;input type="radio" name="plan" value="free" /&gt; Free
+&lt;input type="radio" name="plan" value="pro" /&gt;  Pro
+&lt;input type="file" /&gt;
+&lt;input type="submit" value="Send" /&gt;</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>type</th><th>What the user gets</th></tr></thead>
+            <tbody>
+              <tr><td><code>text</code></td><td>A single-line text box (the default).</td></tr>
+              <tr><td><code>email</code></td><td>Text box that checks for a valid email; email keyboard on phones.</td></tr>
+              <tr><td><code>password</code></td><td>Hides characters as dots.</td></tr>
+              <tr><td><code>number</code></td><td>Numbers only, with up/down steppers. Use <code>min</code>, <code>max</code>, <code>step</code>.</td></tr>
+              <tr><td><code>tel</code></td><td>A phone-number field (numeric keypad on mobile).</td></tr>
+              <tr><td><code>url</code></td><td>Validates that the value looks like a web address.</td></tr>
+              <tr><td><code>search</code></td><td>A search box (often with a clear "✕" button).</td></tr>
+              <tr><td><code>date</code> / <code>time</code></td><td>A date picker / a time picker.</td></tr>
+              <tr><td><code>datetime-local</code></td><td>Date and time together.</td></tr>
+              <tr><td><code>month</code> / <code>week</code></td><td>Pick a whole month / week.</td></tr>
+              <tr><td><code>color</code></td><td>A colour-swatch picker; value is a hex like <code>#7c3aed</code>.</td></tr>
+              <tr><td><code>range</code></td><td>A slider between <code>min</code> and <code>max</code>.</td></tr>
+              <tr><td><code>checkbox</code></td><td>A box that's on or off. Use several for "choose many".</td></tr>
+              <tr><td><code>radio</code></td><td>Round buttons; same <code>name</code> = "choose one" from the group.</td></tr>
+              <tr><td><code>file</code></td><td>An "upload a file" button. Add <code>accept</code> and <code>multiple</code>.</td></tr>
+              <tr><td><code>hidden</code></td><td>A value sent with the form but not shown to the user.</td></tr>
+              <tr><td><code>submit</code></td><td>A button that submits the form.</td></tr>
+              <tr><td><code>reset</code></td><td>A button that clears the form back to defaults.</td></tr>
+              <tr><td><code>button</code></td><td>A plain button (do something with JavaScript).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Two handy patterns</div><p>• <strong>Radio groups</strong>: give every option the <em>same</em> <code class="inline">name</code> so only one can be selected. • Many fields support <code class="inline">required</code>, <code class="inline">placeholder</code>, <code class="inline">min</code>/<code class="inline">max</code> and <code class="inline">pattern</code> for free browser validation — no JavaScript needed.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistakes</div><p>• Radio buttons that all stay selectable → you forgot to give them the same <code class="inline">name</code>. • Using <code class="inline">type="button"</code> inside a form expecting it to submit — use <code class="inline">type="submit"</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- SEMANTIC -->
+      <section class="section reveal" id="semantic">
+        <span class="section-kicker k-1">09</span>
+        <h2 class="section-title">Semantic layout</h2>
+        <p class="section-sub">Instead of wrapping everything in generic <code class="inline">&lt;div&gt;</code>s, use <strong>semantic</strong> tags that describe their purpose. They make your code readable and help screen readers &amp; search engines understand the page.</p>
+
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">layout.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;body&gt;
+  &lt;header&gt;
+    &lt;nav&gt;...site menu...&lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;section&gt;...a hero...&lt;/section&gt;
+    &lt;section&gt;...features...&lt;/section&gt;
+    &lt;article&gt;...a blog post...&lt;/article&gt;
+  &lt;/main&gt;
+
+  &lt;aside&gt;...related links...&lt;/aside&gt;
+
+  &lt;footer&gt;© 2026 My Site&lt;/footer&gt;
+&lt;/body&gt;</code></pre>
+        </div>
+        <div class="grid cols-2">
+          <div class="card"><div class="card-ico bg-cool">🧭</div><h4>&lt;header&gt; / &lt;nav&gt;</h4><p>The top banner and navigation menu.</p></div>
+          <div class="card"><div class="card-ico bg-violet">📰</div><h4>&lt;main&gt; / &lt;section&gt;</h4><p>The main content, split into logical sections.</p></div>
+          <div class="card"><div class="card-ico bg-mint">📄</div><h4>&lt;article&gt;</h4><p>A self-contained piece — a blog post, a card, a comment.</p></div>
+          <div class="card"><div class="card-ico bg-warm">🦶</div><h4>&lt;footer&gt;</h4><p>The bottom: copyright, links, contact.</p></div>
+        </div>
+      </section>
+
+      <!-- BOX MODEL & DISPLAY -->
+      <section class="section reveal" id="layout">
+        <span class="section-kicker k-4">LAYOUT · 10</span>
+        <h2 class="section-title">Box model &amp; display</h2>
+        <p class="section-sub">HTML gives you the elements; <strong>CSS arranges them</strong> on the page. The next four topics are CSS — the styling layer — but you'll use them on every HTML page, so here's a practical primer. (Full details live in the <a href="css.html">CSS guide</a>.)</p>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Every element is a box</div><p>The browser draws every element as a rectangular box made of four layers, from inside out: <strong>content</strong> → <strong>padding</strong> (space inside, around the content) → <strong>border</strong> → <strong>margin</strong> (space outside, between boxes). This is the <em>box model</em>.</p></div>
+        </div>
+
+        <div class="diagram">
+          <div class="dg-title">📦 The box model</div>
+          <div class="flow">
+            <div class="flow-box" style="background:linear-gradient(135deg,#f59e0b,#f43f5e)"><span class="fb-ico">↹</span><b>margin</b><small>space outside</small></div>
+            <div class="flow-box be"><span class="fb-ico">▢</span><b>border</b><small>the edge</small></div>
+            <div class="flow-box fe"><span class="fb-ico">⬚</span><b>padding</b><small>space inside</small></div>
+            <div class="flow-box db"><span class="fb-ico">▦</span><b>content</b><small>text / image</small></div>
+          </div>
+        </div>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.card {
+  padding: 16px;            /* space INSIDE the box */
+  margin: 12px;             /* space OUTSIDE the box */
+  border: 1px solid #ddd;   /* the edge */
+  border-radius: 12px;      /* rounded corners */
+}
+
+/* Make padding &amp; border count INSIDE the width (recommended) */
+* { box-sizing: border-box; }</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔁</span> display — how a box flows</h3>
+        <p>Every element has a <code class="inline">display</code> type that decides how it sits next to others:</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th><code>display</code></th><th>Behaviour</th></tr></thead>
+            <tbody>
+              <tr><td><code>block</code></td><td>Takes the full width, stacks vertically. <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;section&gt;</code>.</td></tr>
+              <tr><td><code>inline</code></td><td>Flows in a line, only as wide as its content. <code>&lt;a&gt;</code>, <code>&lt;span&gt;</code>, <code>&lt;strong&gt;</code>.</td></tr>
+              <tr><td><code>inline-block</code></td><td>Flows inline but you can set width/height.</td></tr>
+              <tr><td><code>flex</code></td><td>Lays children out in a flexible <strong>row or column</strong> (next section).</td></tr>
+              <tr><td><code>grid</code></td><td>Lays children out in a <strong>2-D grid</strong> of rows &amp; columns.</td></tr>
+              <tr><td><code>none</code></td><td>Hides the element completely.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FLEXBOX -->
+      <section class="section reveal" id="flexbox">
+        <span class="section-kicker k-4">LAYOUT · 11</span>
+        <h2 class="section-title">Flexbox — rows &amp; columns</h2>
+        <p class="section-sub">Flexbox is the go-to tool for laying items out in <strong>one direction</strong> — a navbar, a row of cards, centering something. Add <code class="inline">display: flex</code> to a <em>parent</em>, and its direct children become flexible items.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🧲</div>
+          <div><div class="ctitle">Analogy</div><p>Think of a flex container as a shelf and its children as books. You can space the books out, push them to one end, centre them, or stand them in a column — all from the shelf (the parent).</p></div>
+        </div>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">flex.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.navbar {
+  display: flex;                  /* turn on flexbox */
+  justify-content: space-between; /* spread items along the row */
+  align-items: center;            /* centre them vertically */
+  gap: 16px;                      /* space between items */
+}
+
+/* Need a column instead of a row? */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Property (on the parent)</th><th>What it controls</th></tr></thead>
+            <tbody>
+              <tr><td><code>flex-direction</code></td><td><code>row</code> (default, ←→) or <code>column</code> (↑↓).</td></tr>
+              <tr><td><code>justify-content</code></td><td>Spacing <strong>along</strong> the direction: <code>flex-start</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code>.</td></tr>
+              <tr><td><code>align-items</code></td><td>Alignment <strong>across</strong> the direction: <code>stretch</code>, <code>center</code>, <code>flex-start</code>.</td></tr>
+              <tr><td><code>gap</code></td><td>Even space between every item.</td></tr>
+              <tr><td><code>flex-wrap</code></td><td><code>wrap</code> lets items drop to the next line on small screens.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Perfect centering</div><p>The classic one-liner — centre anything horizontally <em>and</em> vertically:</p><p><code class="inline">display: flex; justify-content: center; align-items: center;</code></p></div>
+        </div>
+      </section>
+
+      <!-- GRID -->
+      <section class="section reveal" id="grid">
+        <span class="section-kicker k-4">LAYOUT · 12</span>
+        <h2 class="section-title">CSS Grid — two-dimensional layouts</h2>
+        <p class="section-sub">When flexbox handles one direction, <strong>Grid handles two</strong> — rows <em>and</em> columns at once. It's perfect for galleries, dashboards and card grids. Add <code class="inline">display: grid</code> to the parent and describe the columns.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">grid.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 equal columns */
+  gap: 20px;
+}
+
+/* Responsive: as many columns as fit, min 220px each */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}</code></pre>
+        </div>
+
+        <ul>
+          <li><code class="inline">grid-template-columns</code> — defines the columns. <code class="inline">1fr</code> means "one fraction" (one equal share of the space).</li>
+          <li><code class="inline">repeat(3, 1fr)</code> — shorthand for three <code class="inline">1fr</code> columns.</li>
+          <li><code class="inline">gap</code> — space between rows &amp; columns.</li>
+          <li><code class="inline">minmax(220px, 1fr)</code> + <code class="inline">auto-fill</code> — a fully responsive grid with <strong>no media queries</strong>.</li>
+        </ul>
+        <div class="callout when">
+          <div class="ci">🧭</div>
+          <div><div class="ctitle">Flex vs Grid — which one?</div><p>Use <strong>Flexbox</strong> for a single row/column of items (navbar, button group). Use <strong>Grid</strong> when you need to line things up in <em>both</em> rows and columns (a page layout, a photo grid).</p></div>
+        </div>
+      </section>
+
+      <!-- POSITION -->
+      <section class="section reveal" id="position">
+        <span class="section-kicker k-4">LAYOUT · 13</span>
+        <h2 class="section-title">Position</h2>
+        <p class="section-sub">By default elements sit in normal flow, one after another. The <code class="inline">position</code> property lets you take an element <strong>out of flow</strong> and place it precisely — a sticky navbar, a badge in a corner, a modal overlay.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">position.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>/* A navbar that sticks to the top as you scroll */
+.navbar {
+  position: sticky;
+  top: 0;
+}
+
+/* A "NEW" badge pinned to a card's corner */
+.card { position: relative; }      /* the anchor */
+.card .badge {
+  position: absolute;              /* relative to .card */
+  top: 8px;
+  right: 8px;
+}</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th><code>position</code></th><th>Behaviour</th></tr></thead>
+            <tbody>
+              <tr><td><code>static</code></td><td>The default — normal flow. <code>top/left</code> do nothing.</td></tr>
+              <tr><td><code>relative</code></td><td>Normal flow, but nudge it with <code>top/left</code>. Also becomes the <strong>anchor</strong> for absolute children.</td></tr>
+              <tr><td><code>absolute</code></td><td>Removed from flow; positioned relative to the nearest <code>relative</code> ancestor.</td></tr>
+              <tr><td><code>fixed</code></td><td>Pinned to the <strong>viewport</strong> — stays put when you scroll.</td></tr>
+              <tr><td><code>sticky</code></td><td>Acts normal until you scroll past it, then sticks (great for headers).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistake</div><p><code class="inline">position: absolute</code> jumping to the corner of the whole page? You forgot to set <code class="inline">position: relative</code> on the <em>parent</em> you wanted it to anchor to.</p></div>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Box model</strong> — padding inside, margin outside, <code class="inline">box-sizing: border-box</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Flexbox</strong> for one-direction layouts; centre with <code class="inline">justify-content</code> + <code class="inline">align-items</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Grid</strong> for two-direction layouts; <code class="inline">repeat(auto-fill, minmax(...))</code> for responsive.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Position</strong> sticky/absolute for overlays &amp; pinned elements.</div></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 1 -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">PROJECT 1</span>
+        <h2 class="section-title">Landing page</h2>
+        <p class="section-sub">Put it all together: build the structure of a real marketing landing page — a navbar, a hero, a row of feature cards, and a footer. (You'll style it in the <a href="css.html">CSS guide</a>.)</p>
+
+        <div class="callout output">
+          <div class="ci">📦</div>
+          <div><div class="ctitle">Reference project</div><p>A finished version — the <strong>"Deliver Logistics"</strong> landing page — lives in <code class="inline">public/projects/HTML-CSS-Project</code>. Build your own first, then compare.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> The skeleton to build</h3>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">landing/index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;body&gt;
+  &lt;!-- 1. Navbar --&gt;
+  &lt;header class="navbar"&gt;
+    &lt;div class="logo"&gt;Deliver&lt;/div&gt;
+    &lt;nav&gt;
+      &lt;a href="#features"&gt;Features&lt;/a&gt;
+      &lt;a href="#contact"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;!-- 2. Hero --&gt;
+  &lt;section class="hero"&gt;
+    &lt;h1&gt;Fast, reliable delivery&lt;/h1&gt;
+    &lt;p&gt;Get your packages there on time, every time.&lt;/p&gt;
+    &lt;a href="#" class="btn"&gt;Get started&lt;/a&gt;
+    &lt;img src="public/Hero-img.png" alt="Delivery van" /&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 3. Feature cards --&gt;
+  &lt;section id="features" class="features"&gt;
+    &lt;article class="card"&gt;
+      &lt;h3&gt;Real-time tracking&lt;/h3&gt;
+      &lt;p&gt;Watch your delivery on a live map.&lt;/p&gt;
+    &lt;/article&gt;
+    &lt;article class="card"&gt;
+      &lt;h3&gt;Same-day delivery&lt;/h3&gt;
+      &lt;p&gt;Order before noon, get it today.&lt;/p&gt;
+    &lt;/article&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 4. Footer --&gt;
+  &lt;footer id="contact"&gt;
+    &lt;p&gt;© 2026 Deliver. All rights reserved.&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;</code></pre>
+        </div>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Use semantic tags: <code class="inline">&lt;header&gt;</code>, <code class="inline">&lt;section&gt;</code>, <code class="inline">&lt;article&gt;</code>, <code class="inline">&lt;footer&gt;</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Give elements <code class="inline">class</code> names now — you'll target them with CSS next.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Every image has <code class="inline">alt</code> text; every link a real <code class="inline">href</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Open it in the browser as you go — HTML updates instantly on refresh.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">Then style it</div><p>That's the structure. In the <a href="css.html"><strong>CSS guide</strong></a> you'll make this beautiful and responsive — same project, now styled.</p></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 2 · PROFILE CARD -->
+      <section class="section reveal" id="project-card">
+        <span class="section-kicker k-4">PROJECT 2</span>
+        <h2 class="section-title">Profile card</h2>
+        <p class="section-sub">A self-contained component: an avatar, a name &amp; location, and a row of social icons — with a little star badge in the corner. You'll build the markup here and style it (dark, rounded, hover effects) in the CSS guide.</p>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Uses what you just learned</div><p>An <code class="inline">&lt;img&gt;</code> with <code class="inline">alt</code>, headings, <strong>classes</strong> for styling, and <strong>Font Awesome</strong> icons for the social links.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> The markup</h3>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">card.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;!-- link Font Awesome in &lt;head&gt; first (see Icons &amp; fonts) --&gt;
+
+&lt;div class="profile-card"&gt;
+  &lt;i class="fa-solid fa-star star"&gt;&lt;/i&gt;          &lt;!-- corner badge --&gt;
+
+  &lt;img class="avatar" src="public/avatar.png" alt="Mizko Adrian" /&gt;
+
+  &lt;h2&gt;Mizko Adrian&lt;/h2&gt;
+  &lt;p class="location"&gt;Sydney, Australia&lt;/p&gt;
+
+  &lt;div class="socials"&gt;
+    &lt;a href="#"&gt;&lt;i class="fa-brands fa-discord"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;a href="#"&gt;&lt;i class="fa-brands fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;a href="#"&gt;&lt;i class="fa-solid fa-comment"&gt;&lt;/i&gt;&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>One wrapper (<code class="inline">.profile-card</code>) holds everything — it becomes the rounded dark card.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The <code class="inline">.star</code> sits in the corner using <code class="inline">position: absolute</code> (CSS).</div></div>
+          <div class="kp"><span class="check">✓</span><div>Each social link is an <code class="inline">&lt;a&gt;</code> wrapping a Font Awesome <code class="inline">&lt;i&gt;</code>.</div></div>
+        </div>
+        <div class="callout tip">
+          <div class="ci">🎨</div>
+          <div><div class="ctitle">Styling preview</div><p>In the CSS guide you'll centre everything, make the avatar a circle (<code class="inline">border-radius: 50%</code>), and turn the social icons into round buttons that change colour on hover.</p></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 3 · RESPONSIVE NAVBAR -->
+      <section class="section reveal" id="project-navbar">
+        <span class="section-kicker k-1">PROJECT 3</span>
+        <h2 class="section-title">Responsive navbar</h2>
+        <p class="section-sub">A clean navbar that shows its links in a row on desktop, and collapses to a <strong>hamburger icon</strong> on mobile — tapping it slides open a drawer of menu links. And it's done with <strong>pure HTML &amp; CSS</strong>, no JavaScript.</p>
+
+        <div class="callout what">
+          <div class="ci">🍔</div>
+          <div><div class="ctitle">The checkbox trick</div><p>A hidden <code class="inline">&lt;input type="checkbox"&gt;</code> remembers "is the menu open?". A <code class="inline">&lt;label&gt;</code> (the hamburger) toggles it, and CSS shows the drawer when the box is <code class="inline">:checked</code> — interactivity with zero JavaScript.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> The markup</h3>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">navbar.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;header class="navbar"&gt;
+  &lt;a href="#" class="logo"&gt;Brand&lt;/a&gt;
+
+  &lt;!-- hidden checkbox remembers open/closed --&gt;
+  &lt;input type="checkbox" id="nav-toggle" class="nav-toggle" /&gt;
+
+  &lt;!-- the hamburger is a label for that checkbox --&gt;
+  &lt;label for="nav-toggle" class="hamburger" aria-label="Open menu"&gt;
+    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+  &lt;/label&gt;
+
+  &lt;!-- the menu (a row on desktop, a drawer on mobile) --&gt;
+  &lt;nav class="nav-menu"&gt;
+    &lt;a href="#"&gt;Home&lt;/a&gt;
+    &lt;a href="#"&gt;About&lt;/a&gt;
+    &lt;a href="#"&gt;Services&lt;/a&gt;
+    &lt;a href="#"&gt;Contact&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+        </div>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Why this order matters</div><p>The checkbox comes <em>before</em> the menu in the HTML so CSS can use the sibling selector <code class="inline">.nav-toggle:checked ~ .nav-menu</code> to open it. (Full CSS — including the slide-in drawer — is in the <a href="css.html">CSS guide</a>.)</p></div>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>The hamburger's three <code class="inline">&lt;span&gt;</code>s become the three bars in CSS.</div></div>
+          <div class="kp"><span class="check">✓</span><div>On desktop the menu is a flex row; on mobile it becomes a fixed drawer that slides in.</div></div>
+          <div class="kp"><span class="check">✓</span><div>No JavaScript — the <code class="inline">:checked</code> state does all the work.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>You've built three structures. Head to the <a href="css.html"><strong>CSS guide</strong></a> to style all three — the landing page, this navbar, and the profile card.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="index.html" class="prev"><span class="dir">← All guides</span><span class="ttl">DevGuides</span></a>
+          <a href="css.html" class="next"><span class="dir">Next guide →</span><span class="ttl">CSS</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> HTML guide complete</span>
+            <h3 class="foot-title">You can structure <span class="grad">any page</span> now</h3>
+            <p class="foot-lead">Next up: style it with CSS, then make it interactive with JavaScript.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="css.html">Continue to CSS
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

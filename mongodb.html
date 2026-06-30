@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MongoDB guide — store data in a NoSQL database: documents & collections, Atlas setup, connecting with Mongoose, schemas & models, full CRUD, querying and relationships. Ends by persisting the Tasks API." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>MongoDB · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>MongoDB</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>MongoDB</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>MongoDB</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">MongoDB</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#what" data-title="What is MongoDB"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span> What is MongoDB</a>
+          <a class="nav-link" href="#atlas" data-title="Atlas setup"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 13a4 4 0 1 0-7-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h7a3 3 0 0 0 0-6"/></svg></span> Atlas setup</a>
+          <a class="nav-link" href="#documents" data-title="Documents & collections"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span> Documents</a>
+          <a class="nav-link" href="#connect" data-title="Connecting with Mongoose"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg></span> Connecting</a>
+          <a class="nav-link" href="#schemas" data-title="Schemas & models"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span> Schemas &amp; models</a>
+          <a class="nav-link" href="#crud" data-title="CRUD"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> CRUD</a>
+          <a class="nav-link" href="#queries" data-title="Querying & filtering"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span> Querying</a>
+          <a class="nav-link" href="#relationships" data-title="Relationships"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8 8l8 8"/></svg></span> Relationships</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="Persist the Tasks API"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> Persist Tasks API</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">DATABASE · 01</span>
+        <h2 class="section-title">MongoDB</h2>
+        <p class="section-sub">Your <a href="express.html">Express</a> API works, but forgets everything on restart because the data lives in a variable. A <strong>database</strong> stores it permanently. <strong>MongoDB</strong> is the most popular database for JavaScript apps — it stores data as JSON-like documents.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🗄️</div>
+          <div><div class="ctitle">A filing cabinet for data</div><p>A <strong>collection</strong> is a drawer (e.g. "tasks"), and each <strong>document</strong> is a folder inside it (one task). Unlike a spreadsheet, every document can have a slightly different shape.</p></div>
+        </div>
+        <p>You'll use <strong>Mongoose</strong>, the library that connects Node to MongoDB and adds structure. It completes the <strong>MERN</strong> stack (Mongo, Express, React, Node) — see the <a href="fullstack.html">Full-Stack guide</a>.</p>
+      </section>
+
+      <!-- WHAT -->
+      <section class="section reveal" id="what">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">What is MongoDB?</h2>
+        <p class="section-sub">MongoDB is a <strong>NoSQL</strong> database. Instead of tables with fixed rows and columns (like SQL), it stores flexible <strong>documents</strong> that look just like JavaScript objects.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">📊</div>
+            <h4>SQL (e.g. MySQL)</h4>
+            <p>Rigid tables, rows &amp; columns. Every row has the same fixed shape. You query with the SQL language.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-mint">🍃</div>
+            <h4>MongoDB (NoSQL)</h4>
+            <p>Flexible JSON-like documents. Great fit for JavaScript — the data <em>is</em> objects. You query with JS objects.</p>
+          </div>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">It feels like JavaScript</div><p>A MongoDB document is basically a JS object that's saved to disk. No translating between "database rows" and "app objects" — they're the same shape. That's why it pairs so naturally with Node.</p></div>
+        </div>
+      </section>
+
+      <!-- ATLAS -->
+      <section class="section reveal" id="atlas">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">MongoDB Atlas setup</h2>
+        <p class="section-sub"><strong>Atlas</strong> is MongoDB's free cloud database — no install needed. A few clicks gives you a database and a connection string.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">1</span><div>Sign up at <code class="inline">mongodb.com/atlas</code> and create a <strong>free</strong> (M0) cluster.</div></div>
+          <div class="kp"><span class="check">2</span><div>Create a <strong>database user</strong> (a username &amp; password for your app).</div></div>
+          <div class="kp"><span class="check">3</span><div>Under <strong>Network Access</strong>, allow your IP (or <code class="inline">0.0.0.0/0</code> for learning).</div></div>
+          <div class="kp"><span class="check">4</span><div>Click <strong>Connect → Drivers</strong> and copy the connection string.</div></div>
+        </div>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">.env<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># paste your string here, with your real password
+MONGODB_URI=mongodb+srv://user:password@cluster0.xxxxx.mongodb.net/myapp</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🔑</div>
+          <div><div class="ctitle">Keep the URI secret</div><p>The connection string contains your password — keep it in <code class="inline">.env</code> and <code class="inline">.gitignore</code> it (see <a href="node.html">Node · env variables</a>). Never paste it into code that gets pushed to GitHub.</p></div>
+        </div>
+      </section>
+
+      <!-- DOCUMENTS -->
+      <section class="section reveal" id="documents">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">Documents &amp; collections</h2>
+        <p class="section-sub">Two words to know. A <strong>document</strong> is one record (JSON-like). A <strong>collection</strong> is a group of documents of the same type.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a document<span class="lang">json</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// one document in the "tasks" collection
+{
+  "_id": "6512f1a4c3...",     // MongoDB adds a unique id automatically
+  "title": "Learn MongoDB",
+  "done": false,
+  "tags": ["backend", "database"],
+  "createdAt": "2026-06-30T10:00:00Z"
+}</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>MongoDB</th><th>Spreadsheet analogy</th></tr></thead>
+            <tbody>
+              <tr><td>Database</td><td>The whole workbook</td></tr>
+              <tr><td>Collection</td><td>A sheet (e.g. "tasks")</td></tr>
+              <tr><td>Document</td><td>A row</td></tr>
+              <tr><td>Field</td><td>A cell / column value</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">The _id field</div><p>Every document gets a unique <code class="inline">_id</code> automatically (an ObjectId). You use it to fetch, update or delete that exact document.</p></div>
+        </div>
+      </section>
+
+      <!-- CONNECT -->
+      <section class="section reveal" id="connect">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">Connecting with Mongoose</h2>
+        <p class="section-sub"><strong>Mongoose</strong> is the library that connects your Node app to MongoDB and adds helpful structure (schemas, validation, easy queries). Install it, then connect once when the app starts.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">install<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm install mongoose dotenv</code></pre>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">db.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>require("dotenv/config");
+const mongoose = require("mongoose");
+
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("❌ DB connection failed:", err.message);
+    process.exit(1);
+  }
+}
+
+module.exports = connectDB;</code></pre>
+        </div>
+      </section>
+
+      <!-- SCHEMAS -->
+      <section class="section reveal" id="schemas">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Schemas &amp; models</h2>
+        <p class="section-sub">A <strong>schema</strong> defines the shape of your documents (which fields, what types, what's required). A <strong>model</strong> is the tool built from that schema — you use it to read and write data.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">models/Task.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const mongoose = require("mongoose");
+
+const taskSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    done:  { type: Boolean, default: false },
+    tags:  [String],
+  },
+  { timestamps: true }   // auto-adds createdAt & updatedAt
+);
+
+// "Task" → Mongoose makes a "tasks" collection
+module.exports = mongoose.model("Task", taskSchema);</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Schema = a friendly guardrail</div><p>MongoDB itself is schema-less, but Mongoose schemas catch mistakes early — a missing <code class="inline">title</code>, a number where text belongs — before bad data reaches the database.</p></div>
+        </div>
+      </section>
+
+      <!-- CRUD -->
+      <section class="section reveal" id="crud">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">Create, Read, Update, Delete</h2>
+        <p class="section-sub">The four operations, all on the model. Each returns a promise, so use <code class="inline">await</code>.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">crud.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const Task = require("./models/Task");
+
+// CREATE
+const task = await Task.create({ title: "Learn Mongoose" });
+
+// READ
+const all  = await Task.find();              // every task
+const one  = await Task.findById(id);        // by _id
+const done = await Task.find({ done: true }); // filtered
+
+// UPDATE
+await Task.findByIdAndUpdate(id, { done: true }, { new: true });
+
+// DELETE
+await Task.findByIdAndDelete(id);</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Operation</th><th>Mongoose method</th></tr></thead>
+            <tbody>
+              <tr><td>Create</td><td><code>create()</code> / <code>new Model().save()</code></td></tr>
+              <tr><td>Read</td><td><code>find()</code>, <code>findById()</code>, <code>findOne()</code></td></tr>
+              <tr><td>Update</td><td><code>findByIdAndUpdate()</code>, <code>updateOne()</code></td></tr>
+              <tr><td>Delete</td><td><code>findByIdAndDelete()</code>, <code>deleteOne()</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- QUERIES -->
+      <section class="section reveal" id="queries">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">Querying &amp; filtering</h2>
+        <p class="section-sub">You query by passing a plain object that describes what to match. Operators (prefixed with <code class="inline">$</code>) handle ranges, lists and more.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">queries.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// exact match
+await Task.find({ done: false });
+
+// operators: $gt, $lt, $in, $ne ...
+await Task.find({ priority: { $gte: 3 } });        // priority &gt;= 3
+await Task.find({ tags: { $in: ["urgent"] } });    // has the "urgent" tag
+
+// sort, limit, pick fields
+await Task.find()
+  .sort({ createdAt: -1 })   // newest first
+  .limit(10)                 // only 10
+  .select("title done");     // only these fields</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Queries are chainable</div><p>Build up a query with <code class="inline">.sort()</code>, <code class="inline">.limit()</code>, <code class="inline">.skip()</code> (for paging) and <code class="inline">.select()</code>, then <code class="inline">await</code> the result. It reads almost like a sentence.</p></div>
+        </div>
+      </section>
+
+      <!-- RELATIONSHIPS -->
+      <section class="section reveal" id="relationships">
+        <span class="section-kicker k-1">09</span>
+        <h2 class="section-title">Relationships</h2>
+        <p class="section-sub">Real data is connected — a task belongs to a user, an order has products. In Mongoose you link documents by storing one's <code class="inline">_id</code> on another, then <code class="inline">populate</code> to fetch the full linked document.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">relationships.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const taskSchema = new mongoose.Schema({
+  title: String,
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },  // link
+});
+
+// store just the user's id on the task
+await Task.create({ title: "Ship it", owner: user._id });
+
+// fetch the task WITH its owner's full document
+const task = await Task.findById(id).populate("owner");
+console.log(task.owner.name);   // the linked User's name</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Reference vs embed</div><p>Two patterns: <strong>reference</strong> (store an <code class="inline">_id</code>, like above — good for big or shared data) or <strong>embed</strong> (nest the data directly in the document — good for small, owned data like a list of tags).</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">Persist the Tasks API</h2>
+        <p class="section-sub">Take the in-memory <a href="express.html">Express Tasks API</a> and give it a real database. The routes barely change — you just swap the array for Mongoose calls. Now your data survives restarts.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">The payoff</div><p>This is a real, production-shaped backend: Express + Mongoose + Atlas. The same code pattern powers the <a href="fullstack.html">Full-Stack</a> capstone.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> app.js</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">app.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>require("dotenv/config");
+const express = require("express");
+const mongoose = require("mongoose");
+const Task = require("./models/Task");
+
+const app = express();
+app.use(express.json());
+
+// connect to MongoDB Atlas
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() =&gt; console.log("✅ DB connected"))
+  .catch((err) =&gt; console.error(err));
+
+// READ all
+app.get("/tasks", async (req, res) =&gt; {
+  const tasks = await Task.find().sort({ createdAt: -1 });
+  res.json(tasks);
+});
+
+// CREATE
+app.post("/tasks", async (req, res) =&gt; {
+  try {
+    const task = await Task.create({ title: req.body.title });
+    res.status(201).json(task);
+  } catch (err) {
+    res.status(400).json({ error: err.message });   // e.g. missing title
+  }
+});
+
+// UPDATE
+app.put("/tasks/:id", async (req, res) =&gt; {
+  const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  if (!task) return res.status(404).json({ error: "Not found" });
+  res.json(task);
+});
+
+// DELETE
+app.delete("/tasks/:id", async (req, res) =&gt; {
+  await Task.findByIdAndDelete(req.params.id);
+  res.status(204).end();
+});
+
+app.listen(3000, () =&gt; console.log("API on http://localhost:3000"));</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Same routes as the Express guide — only the storage changed.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Every DB call is <code class="inline">await</code>ed; the route handlers became <code class="inline">async</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Restart the server — your tasks are still there. 🎉</div></div>
+          <div class="kp"><span class="check">✓</span><div>Schema validation means a task with no title is rejected with a clean <code class="inline">400</code>.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>You now have a real database-backed API. Connect a <a href="react.html">React</a> front-end to it and you've built a full application — that's the <a href="fullstack.html"><strong>Full-Stack capstone</strong></a>. Secure it with <a href="authentication.html">Authentication</a> &amp; <a href="jwt.html">JWT</a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="express.html" class="prev"><span class="dir">← Previous</span><span class="ttl">Express.js</span></a>
+          <a href="fullstack.html" class="next"><span class="dir">Capstone →</span><span class="ttl">Full Stack Guide</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> MongoDB complete</span>
+            <h3 class="foot-title">Your data is <span class="grad">permanent</span> now</h3>
+            <p class="foot-lead">Documents, Mongoose, schemas, CRUD, queries, relationships. The backend trio is done.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="fullstack.html">Build the full stack
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

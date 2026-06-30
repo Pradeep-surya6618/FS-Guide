@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Weather App</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="weather-card">
+      <div class="weather-icon"></div>
+
+      <h1 id="city-name">Madurai</h1>
+
+      <p id="weather-info">Sunny • 32°C</p>
+
+      <div class="forecast">
+        <div class="box">Tue 33°</div>
+
+        <div class="box">Wed 31°</div>
+
+        <div class="box">Thu 30°</div>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="city" placeholder="city..." />
+
+        <button onclick="getWeather()">Search</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

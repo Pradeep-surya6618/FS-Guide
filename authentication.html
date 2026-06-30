@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Authentication & authorization guide — auth vs authz, hashing passwords with bcrypt, cookies & sessions vs tokens, register/login flow, OAuth, protecting routes, logout and security best practices." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Authentication · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Authentication</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>Authentication</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Authentication</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Auth basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#authn-authz" data-title="Authn vs Authz"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span> Authn vs Authz</a>
+          <a class="nav-link" href="#hashing" data-title="Hashing passwords"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7M18 14l3 3-3 3"/></svg></span> Hashing passwords</a>
+          <a class="nav-link" href="#cookies-sessions" data-title="Cookies & sessions"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 4 4 0 0 1-5-5 4 4 0 0 1-4-4z"/><circle cx="8.5" cy="12.5" r="1"/><circle cx="13" cy="15" r="1"/><circle cx="15" cy="10" r="1"/></svg></span> Cookies &amp; sessions</a>
+          <a class="nav-link" href="#register-login" data-title="Register & login"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg></span> Register &amp; login</a>
+          <a class="nav-link" href="#protect" data-title="Protecting routes"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span> Protecting routes</a>
+          <a class="nav-link" href="#oauth" data-title="OAuth (Google)"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span> OAuth (Google)</a>
+          <a class="nav-link" href="#best-practices" data-title="Security best practices"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/></svg></span> Best practices</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="Auth flow"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> Auth flow</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">SECURITY · 01</span>
+        <h2 class="section-title">Authentication &amp; authorization</h2>
+        <p class="section-sub">How does an app know <em>who you are</em>, and <em>what you're allowed to do</em>? That's authentication and authorization — the gate and the guard of every real application.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🛂</div>
+          <div><div class="ctitle">Airport security</div><p><strong>Authentication</strong> is showing your passport at check-in — proving you are who you say. <strong>Authorization</strong> is the gate agent checking your boarding pass — deciding which flight (resources) you're allowed onto.</p></div>
+        </div>
+        <p>This guide uses <a href="node.html">Node</a>, <a href="express.html">Express</a> and <a href="mongodb.html">MongoDB</a>, and pairs with the <a href="jwt.html">JWT</a> guide for the token details.</p>
+      </section>
+
+      <!-- AUTHN VS AUTHZ -->
+      <section class="section reveal" id="authn-authz">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">Authentication vs authorization</h2>
+        <p class="section-sub">Two words that sound alike and are constantly confused. They happen in order: first we authenticate, then we authorize.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">🔑</div>
+            <h4>Authentication (authn)</h4>
+            <p><em>"Who are you?"</em> Verifying identity — usually email + password, or a Google login. Happens once, at sign-in.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-mint">🛡️</div>
+            <h4>Authorization (authz)</h4>
+            <p><em>"What may you do?"</em> Checking permissions — is this user an admin? do they own this post? Happens on every protected action.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>&nbsp;</th><th>Authentication</th><th>Authorization</th></tr></thead>
+            <tbody>
+              <tr><td>Question</td><td>Who are you?</td><td>What are you allowed to do?</td></tr>
+              <tr><td>Example</td><td>Logging in</td><td>"Only admins can delete"</td></tr>
+              <tr><td>Fails with</td><td><code>401</code> Unauthorized</td><td><code>403</code> Forbidden</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">401 vs 403, again</div><p><strong>401</strong> = not logged in (failed authentication). <strong>403</strong> = logged in but not allowed (failed authorization). The <a href="http-status-codes.html">status codes</a> guide makes the same point.</p></div>
+        </div>
+      </section>
+
+      <!-- HASHING -->
+      <section class="section reveal" id="hashing">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Hashing passwords with bcrypt</h2>
+        <p class="section-sub">Golden rule: <strong>never store passwords as plain text</strong>. Instead store a <em>hash</em> — a scrambled, one-way version. Even if your database leaks, the real passwords stay hidden.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">hash.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const bcrypt = require("bcrypt");   // npm install bcrypt
+
+// when REGISTERING — hash the password before saving
+const hash = await bcrypt.hash("mypassword123", 10);   // 10 = salt rounds
+// store `hash` in the database, NOT the raw password
+
+// when LOGGING IN — compare the attempt to the stored hash
+const ok = await bcrypt.compare("mypassword123", hash);  // true / false</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Why hashing (not encryption)?</div><p>Hashing is <strong>one-way</strong> — you can't reverse it back to the password. You never need to; at login you just hash the attempt and compare. The "salt" makes every hash unique, so identical passwords don't look the same.</p></div>
+        </div>
+        <div class="callout warning">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Never do this</div><p>Don't store plain passwords, don't email passwords, and don't roll your own crypto. Use a vetted library (bcrypt, argon2) — always.</p></div>
+        </div>
+      </section>
+
+      <!-- COOKIES & SESSIONS -->
+      <section class="section reveal" id="cookies-sessions">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">Cookies &amp; sessions (vs tokens)</h2>
+        <p class="section-sub">Logging in is the easy part. The hard part is <strong>staying</strong> logged in — HTTP is <a href="api.html">stateless</a>, so the server forgets you after every request. There are two classic ways to keep you signed in.</p>
+
+        <h3><span class="h3-ico">🍪</span> What is a cookie?</h3>
+        <p>A <strong>cookie</strong> is a small piece of data the server asks the browser to store. The browser then <strong>automatically sends it back on every request</strong> to that site — so the server can recognise you.</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a cookie<span class="lang">http</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># server sets it on login:
+Set-Cookie: sessionId=abc123; HttpOnly; Secure; SameSite=Strict
+
+# browser sends it back automatically on every request:
+Cookie: sessionId=abc123</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🗂️</span> What is a session?</h3>
+        <p>A <strong>session</strong> is data the <em>server</em> keeps about a logged-in user. The cookie holds only a random <strong>session ID</strong>; the server looks that ID up in its store (memory, Redis, a database) to find who you are.</p>
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">session flow<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>1. You log in            ──▶  server creates a session, stores it
+2. Server replies        ──▶  Set-Cookie: sessionId=abc123
+3. Next request          ──▶  browser sends Cookie: sessionId=abc123
+4. Server looks up abc123 ──▶ "ah, this is Ada" → allows the request</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">⚖️</span> Sessions vs tokens (JWT)</h3>
+        <p>The modern alternative is a <strong>token</strong> (a <a href="jwt.html">JWT</a>): instead of the server remembering you, it hands you a signed token that <em>contains</em> your identity. You send it back each time and the server just verifies the signature — nothing to store.</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>&nbsp;</th><th>Sessions + cookies</th><th>Tokens (JWT)</th></tr></thead>
+            <tbody>
+              <tr><td>Who remembers?</td><td>The server (has state)</td><td>Nobody — the token holds it (stateless)</td></tr>
+              <tr><td>Stored where</td><td>Session ID in a cookie</td><td>The whole token (cookie or header)</td></tr>
+              <tr><td>Scales across servers</td><td>Needs a shared store</td><td>Easily — just verify the signature</td></tr>
+              <tr><td>Revoke instantly</td><td>Easy (delete the session)</td><td>Harder (wait for expiry)</td></tr>
+              <tr><td>Great for</td><td>Traditional web apps</td><td>APIs, mobile, microservices</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Cookie flags that matter</div><p><code class="inline">HttpOnly</code> (JavaScript can't read it — blocks XSS theft), <code class="inline">Secure</code> (HTTPS only), and <code class="inline">SameSite</code> (limits cross-site sending — blocks CSRF). A login cookie should have all three.</p></div>
+        </div>
+      </section>
+
+      <!-- REGISTER & LOGIN -->
+      <section class="section reveal" id="register-login">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">Register &amp; login flow</h2>
+        <p class="section-sub">Putting hashing and tokens together — the two endpoints every app needs. (Full JWT details are in the <a href="jwt.html">JWT guide</a>.)</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">auth.routes.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+// REGISTER
+app.post("/register", async (req, res) =&gt; {
+  const { email, password } = req.body;
+
+  const hash = await bcrypt.hash(password, 10);     // hash it
+  const user = await User.create({ email, password: hash });
+
+  res.status(201).json({ id: user._id, email });    // never send the hash
+});
+
+// LOGIN
+app.post("/login", async (req, res) =&gt; {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return res.status(401).json({ error: "Invalid credentials" });
+
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok)  return res.status(401).json({ error: "Invalid credentials" });
+
+  // issue a signed token (see the JWT guide)
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  res.json({ token });
+});</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Same error for both</div><p>If the email doesn't exist <em>or</em> the password is wrong, return the same <code class="inline">"Invalid credentials"</code> message. Telling attackers "that email exists" leaks information.</p></div>
+        </div>
+      </section>
+
+      <!-- PROTECT ROUTES -->
+      <section class="section reveal" id="protect">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Protecting routes</h2>
+        <p class="section-sub">An <strong>auth middleware</strong> guards private routes — it checks the token (or session) before the handler runs, and attaches the user so the handler knows who's asking.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">protect.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>function protect(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];   // "Bearer xxx"
+  if (!token) return res.status(401).json({ error: "Not logged in" });
+
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);   // adds the user
+    next();                                                 // allow through
+  } catch {
+    res.status(401).json({ error: "Invalid token" });
+  }
+}
+
+// AUTHORIZATION — a role check on top of authentication
+function adminOnly(req, res, next) {
+  if (req.user.role !== "admin") return res.status(403).json({ error: "Forbidden" });
+  next();
+}
+
+app.get("/profile", protect, (req, res) =&gt; res.json(req.user));
+app.delete("/users/:id", protect, adminOnly, deleteUser);   // both checks</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">authn then authz</div><p><code class="inline">protect</code> answers "are you logged in?" (authentication). <code class="inline">adminOnly</code> answers "are you allowed?" (authorization). Chaining them is exactly the two-step gate from the start of this guide.</p></div>
+        </div>
+      </section>
+
+      <!-- OAUTH -->
+      <section class="section reveal" id="oauth">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">OAuth — "Sign in with Google"</h2>
+        <p class="section-sub"><strong>OAuth</strong> lets users log in with an account they already have (Google, GitHub) instead of making a new password. Your app never sees their password — Google vouches for them.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">the OAuth dance<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>1. User clicks "Sign in with Google"
+2. Your app redirects them to Google's login
+3. They approve → Google redirects back with a code
+4. Your server swaps the code for the user's profile (email, name)
+5. You create/find that user and issue YOUR own token</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Don't build it from scratch</div><p>Use a library like <strong>Passport.js</strong> (<code class="inline">passport-google-oauth20</code>) — it handles the redirects and token exchange. You register your app in the Google Cloud Console to get a client ID &amp; secret.</p></div>
+        </div>
+      </section>
+
+      <!-- BEST PRACTICES -->
+      <section class="section reveal" id="best-practices">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">Security best practices</h2>
+        <p class="section-sub">A short checklist that prevents the most common auth mistakes.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Always hash</strong> passwords with bcrypt/argon2 — never plain text, never reversible encryption.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Always HTTPS</strong> in production — passwords and tokens must never travel in plain text.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Keep secrets in <code class="inline">.env</code></strong> — the JWT secret, OAuth keys — and <code class="inline">.gitignore</code> them.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Set token expiry</strong> — short-lived access tokens, optional refresh tokens (see <a href="jwt.html">JWT</a>).</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>HttpOnly + Secure + SameSite</strong> cookies if you store tokens in cookies.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Validate &amp; rate-limit</strong> login attempts to slow brute-force attacks.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Generic error messages</strong> — don't reveal whether the email or the password was wrong.</div></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">A complete auth flow</h2>
+        <p class="section-sub">Add real authentication to the <a href="express.html">Tasks API</a>: users register, log in, and only see <em>their own</em> tasks. It combines hashing, tokens, protected routes and authorization.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">The pieces</div><p>A <code class="inline">User</code> model · <code class="inline">/register</code> &amp; <code class="inline">/login</code> · a <code class="inline">protect</code> middleware · tasks scoped to <code class="inline">req.user.id</code>.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> Tasks, scoped to the logged-in user</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">tasks.routes.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// every task route is behind `protect` — must be logged in
+app.get("/tasks", protect, async (req, res) =&gt; {
+  // only THIS user's tasks (authorization by ownership)
+  const tasks = await Task.find({ owner: req.user.id });
+  res.json(tasks);
+});
+
+app.post("/tasks", protect, async (req, res) =&gt; {
+  const task = await Task.create({
+    title: req.body.title,
+    owner: req.user.id,        // stamp it with the owner
+  });
+  res.status(201).json(task);
+});
+
+app.delete("/tasks/:id", protect, async (req, res) =&gt; {
+  const task = await Task.findById(req.params.id);
+  if (!task) return res.status(404).json({ error: "Not found" });
+
+  // can't delete someone else's task!
+  if (task.owner.toString() !== req.user.id) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+  await task.deleteOne();
+  res.status(204).end();
+});</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Authentication</strong>: <code class="inline">protect</code> blocks anyone without a valid token (<code class="inline">401</code>).</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Authorization</strong>: the ownership check stops users touching others' tasks (<code class="inline">403</code>).</div></div>
+          <div class="kp"><span class="check">✓</span><div>The <code class="inline">owner</code> field links each task to a user — a <a href="mongodb.html">Mongoose relationship</a>.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>For the token mechanics — structure, signing, verifying, refresh — read the <a href="jwt.html"><strong>JWT</strong></a> guide. To charge users, see <a href="payment.html">Payments</a>. To see it all together, the <a href="fullstack.html">Full-Stack capstone</a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="jwt.html" class="prev"><span class="dir">← Related</span><span class="ttl">JWT</span></a>
+          <a href="payment.html" class="next"><span class="dir">Next guide →</span><span class="ttl">Payments</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Authentication complete</span>
+            <h3 class="foot-title">Lock the <span class="grad">front door</span></h3>
+            <p class="foot-lead">Hashing, cookies &amp; sessions, tokens, protected routes, OAuth. The how-tokens-work details are in JWT.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="jwt.html">Go deeper with JWT
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free, beginner-friendly coding guides — HTML, CSS, JavaScript, Git, APIs, React, Node, Express, MongoDB, JWT, Authentication, Payments and a full-stack build. Each guide ends with a real mini project." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>DevGuides · Learn the full web stack, one guide at a time</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Apply saved theme before first paint (no flash) -->
+  <script>
+    try {
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body class="lp">
+
+  <div class="progress-track"><div class="progress-fill"></div></div>
+
+  <!-- ============================ APP BAR (floating) ============================ -->
+  <header class="appbar lp-appbar">
+    <a class="brand-link" href="index.html" aria-label="DevGuides — home">
+      <span class="logo">DG</span>
+      <span class="brand-text">
+        <strong>DevGuides</strong>
+        <span>Learn the web stack</span>
+      </span>
+    </a>
+
+    <nav class="lp-nav" aria-label="Primary">
+      <!-- Guides dropdown -->
+      <div class="lp-nav-item">
+        <button class="lp-nav-link" aria-haspopup="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Guides
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lp-mega">
+          <a href="#fundamentals"><span class="m-ico bg-warm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span class="m-tx"><strong>Fundamentals</strong><small>HTML, CSS, JS, Git, API &amp; more</small></span></a>
+          <a href="#frontend"><span class="m-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span class="m-tx"><strong>Frontend</strong><small>React &amp; building UIs</small></span></a>
+          <a href="#backend"><span class="m-ico bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01"/></svg></span><span class="m-tx"><strong>Backend</strong><small>Node, Express, MongoDB</small></span></a>
+          <a href="#auth-payments"><span class="m-ico bg-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><span class="m-tx"><strong>Auth &amp; Payments</strong><small>JWT, OAuth, Razorpay</small></span></a>
+          <a class="m-foot" href="fullstack.html">🚀 Full Stack Guide →</a>
+        </div>
+      </div>
+
+      <!-- Projects dropdown -->
+      <div class="lp-nav-item">
+        <button class="lp-nav-link" aria-haspopup="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Projects
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lp-mega">
+          <a href="#proj-frontend"><span class="m-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2a10 10 0 1 0 0 20c1 0 1.5-.5 1.5-1.5 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.3 0-1 .9-1.5 2-1.5h2A4 4 0 0 0 22 11c0-5-4.5-9-10-9z"/></svg></span><span class="m-tx"><strong>Frontend</strong><small>Landing, calculator, weather, movie</small></span></a>
+          <a href="#proj-backend"><span class="m-ico bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span><span class="m-tx"><strong>Backend</strong><small>QR, password API, URL shortener</small></span></a>
+          <a href="#proj-fullstack"><span class="m-ico bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></span><span class="m-tx"><strong>Full-stack</strong><small>Sticky Notes, Contact Form, AI Chatbot</small></span></a>
+          <a class="m-foot" href="#projects">See all projects →</a>
+        </div>
+      </div>
+
+      <a class="lp-nav-link" href="#materials">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M9 13h6"/></svg>
+        Materials
+      </a>
+      <a class="lp-nav-link" href="fullstack.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M3 7l9 5 9-5"/></svg>
+        Full Stack
+      </a>
+    </nav>
+
+    <div class="lp-actions">
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="btn btn-primary lp-cta-btn" href="html.html">Start learning
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="hamburger" data-lp-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================ MOBILE DRAWER ============================ -->
+  <aside class="lp-drawer" id="lpDrawer" aria-hidden="true">
+    <div class="lp-drawer-head">
+      <a class="brand-link" href="index.html" aria-label="DevGuides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>DevGuides</strong><span>Learn the web stack</span></span>
+      </a>
+      <button class="lp-drawer-close" data-lp-close aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <nav class="lp-drawer-nav" aria-label="Sections">
+      <div class="lp-drawer-group-title">Guides</div>
+      <a href="#fundamentals"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span> Fundamentals</a>
+      <a href="#frontend"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span> Frontend</a>
+      <a href="#backend"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01"/></svg></span> Backend</a>
+      <a href="#auth-payments"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span> Auth</a>
+      <a href="#auth-payments"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></span> Payments</a>
+
+      <div class="lp-drawer-group-title">Projects</div>
+      <a href="#proj-frontend"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2a10 10 0 1 0 0 20c1 0 1.5-.5 1.5-1.5 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.3 0-1 .9-1.5 2-1.5h2A4 4 0 0 0 22 11c0-5-4.5-9-10-9z"/></svg></span> Frontend</a>
+      <a href="#proj-backend"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span> Backend</a>
+      <a href="#proj-fullstack"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></span> Full-stack</a>
+
+      <div class="lp-drawer-group-title">Resources</div>
+      <a href="#materials"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M9 13h6"/></svg></span> Materials</a>
+      <a href="fullstack.html"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-1 9h7l-8 11 1-9H5z"/></svg></span> Full Stack Guide</a>
+    </nav>
+  </aside>
+  <div class="lp-scrim" data-lp-close></div>
+
+  <main class="lp-main">
+
+    <!-- =============================== HERO =============================== -->
+    <section class="lp-hero">
+      <div class="hero-left">
+        <span class="lp-eyebrow ha" style="--d:0"><span class="dot"></span> Free · beginner-friendly · 2026</span>
+        <h1 class="lp-title">
+          <span class="ha tline" style="--d:1">Pick a guide.</span>
+          <span class="ha tline grad" style="--d:2">Start building.</span>
+        </h1>
+        <p class="lp-lead ha" style="--d:3">Beginner-friendly guides for the whole web stack — from your first HTML tag to a deployed full-stack app with auth &amp; payments. Each one explains the ideas in plain language and ends with a real <strong>mini project</strong>.</p>
+        <div class="lp-cta ha" style="--d:4">
+          <a class="btn btn-primary" href="html.html">Start with HTML
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="fullstack.html">🚀 Full Stack Guide</a>
+        </div>
+        <ul class="lp-stats ha" style="--d:5">
+          <li><b>15</b><span>topic guides</span></li>
+          <li><b>1</b><span>full-stack build</span></li>
+          <li><b>7</b><span>downloadable projects</span></li>
+          <li><b>9</b><span>PPT decks</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-art ha" style="--d:3">
+        <span class="hero-glow"></span>
+        <span class="float-chip fc-1" title="HTML">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e44d26" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5M14 5l-4 14"/></svg>
+        </span>
+        <span class="float-chip fc-2" title="CSS">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2965f1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H8a3 3 0 0 0-3 3v2a2 2 0 0 1-2 2 2 2 0 0 1 2 2v2a3 3 0 0 0 3 3h1"/><path d="M15 4h1a3 3 0 0 1 3 3v2a2 2 0 0 0 2 2 2 2 0 0 0-2 2v2a3 3 0 0 1-3 3h-1"/></svg>
+        </span>
+        <span class="float-chip fc-3" title="JavaScript">
+          <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#f7df1e"/><text x="12" y="17" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#0b0e26">JS</text></svg>
+        </span>
+        <span class="float-chip fc-4" title="React">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.4"><circle cx="12" cy="12" r="1.8" fill="#06b6d4" stroke="none"/><ellipse cx="12" cy="12" rx="10" ry="4.3"/><ellipse cx="12" cy="12" rx="10" ry="4.3" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.3" transform="rotate(120 12 12)"/></svg>
+        </span>
+        <span class="float-chip fc-5" title="Node.js">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2 20.5 7v10L12 21.8 3.5 17V7z" fill="#539e43"/><path d="M12 6.4 16.8 9.1v5.8L12 17.6 7.2 14.9V9.1z" fill="none" stroke="#cdebc2" stroke-width="1.1" stroke-linejoin="round"/></svg>
+        </span>
+
+        <div class="hero-editor" aria-hidden="true">
+          <div class="he-head">
+            <span class="he-dots"><i></i><i></i><i></i></span>
+            <span class="he-file">learn.js</span>
+          </div>
+          <pre class="he-body"><code><span class="cl" style="--i:0"><span class="tok-key">const</span> you = <span class="tok-key">new</span> <span class="tok-fn">Developer</span>();</span><span class="cl" style="--i:1">&nbsp;</span><span class="cl" style="--i:2">you.<span class="tok-fn">learn</span>([</span><span class="cl" style="--i:3">  <span class="tok-str">"HTML"</span>, <span class="tok-str">"CSS"</span>, <span class="tok-str">"JS"</span>,</span><span class="cl" style="--i:4">  <span class="tok-str">"React"</span>, <span class="tok-str">"Node"</span>, <span class="tok-str">"Mongo"</span></span><span class="cl" style="--i:5">]);</span><span class="cl" style="--i:6">&nbsp;</span><span class="cl" style="--i:7">you.<span class="tok-fn">build</span>(fullStackApp);</span><span class="cl" style="--i:8"><span class="tok-com">// shipped 🚀</span><span class="he-caret"></span></span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FULL STACK BANNER ============================ -->
+    <a class="lp-featured reveal" href="fullstack.html">
+      <span class="lp-featured-glow"></span>
+      <div class="lp-featured-text">
+        <span class="lp-featured-tag">★ Capstone</span>
+        <h2>Full Stack Guide</h2>
+        <p>Tie everything together: build & deploy a React + Node.js + Express + MongoDB app — with CORS, REST, Axios, two mini projects and Vercel deployment, explained line by line.</p>
+        <span class="lp-card-go">Open the full guide →</span>
+      </div>
+      <div class="lp-featured-badges">
+        <span class="chip violet">React</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">Express</span>
+        <span class="chip green">MongoDB</span>
+      </div>
+    </a>
+
+    <!-- ============================ FUNDAMENTALS ============================ -->
+    <section class="lp-cat reveal" id="fundamentals">
+      <div class="lp-cat-head"><h2>Fundamentals</h2><p>The core skills every web developer needs first.</p></div>
+      <div class="lp-grid">
+
+        <a class="lp-card" href="html.html">
+          <span class="lp-card-ico bg-warm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <h3>HTML</h3>
+          <p>The skeleton of every page — elements, attributes & semantic structure.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="css.html">
+          <span class="lp-card-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1 0 1.5-.8 1.5-1.6 0-1.4 1-2 2.3-2H18a3 3 0 0 0 3-3c0-5-4-8.4-9-8.4z"/><circle cx="7.5" cy="11" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16" cy="11" r="1"/></svg></span>
+          <h3>CSS</h3>
+          <p>Style & lay out pages — colors, flexbox, grid & responsive design.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="javascript.html">
+          <span class="lp-card-ico bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 0 0-2 2v3c0 1-1 2-2 2 1 0 2 1 2 2v3a2 2 0 0 0 2 2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v3c0 1 1 2 2 2-1 0-2 1-2 2v3a2 2 0 0 1-2 2h-2"/></svg></span>
+          <h3>JavaScript</h3>
+          <p>Make pages interactive — variables, functions, the DOM & events.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="git.html">
+          <span class="lp-card-ico bg-warm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="7" r="2.5"/><path d="M6 8.5v7M18 9.5c0 3.5-6 1.5-6 6"/></svg></span>
+          <h3>Git &amp; GitHub</h3>
+          <p>Track changes & collaborate — commits, branches & pushing to GitHub.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="networking.html">
+          <span class="lp-card-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></span>
+          <h3>Networking Basics</h3>
+          <p>How the web talks — clients, servers, DNS, requests & responses.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="http-status-codes.html">
+          <span class="lp-card-ico bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg></span>
+          <h3>HTTP Status Codes</h3>
+          <p>Decode 200, 301, 404, 500 & friends — what each response means.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="api.html">
+          <span class="lp-card-ico bg-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3.5-3.5M20 16H7l3.5 3.5"/></svg></span>
+          <h3>APIs &amp; REST</h3>
+          <p>How apps exchange data — endpoints, methods, JSON & REST.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="nodemailer.html">
+          <span class="lp-card-ico bg-warm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+          <h3>Nodemailer</h3>
+          <p>Send emails from a Node app — transporters, HTML mail & a contact-form API.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============================ FRONTEND ============================ -->
+    <section class="lp-cat reveal" id="frontend">
+      <div class="lp-cat-head"><h2>Frontend</h2><p>Build interactive user interfaces.</p></div>
+      <div class="lp-grid">
+        <a class="lp-card" href="react.html">
+          <span class="lp-card-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(120 12 12)"/></svg></span>
+          <h3>React</h3>
+          <p>Build UIs from reusable components — JSX, props, state & hooks.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================ BACKEND ============================ -->
+    <section class="lp-cat reveal" id="backend">
+      <div class="lp-cat-head"><h2>Backend</h2><p>Servers, APIs and databases.</p></div>
+      <div class="lp-grid">
+
+        <a class="lp-card" href="node.html">
+          <span class="lp-card-ico bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 8v8M8.5 10v4M15.5 10v4"/></svg></span>
+          <h3>Node.js</h3>
+          <p>Run JavaScript on the server — modules, npm & the runtime.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="express.html">
+          <span class="lp-card-ico bg-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>
+          <h3>Express</h3>
+          <p>Build web servers & REST APIs — routes, middleware & controllers.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="mongodb.html">
+          <span class="lp-card-ico bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span>
+          <h3>MongoDB</h3>
+          <p>Store data in flexible documents — Atlas, Mongoose & CRUD.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============================ AUTH & PAYMENTS ============================ -->
+    <section class="lp-cat reveal" id="auth-payments">
+      <div class="lp-cat-head"><h2>Auth &amp; Payments</h2><p>Real-world features for production apps.</p></div>
+      <div class="lp-grid">
+
+        <a class="lp-card" href="jwt.html">
+          <span class="lp-card-ico bg-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 8.2-8.2M16 6l3 3M14 8l2 2"/></svg></span>
+          <h3>JWT</h3>
+          <p>Stateless auth with JSON Web Tokens — sign, verify & protect routes.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="authentication.html">
+          <span class="lp-card-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.5"/></svg></span>
+          <h3>Authentication</h3>
+          <p>Log users in securely — email/password + Google OAuth.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+        <a class="lp-card" href="payment.html">
+          <span class="lp-card-ico bg-warm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></span>
+          <h3>Payments · Razorpay</h3>
+          <p>Accept online payments — orders, checkout & verifying signatures.</p>
+          <span class="lp-card-go">Start guide →</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============================ PROJECTS ============================ -->
+    <section class="lp-cat reveal" id="projects">
+      <div class="lp-cat-head"><h2>Projects</h2><p>Real, working mini projects — open a live preview, or download the full source as a zip to run locally.</p></div>
+
+      <h3 class="lp-subcat" id="proj-frontend">🎨 Frontend projects</h3>
+      <div class="lp-grid">
+
+        <div class="lp-card proj-card">
+          <span class="lp-card-ico bg-warm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></span>
+          <h3>Landing Page</h3>
+          <p>A responsive "Deliver" marketing page — built with HTML &amp; CSS using flexbox, grid &amp; hover effects.</p>
+          <div class="proj-actions">
+            <a class="proj-btn preview" href="public/projects/HTML-CSS-Project/index.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg> Preview</a>
+            <a class="proj-btn dl" href="public/downloads/landing-page.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> .zip</a>
+          </div>
+        </div>
+
+        <div class="lp-card proj-card">
+          <span class="lp-card-ico bg-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2M16 16h0"/></svg></span>
+          <h3>Calculator</h3>
+          <p>A simple calculator with add, subtract, multiply &amp; divide — your first JavaScript app.</p>
+          <div class="proj-actions">
+            <a class="proj-btn preview" href="public/projects/JS-Projects/simpleCalculator/calc.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg> Preview</a>
+            <a class="proj-btn dl" href="public/downloads/calculator.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> .zip</a>
+          </div>
+        </div>
+
+        <div class="lp-card proj-card">
+          <span class="lp-card-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 13a4 4 0 1 0-7-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h7a3 3 0 0 0 0-6"/></svg></span>
+          <h3>Weather App</h3>
+          <p>Type a city and fetch its live weather from a real API — <code class="inline">fetch</code> + async/await.</p>
+          <div class="proj-actions">
+            <a class="proj-btn preview" href="public/projects/JS-Projects/weatherApp-API/index.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg> Preview</a>
+            <a class="proj-btn dl" href="public/downloads/weather-app.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> .zip</a>
+          </div>
+        </div>
+
+        <div class="lp-card proj-card">
+          <span class="lp-card-ico bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg></span>
+          <h3>Movie App</h3>
+          <p>Search any movie and show its poster, rating &amp; details from the OMDb API.</p>
+          <div class="proj-actions">
+            <a class="proj-btn preview" href="public/projects/JS-Projects/movileApp-API/index.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg> Preview</a>
+            <a class="proj-btn dl" href="public/downloads/movie-app.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> .zip</a>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 class="lp-subcat" id="proj-backend">⚙️ Backend projects</h3>
+      <div class="lp-grid cols-3">
+
+        <div class="lp-card proj-card">
+          <span class="lp-card-ico bg-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v3M14 21h3M21 21v.01M17.5 17.5v.01"/></svg></span>
+          <h3>QR Code Generator</h3>
+          <p>A pure <strong>Node.js</strong> CLI that turns any text or URL into a PNG QR code with the <code class="inline">qrcode</code> package.</p>
+          <p class="cmd-label">Run it</p>
+          <div class="code cmd" data-lang="bash">
+            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button>
+            <pre><code>npm install
+node index.js "hello world"</code></pre>
+          </div>
+          <div class="proj-actions">
+            <a class="proj-btn dl" href="public/downloads/qr-generator.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> Download .zip</a>
+          </div>
+        </div>
+
+        <div class="lp-card proj-card">
+          <span class="lp-card-ico bg-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0 1 10 0v3"/><path d="M9 16h.01M12 16h.01M15 16h.01"/></svg></span>
+          <h3>Password Generator API</h3>
+          <p>A <strong>Node.js + Express</strong> REST API (no database) that returns secure random passwords — control length, symbols &amp; more via query params, powered by <code class="inline">crypto</code>.</p>
+          <p class="cmd-label">Run it</p>
+          <div class="code cmd" data-lang="bash">
+            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button>
+            <pre><code>npm install
+npm start</code></pre>
+          </div>
+          <div class="proj-actions">
+            <a class="proj-btn dl" href="public/downloads/password-api.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> Download .zip</a>
+          </div>
+        </div>
+
+        <div class="lp-card proj-card">
+          <span class="lp-card-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg></span>
+          <h3>URL Shortener</h3>
+          <p>A <strong>Node.js + Express</strong> API that turns long links into short codes — stored <strong>in memory</strong> (no database), so they reset on restart.</p>
+          <p class="cmd-label">Run it</p>
+          <div class="code cmd" data-lang="bash">
+            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button>
+            <pre><code>npm install
+npm start</code></pre>
+          </div>
+          <div class="proj-actions">
+            <a class="proj-btn dl" href="public/downloads/url-shortener.zip" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> Download .zip</a>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 class="lp-subcat" id="proj-fullstack">🌐 Full-stack projects</h3>
+      <div class="lp-grid">
+
+        <a class="lp-card" href="fullstack.html#project-notes">
+          <span class="lp-card-ico bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M15 3v5h5M9 13h6M9 17h4"/></svg></span>
+          <h3>Sticky Notes App</h3>
+          <p>Create, list &amp; delete notes — a React front-end talking to a Node + Express + MongoDB API. Built step by step in the Full Stack Guide.</p>
+          <span class="lp-card-go">Open in Full Stack Guide →</span>
+        </a>
+
+        <a class="lp-card" href="fullstack.html#project-contact">
+          <span class="lp-card-ico bg-cool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+          <h3>Contact Form</h3>
+          <p>A working contact form that posts messages to an Express API and saves them in MongoDB — validation &amp; success states included.</p>
+          <span class="lp-card-go">Open in Full Stack Guide →</span>
+        </a>
+
+        <a class="lp-card" href="fullstack.html#project-chatbot">
+          <span class="lp-card-ico bg-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 0 1 9 9c0 5-4 8-9 8a10 10 0 0 1-3-.5L4 20l1.2-3.3A8.5 8.5 0 0 1 3 11a9 9 0 0 1 9-9z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg></span>
+          <h3>AI Chatbot</h3>
+          <p>A chat app with memory — React UI, an Express API and a free Gemini model, saving the conversation in MongoDB. Premium chat interface.</p>
+          <span class="lp-card-go">Open in Full Stack Guide →</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============================ MATERIALS ============================ -->
+    <section class="lp-cat reveal" id="materials">
+      <div class="lp-cat-head"><h2>Materials</h2><p>Slide decks (PPT) for each topic — download and study offline.</p></div>
+      <div class="lp-grid">
+
+        <a class="lp-card mat-card" href="public/ppt/HTML%2C%20GIT%20-%20Part-1.pptx" download="HTML & Git - Part 1.pptx">
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>HTML &amp; Git — Part 1</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/HTML%20%2C%20CSS%20-%20Part-2.pptx" download="HTML & CSS - Part 2.pptx">
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>HTML &amp; CSS — Part 2</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/CSS.pptx" download>
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>CSS</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/JS-Part-1.pptx" download>
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>JavaScript — Part 1</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/JS-Part-2.pptx" download>
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>JavaScript — Part 2</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/React-Part-1.pptx" download>
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>React — Part 1</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/React-Part-2.pptx" download>
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>React — Part 2</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/Node-Express.pptx" download>
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>Node &amp; Express</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+        <a class="lp-card mat-card" href="public/ppt/Mongo-DB.pptx" download>
+          <span class="mat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span>
+          <span class="mat-text"><h3>MongoDB</h3><span class="mat-meta">PPTX</span></span>
+          <span class="mat-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =============================== FOOTER (full width) =============================== -->
+  <footer class="foot reveal foot-full">
+      <span class="foot-glow foot-glow-a"></span>
+      <span class="foot-glow foot-glow-b"></span>
+      <div class="foot-inner">
+        <div class="foot-hero">
+          <span class="foot-eyebrow"><span class="dot"></span> happy learning</span>
+          <h3 class="foot-title">Learn the whole stack, <span class="grad">for free</span></h3>
+          <p class="foot-lead">Start anywhere — each guide is self-contained, beginner-friendly, and ends with a project you actually build.</p>
+          <div class="foot-cta">
+            <a class="btn btn-primary" href="html.html">Start with HTML
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn foot-ghost" href="fullstack.html">Full Stack Guide</a>
+          </div>
+        </div>
+        <nav class="foot-nav" aria-label="All guides">
+          <a href="html.html">HTML</a>
+          <a href="css.html">CSS</a>
+          <a href="javascript.html">JavaScript</a>
+          <a href="git.html">Git</a>
+          <a href="api.html">API</a>
+          <a href="react.html">React</a>
+          <a href="node.html">Node</a>
+          <a href="express.html">Express</a>
+          <a href="mongodb.html">MongoDB</a>
+          <a href="jwt.html">JWT</a>
+          <a href="authentication.html">Auth</a>
+          <a href="payment.html">Payments</a>
+          <a href="http-status-codes.html">HTTP Codes</a>
+          <a href="networking.html">Networking</a>
+          <a href="nodemailer.html">Nodemailer</a>
+          <a href="#projects">Projects</a>
+          <a href="#materials">Materials</a>
+        </nav>
+        <div class="foot-divider"></div>
+        <div class="foot-bottom">
+          <div class="foot-brand">
+            <span class="logo">DG</span>
+            <span>© <span data-year>2026</span> DevGuides · All rights reserved.</span>
+          </div>
+          <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+        </div>
+      </div>
+    </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

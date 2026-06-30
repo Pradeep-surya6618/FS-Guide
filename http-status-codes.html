@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HTTP status codes explained — the 1xx–5xx categories, the most common codes (200, 201, 301, 304, 400, 401, 403, 404, 500…), and how to choose the right one. Ends with a cheat-sheet project." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>HTTP Status Codes · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>HTTP Status Codes</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>HTTP Status Codes</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>HTTP Status Codes</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Status codes</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#what" data-title="What is a status code"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h0"/></svg></span> What is a code</a>
+          <a class="nav-link" href="#categories" data-title="The 5 categories"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span> The 5 categories</a>
+          <a class="nav-link" href="#success" data-title="2xx success"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span> 2xx success</a>
+          <a class="nav-link" href="#redirects" data-title="3xx redirects"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/></svg></span> 3xx redirects</a>
+          <a class="nav-link" href="#client-errors" data-title="4xx client errors"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h0"/></svg></span> 4xx client</a>
+          <a class="nav-link" href="#server-errors" data-title="5xx server errors"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.3a2 2 0 0 1 3.4 0l8 14a2 2 0 0 1-1.7 3H4a2 2 0 0 1-1.7-3z"/><path d="M12 9v4M12 17h0"/></svg></span> 5xx server</a>
+          <a class="nav-link" href="#choosing" data-title="Choosing the right code"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> Choosing a code</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="Cheat sheet"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span> Cheat sheet</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">FUNDAMENTALS · 01</span>
+        <h2 class="section-title">HTTP status codes</h2>
+        <p class="section-sub">Every HTTP response carries a 3-digit number that summarises what happened — <code class="inline">200</code> (great), <code class="inline">404</code> (not found), <code class="inline">500</code> (server broke). Learn to read them and you can debug almost any web issue at a glance.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🚦</div>
+          <div><div class="ctitle">Think traffic lights</div><p>Status codes are the server's way of signalling outcome without words. The <strong>first digit</strong> is the colour of the light — it tells you the whole category before you read the rest.</p></div>
+        </div>
+        <p>This pairs with the <a href="networking.html">Networking</a> and <a href="api.html">APIs &amp; REST</a> guides — every response you saw there had one of these codes.</p>
+      </section>
+
+      <!-- WHAT -->
+      <section class="section reveal" id="what">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">What is a status code?</h2>
+        <p class="section-sub">It's a number the server puts at the top of every response, with a short text reason next to it. You usually never see it — the browser handles it — but as a developer you check it constantly.</p>
+
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a response status line<span class="lang">http</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>HTTP/1.1 200 OK
+              │   └─ reason phrase (for humans)
+              └───── status code (for machines)</code></pre>
+        </div>
+        <p>In JavaScript, <code class="inline">fetch</code> gives you the code on the response object:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">check.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const res = await fetch(url);
+
+res.status   // 200, 404, 500…  (the number)
+res.ok       // true for any 2xx, false otherwise
+
+if (!res.ok) console.log("Request failed:", res.status);</code></pre>
+        </div>
+      </section>
+
+      <!-- CATEGORIES -->
+      <section class="section reveal" id="categories">
+        <span class="section-kicker k-4">03</span>
+        <h2 class="section-title">The five categories</h2>
+        <p class="section-sub">The first digit tells you everything you need at a glance. There are five families.</p>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Range</th><th>Family</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>1xx</code></td><td>Informational</td><td>"Hold on, still processing." Rare in everyday work.</td></tr>
+              <tr><td><code>2xx</code></td><td>✅ Success</td><td>It worked.</td></tr>
+              <tr><td><code>3xx</code></td><td>↪️ Redirection</td><td>"Look somewhere else for this."</td></tr>
+              <tr><td><code>4xx</code></td><td>🙋 Client error</td><td><em>Your</em> request was wrong (bad data, not allowed, not found).</td></tr>
+              <tr><td><code>5xx</code></td><td>🔥 Server error</td><td>The request was fine, but the <em>server</em> failed.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Remember the split</div><p><strong>4xx = your fault</strong> (the client). <strong>5xx = their fault</strong> (the server). That one distinction solves most "who do I blame?" debugging questions.</p></div>
+        </div>
+      </section>
+
+      <!-- 2xx -->
+      <section class="section reveal" id="success">
+        <span class="section-kicker k-1">04</span>
+        <h2 class="section-title">2xx — success</h2>
+        <p class="section-sub">The request was received, understood, and accepted.</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Code</th><th>Name</th><th>When</th></tr></thead>
+            <tbody>
+              <tr><td><code>200</code></td><td>OK</td><td>The standard success — a GET returned data, an update worked.</td></tr>
+              <tr><td><code>201</code></td><td>Created</td><td>A <code>POST</code> made a new resource (a sign-up, a new post).</td></tr>
+              <tr><td><code>204</code></td><td>No Content</td><td>Success, but nothing to send back — common after a <code>DELETE</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3xx -->
+      <section class="section reveal" id="redirects">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">3xx — redirects</h2>
+        <p class="section-sub">"What you want is at a different URL" — or "you already have the latest copy."</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Code</th><th>Name</th><th>When</th></tr></thead>
+            <tbody>
+              <tr><td><code>301</code></td><td>Moved Permanently</td><td>This URL has a new home forever (browsers/SEO remember it).</td></tr>
+              <tr><td><code>302</code></td><td>Found (temporary)</td><td>Go here for now, but keep using the original URL.</td></tr>
+              <tr><td><code>304</code></td><td>Not Modified</td><td>Your cached copy is still fresh — saves re-downloading. Very fast.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Redirects are automatic</div><p>The browser follows 3xx responses for you — that's why typing <code class="inline">http://</code> often lands you on the <code class="inline">https://</code> version.</p></div>
+        </div>
+      </section>
+
+      <!-- 4xx -->
+      <section class="section reveal" id="client-errors">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">4xx — client errors</h2>
+        <p class="section-sub">Something about <em>your</em> request was wrong. The most common codes you'll meet and fix.</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Code</th><th>Name</th><th>When</th></tr></thead>
+            <tbody>
+              <tr><td><code>400</code></td><td>Bad Request</td><td>Malformed data — a missing field, invalid JSON.</td></tr>
+              <tr><td><code>401</code></td><td>Unauthorized</td><td>Not logged in / no valid token. (Really means "unauthenticated.")</td></tr>
+              <tr><td><code>403</code></td><td>Forbidden</td><td>Logged in, but <em>not allowed</em> to do this.</td></tr>
+              <tr><td><code>404</code></td><td>Not Found</td><td>No resource at that URL — the famous one.</td></tr>
+              <tr><td><code>409</code></td><td>Conflict</td><td>Clashes with current state — e.g. that email is already registered.</td></tr>
+              <tr><td><code>422</code></td><td>Unprocessable</td><td>Valid format but fails validation rules.</td></tr>
+              <tr><td><code>429</code></td><td>Too Many Requests</td><td>You've been rate-limited — slow down.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">401 vs 403</div><p><strong>401</strong> = "I don't know who you are" (log in). <strong>403</strong> = "I know who you are, and you can't." A subtle but important difference when building auth — see the <a href="authentication.html">Authentication</a> guide.</p></div>
+        </div>
+      </section>
+
+      <!-- 5xx -->
+      <section class="section reveal" id="server-errors">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">5xx — server errors</h2>
+        <p class="section-sub">Your request was fine; the server failed to handle it. These are the server's problem to fix.</p>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Code</th><th>Name</th><th>When</th></tr></thead>
+            <tbody>
+              <tr><td><code>500</code></td><td>Internal Server Error</td><td>An unhandled crash in the server code — the catch-all.</td></tr>
+              <tr><td><code>502</code></td><td>Bad Gateway</td><td>A server in front got a bad reply from one behind it.</td></tr>
+              <tr><td><code>503</code></td><td>Service Unavailable</td><td>Overloaded or down for maintenance — try again later.</td></tr>
+              <tr><td><code>504</code></td><td>Gateway Timeout</td><td>An upstream server took too long to respond.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">A 500 usually means "read the logs"</div><p>When your own API throws a <code class="inline">500</code>, the real cause is in the server's console — an exception, a bad database query. The status is just the symptom.</p></div>
+        </div>
+      </section>
+
+      <!-- CHOOSING -->
+      <section class="section reveal" id="choosing">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">Choosing the right code</h2>
+        <p class="section-sub">When you build an API (with <a href="express.html">Express</a>), <em>you</em> decide the status of each response. Returning the right one makes your API honest and easy to consume.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">routes.js (Express)<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>app.post("/users", (req, res) =&gt; {
+  if (!req.body.email) {
+    return res.status(400).json({ error: "Email is required" });   // bad input
+  }
+  if (emailTaken(req.body.email)) {
+    return res.status(409).json({ error: "Email already exists" }); // conflict
+  }
+
+  const user = createUser(req.body);
+  res.status(201).json(user);   // created!
+});
+
+app.get("/users/:id", (req, res) =&gt; {
+  const user = findUser(req.params.id);
+  if (!user) return res.status(404).json({ error: "Not found" });   // missing
+  res.status(200).json(user);   // ok (200 is the default)
+});</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Created something? <code class="inline">201</code>, not <code class="inline">200</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Bad input from the user? <code class="inline">400</code> (or <code class="inline">422</code> for validation).</div></div>
+          <div class="kp"><span class="check">✓</span><div>Can't find it? <code class="inline">404</code>. Not allowed? <code class="inline">401</code>/<code class="inline">403</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Never return <code class="inline">200</code> with an error message inside — the code <em>is</em> the signal.</div></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">Status-code cheat sheet</h2>
+        <p class="section-sub">Build a searchable one-page reference of the codes you just learned — type to filter, and keep it bookmarked. It's a neat exercise in arrays, <code class="inline">map</code> and a simple search filter.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">What you'll build</div><p>A grid of code cards, colour-coded by family, with a search box that filters as you type (by number or name).</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> HTML</h3>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;div class="sheet"&gt;
+  &lt;h1&gt;HTTP Status Codes&lt;/h1&gt;
+  &lt;input type="text" id="search" placeholder="Filter… e.g. 404 or 'not found'" /&gt;
+  &lt;div id="grid" class="grid"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🎨</span> CSS</h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>body { font-family: Arial, sans-serif; background: #0f1222; color: #e7ecff; }
+.sheet { max-width: 760px; margin: 40px auto; padding: 0 16px; }
+
+#search {
+  width: 100%;
+  padding: 14px;
+  margin: 18px 0;
+  border-radius: 10px;
+  border: 1px solid #2a3157;
+  background: #181d3a;
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.code-card {
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 4px solid var(--c);   /* family colour, set inline */
+  background: #181d3a;
+}
+.code-card .num  { font-size: 24px; font-weight: 800; }
+.code-card .name { color: #aab3e6; font-size: 14px; }</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">⚙️</span> JavaScript</h3>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">script.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>const codes = [
+  { num: 200, name: "OK",            color: "#10b981" },
+  { num: 201, name: "Created",       color: "#10b981" },
+  { num: 301, name: "Moved",         color: "#3b82f6" },
+  { num: 304, name: "Not Modified",  color: "#3b82f6" },
+  { num: 400, name: "Bad Request",   color: "#f59e0b" },
+  { num: 401, name: "Unauthorized",  color: "#f59e0b" },
+  { num: 403, name: "Forbidden",     color: "#f59e0b" },
+  { num: 404, name: "Not Found",     color: "#f59e0b" },
+  { num: 500, name: "Server Error",  color: "#ef4444" },
+  { num: 503, name: "Unavailable",   color: "#ef4444" },
+];
+
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
+
+function render(list) {
+  grid.innerHTML = list
+    .map(
+      (c) =&gt; `
+      &lt;div class="code-card" style="--c:${c.color}"&gt;
+        &lt;div class="num"&gt;${c.num}&lt;/div&gt;
+        &lt;div class="name"&gt;${c.name}&lt;/div&gt;
+      &lt;/div&gt;`
+    )
+    .join("");
+}
+
+// filter as the user types (by number OR name)
+search.addEventListener("input", () =&gt; {
+  const q = search.value.toLowerCase();
+  render(
+    codes.filter(
+      (c) =&gt; String(c.num).includes(q) || c.name.toLowerCase().includes(q)
+    )
+  );
+});
+
+render(codes);   // show everything on load</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>The data lives in an <strong>array of objects</strong> — easy to extend with more codes.</div></div>
+          <div class="kp"><span class="check">✓</span><div><code class="inline">map()</code> turns the data into cards; <code class="inline">filter()</code> powers the search.</div></div>
+          <div class="kp"><span class="check">✓</span><div>A CSS variable (<code class="inline">--c</code>) set inline colour-codes each card by family.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>You can now read and choose status codes. Put them to work building a real API with <a href="node.html">Node</a> &amp; <a href="express.html">Express</a>, or secure one with <a href="authentication.html">Authentication</a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="networking.html" class="prev"><span class="dir">← Previous</span><span class="ttl">Networking</span></a>
+          <a href="index.html" class="next"><span class="dir">All guides →</span><span class="ttl">DevGuides</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Status codes complete</span>
+            <h3 class="foot-title">You read the <span class="grad">signals</span> now</h3>
+            <p class="foot-lead">2xx, 3xx, 4xx, 5xx — and which one to send. Time to build the servers that return them.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="node.html">Continue to Node.js
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

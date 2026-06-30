@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Networking basics — how the web talks: clients & servers, IP & DNS, the HTTP request/response cycle, headers, ports, HTTPS/TLS, latency & caching. Ends with a DevTools network-trace project." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Networking Basics · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Networking Basics</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>Networking Basics</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Networking Basics</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Networking</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#client-server" data-title="Client & server"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h0M7 17h0"/></svg></span> Client &amp; server</a>
+          <a class="nav-link" href="#dns" data-title="IP & DNS"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></span> IP &amp; DNS</a>
+          <a class="nav-link" href="#cycle" data-title="Request/response cycle"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span> Request cycle</a>
+          <a class="nav-link" href="#methods" data-title="HTTP methods"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span> HTTP methods</a>
+          <a class="nav-link" href="#headers" data-title="Headers & body"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span> Headers &amp; body</a>
+          <a class="nav-link" href="#ports" data-title="Ports & localhost"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Ports &amp; localhost</a>
+          <a class="nav-link" href="#https" data-title="HTTPS & TLS"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1"/></svg></span> HTTPS &amp; TLS</a>
+          <a class="nav-link" href="#performance" data-title="Latency & caching"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span> Latency &amp; caching</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini project</div>
+          <a class="nav-link" href="#project" data-title="Trace a page load"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg></span> Trace a page load</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-1">FUNDAMENTALS · 01</span>
+        <h2 class="section-title">Networking basics</h2>
+        <p class="section-sub">Every time you load a page, dozens of messages fly across the internet in well under a second. This guide demystifies that journey — what a client and server are, how a domain name becomes a connection, and what travels back and forth.</p>
+
+        <div class="callout analogy">
+          <div class="ci">📮</div>
+          <div><div class="ctitle">The postal analogy</div><p>Sending a request is like posting a letter. You need an <strong>address</strong> (the IP), a <strong>post office</strong> to look it up by name (DNS), an <strong>envelope</strong> with sender/recipient info (headers), and the <strong>letter inside</strong> (the body). The reply comes back the same way.</p></div>
+        </div>
+        <p>You don't need to memorise protocols — just build a clear mental model. It makes the <a href="api.html">API</a>, <a href="node.html">Node</a> and <a href="fullstack.html">Full-Stack</a> guides click into place.</p>
+      </section>
+
+      <!-- CLIENT & SERVER -->
+      <section class="section reveal" id="client-server">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">Client &amp; server</h2>
+        <p class="section-sub">Almost all web traffic is a conversation between two roles: a <strong>client</strong> that asks, and a <strong>server</strong> that answers.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">💻</div>
+            <h4>Client</h4>
+            <p>The one that <strong>requests</strong>. Usually your browser or phone app. It sends a request and waits for the reply.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-cool">🖥️</div>
+            <h4>Server</h4>
+            <p>A computer that <strong>listens</strong> for requests and <strong>responds</strong> — with a web page, JSON data, an image, anything.</p>
+          </div>
+        </div>
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">the conversation<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>CLIENT  ──────── "GET me the home page" ───────▶  SERVER
+   │                                                 │
+   ◀──────── "200 OK, here's the HTML" ──────────────┘</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Servers only respond</div><p>A server can't push to a client out of the blue — the client always starts the conversation by making a request. (Live updates use special tricks like WebSockets, built on top of this.)</p></div>
+        </div>
+      </section>
+
+      <!-- IP & DNS -->
+      <section class="section reveal" id="dns">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">IP addresses &amp; DNS</h2>
+        <p class="section-sub">Every device on a network has an <strong>IP address</strong> — its numeric location. But nobody types <code class="inline">142.250.183.110</code>; we type <code class="inline">google.com</code>. <strong>DNS</strong> is the system that translates one into the other.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-mint">🔢</div>
+            <h4>IP address</h4>
+            <p>A device's address, like <code class="inline">142.250.183.110</code> (IPv4) or a longer IPv6. Servers have one so requests can find them.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-warm">📖</div>
+            <h4>DNS</h4>
+            <p>The internet's <strong>phonebook</strong>: it maps a friendly domain (<code class="inline">google.com</code>) to its IP address.</p>
+          </div>
+        </div>
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a DNS lookup<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>You type:     github.com
+                  │
+DNS lookup:   "what's the IP for github.com?"  ──▶  140.82.121.4
+                  │
+Browser:      connects to 140.82.121.4 and makes the request</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">A domain has parts</div><p>In <code class="inline">api.github.com</code>: <code class="inline">com</code> is the top-level domain, <code class="inline">github</code> is the domain, and <code class="inline">api</code> is a <strong>subdomain</strong>. DNS results are cached, so repeat visits skip the lookup.</p></div>
+        </div>
+      </section>
+
+      <!-- REQUEST/RESPONSE CYCLE -->
+      <section class="section reveal" id="cycle">
+        <span class="section-kicker k-4">04</span>
+        <h2 class="section-title">The request/response cycle</h2>
+        <p class="section-sub">Here's everything that happens between pressing Enter on a URL and seeing the page — in order.</p>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">1</span><div><strong>DNS lookup</strong> — turn the domain into an IP address.</div></div>
+          <div class="kp"><span class="check">2</span><div><strong>Connect</strong> — open a connection to that IP (a TCP handshake; HTTPS adds a TLS handshake).</div></div>
+          <div class="kp"><span class="check">3</span><div><strong>Request</strong> — the browser sends an HTTP request (method + path + headers).</div></div>
+          <div class="kp"><span class="check">4</span><div><strong>Server works</strong> — runs code, maybe queries a database, builds a response.</div></div>
+          <div class="kp"><span class="check">5</span><div><strong>Response</strong> — comes back with a status code, headers and a body (HTML/JSON).</div></div>
+          <div class="kp"><span class="check">6</span><div><strong>Render</strong> — the browser paints the page and fetches more assets (CSS, JS, images) the same way.</div></div>
+        </div>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a raw HTTP request<span class="lang">http</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>GET /users/torvalds HTTP/1.1
+Host: api.github.com
+Accept: application/json
+
+# ...and the response:
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{ "login": "torvalds", "public_repos": 6 }</code></pre>
+        </div>
+      </section>
+
+      <!-- HTTP METHODS -->
+      <section class="section reveal" id="methods">
+        <span class="section-kicker k-1">05</span>
+        <h2 class="section-title">HTTP methods</h2>
+        <p class="section-sub">Every request has a <strong>method</strong> — a verb that says what you want to do with the resource.</p>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Method</th><th>Means</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td>Read / fetch data (the default when you visit a page)</td></tr>
+              <tr><td><code>POST</code></td><td>Send data to create something (form submit, sign up)</td></tr>
+              <tr><td><code>PUT</code> / <code>PATCH</code></td><td>Update an existing thing</td></tr>
+              <tr><td><code>DELETE</code></td><td>Remove a thing</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">More detail in the API guide</div><p>These methods are the heart of REST APIs — how they map to <strong>CRUD</strong> and how to call them with <code class="inline">fetch</code> is covered in the <a href="api.html">APIs &amp; REST</a> guide.</p></div>
+        </div>
+      </section>
+
+      <!-- HEADERS & BODY -->
+      <section class="section reveal" id="headers">
+        <span class="section-kicker k-1">06</span>
+        <h2 class="section-title">Headers &amp; body</h2>
+        <p class="section-sub">Both requests and responses have two parts: <strong>headers</strong> (info <em>about</em> the message) and an optional <strong>body</strong> (the actual data).</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-violet">🏷️</div>
+            <h4>Headers</h4>
+            <p>Key–value metadata: content type, length, auth tokens, caching rules. Like the writing on an envelope.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-cool">📦</div>
+            <h4>Body</h4>
+            <p>The payload — the HTML page, the JSON data, the uploaded file. GET requests usually have no body.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Common header</th><th>Says</th></tr></thead>
+            <tbody>
+              <tr><td><code>Content-Type</code></td><td>What format the body is — <code>application/json</code>, <code>text/html</code></td></tr>
+              <tr><td><code>Authorization</code></td><td>Who you are — a token or key (see <a href="jwt.html">JWT</a>)</td></tr>
+              <tr><td><code>Accept</code></td><td>What format you'd like back</td></tr>
+              <tr><td><code>Cache-Control</code></td><td>How long this can be cached</td></tr>
+              <tr><td><code>User-Agent</code></td><td>What browser/app is making the request</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PORTS & LOCALHOST -->
+      <section class="section reveal" id="ports">
+        <span class="section-kicker k-1">07</span>
+        <h2 class="section-title">Ports &amp; localhost</h2>
+        <p class="section-sub">An IP address gets you to the right computer; a <strong>port</strong> gets you to the right <em>program</em> on it. One server can run many services, each on its own port.</p>
+
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">a URL with a port<span class="lang">url</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>http://localhost:3000/api
+       └───┬───┘ └─┬┘ └─┬─┘
+        host     port  path
+
+localhost = "this computer" (the IP 127.0.0.1)</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Port</th><th>Usually</th></tr></thead>
+            <tbody>
+              <tr><td><code>80</code></td><td>HTTP (the default — hidden in normal URLs)</td></tr>
+              <tr><td><code>443</code></td><td>HTTPS (the secure default)</td></tr>
+              <tr><td><code>3000</code> / <code>5173</code> / <code>8080</code></td><td>Dev servers (Node/Express, Vite, etc.)</td></tr>
+              <tr><td><code>27017</code></td><td>MongoDB</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">You'll see this constantly</div><p>When you run a Node/Express server it prints something like <code class="inline">listening on http://localhost:3000</code> — that's <em>your</em> machine acting as the server, reachable on port 3000.</p></div>
+        </div>
+      </section>
+
+      <!-- HTTPS & TLS -->
+      <section class="section reveal" id="https">
+        <span class="section-kicker k-1">08</span>
+        <h2 class="section-title">HTTPS &amp; TLS</h2>
+        <p class="section-sub"><strong>HTTPS</strong> is just HTTP with encryption. The <strong>S</strong> stands for Secure — it's the padlock 🔒 in your address bar. The encryption layer is called <strong>TLS</strong> (you may hear the older name SSL).</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-rose">🔓</div>
+            <h4>HTTP</h4>
+            <p>Plain text. Anyone between you and the server (cafe wifi, your ISP) could read it. Fine for nothing sensitive.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-mint">🔒</div>
+            <h4>HTTPS</h4>
+            <p>Encrypted with TLS, so only the server can read your data. <strong>Required</strong> for logins, payments — really, everything today.</p>
+          </div>
+        </div>
+        <p>HTTPS does two things: it <strong>encrypts</strong> the traffic, and a <strong>certificate</strong> proves the server really is who it claims to be. The browser checks the certificate automatically and shows the padlock when all's well.</p>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Never send secrets over plain HTTP</div><p>Passwords, tokens and card details must go over HTTPS. Modern browsers warn on <code class="inline">http://</code> pages with password fields for exactly this reason.</p></div>
+        </div>
+      </section>
+
+      <!-- LATENCY & CACHING -->
+      <section class="section reveal" id="performance">
+        <span class="section-kicker k-1">09</span>
+        <h2 class="section-title">Latency &amp; caching</h2>
+        <p class="section-sub">Data takes time to travel. <strong>Latency</strong> is that delay; <strong>caching</strong> is how we avoid paying it twice.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-warm">⏱️</div>
+            <h4>Latency</h4>
+            <p>The round-trip time for a request — measured in milliseconds. Distance, network quality and server speed all add to it.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-cool">🗄️</div>
+            <h4>Caching</h4>
+            <p>Storing a copy of a response so the next request is instant — in the browser, or on a CDN close to the user.</p>
+          </div>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">CDNs bring data closer</div><p>A <strong>CDN</strong> (Content Delivery Network) keeps copies of files on servers around the world, so a user in India loads from a nearby server instead of one across the planet — slashing latency. It's why a <code class="inline">304 Not Modified</code> response (see <a href="http-status-codes.html">status codes</a>) is so fast.</p></div>
+        </div>
+      </section>
+
+      <!-- MINI PROJECT -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">MINI PROJECT</span>
+        <h2 class="section-title">Trace a real page load</h2>
+        <p class="section-sub">No code for this one — you'll use the tool every developer lives in: the browser's <strong>DevTools Network tab</strong>. Watch the request/response cycle happen for real.</p>
+
+        <div class="callout output">
+          <div class="ci">🎯</div>
+          <div><div class="ctitle">Goal</div><p>See the actual requests, methods, status codes, headers and timings behind a page you visit every day.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🪜</span> Steps</h3>
+        <div class="key-points">
+          <div class="kp"><span class="check">1</span><div>Open any site, press <kbd>F12</kbd>, and click the <strong>Network</strong> tab.</div></div>
+          <div class="kp"><span class="check">2</span><div>Reload the page. Watch the list of requests fill up — HTML first, then CSS, JS, images, fonts.</div></div>
+          <div class="kp"><span class="check">3</span><div>Click the first request. Find its <strong>Method</strong> (GET), <strong>Status</strong> (200), and the <strong>Headers</strong> tab.</div></div>
+          <div class="kp"><span class="check">4</span><div>Spot the <code class="inline">Content-Type</code> header and, on a data request, switch to <strong>Response</strong> to see the JSON.</div></div>
+          <div class="kp"><span class="check">5</span><div>Check the <strong>Timing</strong> — DNS lookup, connecting, waiting (TTFB), downloading. That's everything from this guide, visualised.</div></div>
+        </div>
+
+        <h3><span class="h3-ico">🧪</span> Bonus: a request from the terminal</h3>
+        <p>See a raw response with <code class="inline">curl</code> — the request and headers, no browser involved:</p>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># -i shows the status line and headers, then the body
+curl -i https://api.github.com/users/torvalds
+
+# just the headers (a HEAD request)
+curl -I https://github.com</code></pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>Now that you know how the web moves data, learn the language of those responses in <a href="http-status-codes.html"><strong>HTTP status codes</strong></a>, or start building servers with <a href="node.html">Node</a>.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="index.html" class="prev"><span class="dir">← All guides</span><span class="ttl">DevGuides</span></a>
+          <a href="http-status-codes.html" class="next"><span class="dir">Next guide →</span><span class="ttl">HTTP status codes</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Networking basics complete</span>
+            <h3 class="foot-title">You can see the <span class="grad">wires</span> now</h3>
+            <p class="foot-lead">Clients, servers, DNS, the request cycle, HTTPS. Next: the status codes those responses carry.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="http-status-codes.html">HTTP status codes
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

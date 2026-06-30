@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CSS guide — style and lay out web pages: selectors, colors, units, the box model, flexbox, grid, position, responsive design and transitions. Ends with a landing-page styling project." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>CSS · DevGuides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>CSS</strong><span>DevGuides</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Guides / <b>CSS</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>CSS</strong><span>DevGuides</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">CSS basics</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#adding" data-title="Adding CSS"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg></span> Adding CSS</a>
+          <a class="nav-link" href="#folders" data-title="Folder structure"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span> Folder structure</a>
+          <a class="nav-link" href="#selectors" data-title="Selectors"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></span> Selectors</a>
+          <a class="nav-link" href="#colors" data-title="Colors & units"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/></svg></span> Colors &amp; units</a>
+          <a class="nav-link" href="#box-model" data-title="Box model"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg></span> Box model</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Layout</div>
+          <a class="nav-link" href="#flexbox" data-title="Flexbox"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/></svg></span> Flexbox</a>
+          <a class="nav-link" href="#grid" data-title="CSS Grid"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span> CSS Grid</a>
+          <a class="nav-link" href="#position" data-title="Position"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></span> Position</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Responsive &amp; motion</div>
+          <a class="nav-link" href="#responsive" data-title="Media queries"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="13" height="10" rx="1"/><rect x="17" y="9" width="5" height="11" rx="1"/><path d="M2 18h11"/></svg></span> Media queries</a>
+          <a class="nav-link" href="#transitions" data-title="Transitions"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l2.4 6.6L22 12l-6.6 2.4L13 21l-2.4-6.6L4 12l6.6-2.4z"/><path d="M5 4v3M3.5 5.5h3"/></svg></span> Transitions</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Mini projects</div>
+          <a class="nav-link" href="#project" data-title="1 · Landing page"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></span> 1 · Landing page</a>
+          <a class="nav-link" href="#project-card" data-title="2 · Profile card"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="3"/><path d="M7 18a5 5 0 0 1 10 0"/></svg></span> 2 · Profile card</a>
+          <a class="nav-link" href="#project-navbar" data-title="3 · Responsive navbar"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M7 14h10M7 18h10"/></svg></span> 3 · Responsive navbar</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-4">FUNDAMENTALS · 01</span>
+        <h2 class="section-title">CSS — making the web beautiful</h2>
+        <p class="section-sub">CSS (Cascading Style Sheets) controls <strong>how your HTML looks</strong> — colours, fonts, spacing, layout, animations. HTML builds the structure; CSS dresses it up.</p>
+
+        <div class="callout analogy">
+          <div class="ci">🎨</div>
+          <div><div class="ctitle">Analogy</div><p>If HTML is the framing and walls of a house, <strong>CSS is the paint, flooring, and furniture arrangement</strong>. Same structure, completely different feel.</p></div>
+        </div>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What does "cascading" mean?</div><p>Many rules can target the same element. CSS has a system — the <strong>cascade</strong> — that decides which one wins, based on <em>specificity</em> and <em>order</em>. You'll meet it in the Selectors section.</p></div>
+        </div>
+
+        <p>This guide assumes you know basic HTML (if not, read the <a href="html.html">HTML guide</a> first). Open the <code class="inline">public/projects/HTML-CSS-Project</code> page and follow along — you'll style it into a real landing page by the end.</p>
+      </section>
+
+      <!-- ADDING CSS -->
+      <section class="section reveal" id="adding">
+        <span class="section-kicker k-3">02</span>
+        <h2 class="section-title">Adding CSS &amp; the rule syntax</h2>
+        <p class="section-sub">Every CSS rule has the same shape: a <strong>selector</strong> (what to style) and a <strong>declaration block</strong> of <code class="inline">property: value;</code> pairs (how to style it).</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">rule.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>h1 {                 /* selector */
+  color: #7c3aed;    /* property: value;  (a declaration) */
+  font-size: 32px;
+  text-align: center;
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🔌</span> Three ways to add CSS</h3>
+        <p>There are exactly three places CSS can live. They behave differently — here's what each one is.</p>
+
+        <h4>1 · Inline styles — on the element itself</h4>
+        <p>CSS written directly in an element's <code class="inline">style</code> attribute. It applies to <strong>that one element only</strong>.</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">inline<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;p style="color: red; font-size: 20px;"&gt;Hello&lt;/p&gt;</code></pre>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Avoid inline styles</div><p>They mix structure with styling, can't be reused, and are the <strong>hardest to override</strong> (highest specificity). Fine for a one-off quick test or email templates — not for real projects.</p></div>
+        </div>
+
+        <h4>2 · Internal styles — a &lt;style&gt; block in the page</h4>
+        <p>CSS placed inside a <code class="inline">&lt;style&gt;</code> tag in the <code class="inline">&lt;head&gt;</code>. It styles <strong>that whole page</strong>, but only that page.</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">internal<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;head&gt;
+  &lt;style&gt;
+    p    { color: red; }
+    .btn { background: #7c3aed; color: white; }
+  &lt;/style&gt;
+&lt;/head&gt;</code></pre>
+        </div>
+        <p>Better than inline (you can reuse selectors and it's separate from the markup), but the styles are stuck on this one page. Good for a quick demo or a single-page site.</p>
+
+        <h4>3 · External styles — a separate .css file ✅</h4>
+        <p>CSS lives in its own <code class="inline">.css</code> file, linked from the <code class="inline">&lt;head&gt;</code>. <strong>This is what you should use.</strong> One file can style your <em>entire</em> website.</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;head&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;</code></pre>
+        </div>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>p    { color: red; }
+.btn { background: #7c3aed; color: white; }</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Method</th><th>Scope</th><th>Reusable?</th><th>Use it?</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Inline</strong> (<code>style="…"</code>)</td><td>One element</td><td>No</td><td><span class="status-pill s-5xx">avoid</span></td></tr>
+              <tr><td><strong>Internal</strong> (<code>&lt;style&gt;</code>)</td><td>One page</td><td>On that page</td><td><span class="status-pill s-4xx">sometimes</span></td></tr>
+              <tr><td><strong>External</strong> (<code>.css</code> file)</td><td>Every linked page</td><td>Everywhere</td><td><span class="status-pill s-2xx">yes ✓</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Why external wins</div><p>It keeps your HTML clean, lets <strong>one stylesheet serve your whole site</strong> (change a colour once, every page updates), and the browser <strong>caches</strong> it so pages load faster.</p></div>
+        </div>
+        <div class="callout what">
+          <div class="ci">⚖️</div>
+          <div><div class="ctitle">If they clash, who wins?</div><p>When all three set the same property: <strong>inline &gt; internal/external</strong> (inline is most specific), and between internal and external the one written <strong>later</strong> wins. More on this in <a href="#selectors">Selectors &amp; specificity</a>.</p></div>
+        </div>
+      </section>
+
+      <!-- FOLDER STRUCTURE -->
+      <section class="section reveal" id="folders">
+        <span class="section-kicker k-4">SETUP</span>
+        <h2 class="section-title">Where the CSS file lives</h2>
+        <p class="section-sub">Your stylesheet sits alongside your HTML, and the <code class="inline">&lt;link&gt;</code> path must point to it correctly. Here's the standard layout.</p>
+
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">my-website/<span class="lang">folders</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>my-website/
+├── index.html        # links to style.css
+├── about.html        # can link to the SAME style.css
+├── style.css         # all your styles
+└── public/
+    └── hero.jpg</code></pre>
+        </div>
+        <p>Because <code class="inline">style.css</code> is in the <strong>same folder</strong> as <code class="inline">index.html</code>, the link is just the file name:</p>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;head&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🗂️</span> Bigger projects — a css/ folder</h3>
+        <p>As your styles grow, split them into a <code class="inline">css/</code> folder. Then the link path includes the folder.</p>
+        <div class="code" data-lang="tree">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">my-website/<span class="lang">folders</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>my-website/
+├── index.html
+└── css/
+    ├── reset.css         # clear browser defaults
+    ├── style.css         # main styles
+    └── components.css    # buttons, cards, etc.</code></pre>
+        </div>
+        <div class="code" data-lang="html">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">index.html<span class="lang">html</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>&lt;link rel="stylesheet" href="css/reset.css" /&gt;
+&lt;link rel="stylesheet" href="css/style.css" /&gt;        &lt;!-- order matters! --&gt;</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Order matters</div><p>Stylesheets load top-to-bottom, and later rules can override earlier ones. Link <code class="inline">reset.css</code> first, then your main styles, so your styles win.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Styles not applying?</div><p>It's almost always a wrong <code class="inline">href</code> path — the file isn't where the link says. Check the folder: <code class="inline">href="style.css"</code> (same folder) vs <code class="inline">href="css/style.css"</code> (inside a <code class="inline">css</code> folder).</p></div>
+        </div>
+      </section>
+
+      <!-- SELECTORS -->
+      <section class="section reveal" id="selectors">
+        <span class="section-kicker k-3">03</span>
+        <h2 class="section-title">Selectors &amp; specificity</h2>
+        <p class="section-sub">Selectors decide <em>which</em> elements a rule applies to. Master these five and you can target anything.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">selectors.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>p            { color: #333; }   /* element  — every &lt;p&gt; */
+.btn         { color: white; }  /* class    — every class="btn" */
+#hero        { padding: 40px; }  /* id       — the one id="hero" */
+.card p      { margin: 0; }     /* descendant — &lt;p&gt; inside .card */
+.btn:hover   { color: violet; } /* pseudo-class — on mouse hover */</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Selector</th><th>Targets</th><th>Weight</th></tr></thead>
+            <tbody>
+              <tr><td><code>p</code> (element)</td><td>All elements of that tag</td><td>1</td></tr>
+              <tr><td><code>.btn</code> (class)</td><td>All elements with that class</td><td>10</td></tr>
+              <tr><td><code>#hero</code> (id)</td><td>The single element with that id</td><td>100</td></tr>
+              <tr><td><code>:hover</code>, <code>:first-child</code></td><td>Elements in a certain state/position</td><td>10</td></tr>
+              <tr><td><code>*</code></td><td>Everything (universal)</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout what">
+          <div class="ci">⚖️</div>
+          <div><div class="ctitle">Specificity — who wins?</div><p>When two rules set the same property, the one with the higher <strong>specificity</strong> (id &gt; class &gt; element) wins. If they tie, the one written <strong>later</strong> wins. Prefer <strong>classes</strong> — avoid ids and <code class="inline">!important</code> for styling, since they're hard to override.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common mistake</div><p>Forgetting the <code class="inline">.</code> before a class (<code class="inline">btn { }</code> targets a <code class="inline">&lt;btn&gt;</code> tag, not <code class="inline">class="btn"</code>) or the <code class="inline">#</code> before an id.</p></div>
+        </div>
+      </section>
+
+      <!-- COLORS & UNITS -->
+      <section class="section reveal" id="colors">
+        <span class="section-kicker k-3">04</span>
+        <h2 class="section-title">Colors, units &amp; variables</h2>
+        <p class="section-sub">The raw materials of styling: how to write colours, which size units to use, and how to reuse values with variables.</p>
+
+        <h3><span class="h3-ico">🎨</span> Colors</h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">colors.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>color: red;                      /* named */
+color: #7c3aed;                  /* hex */
+color: rgb(124, 58, 237);        /* red, green, blue */
+color: rgba(124, 58, 237, 0.5);  /* + alpha (transparency) */
+color: hsl(258, 84%, 58%);       /* hue, saturation, lightness */
+
+background: linear-gradient(135deg, #7c3aed, #06b6d4);</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">📏</span> Units — when to use which</h3>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Unit</th><th>Use for</th></tr></thead>
+            <tbody>
+              <tr><td><code>px</code></td><td>Fixed sizes — borders, small precise spacing.</td></tr>
+              <tr><td><code>rem</code></td><td>Font sizes &amp; spacing that scale with the user's settings (1rem = 16px by default). <strong>Prefer this.</strong></td></tr>
+              <tr><td><code>%</code></td><td>Sizes relative to the parent (e.g. <code>width: 50%</code>).</td></tr>
+              <tr><td><code>vw</code> / <code>vh</code></td><td>Percentage of the viewport width/height (<code>100vh</code> = full screen height).</td></tr>
+              <tr><td><code>fr</code></td><td>A "fraction" of free space — used in Grid.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3><span class="h3-ico">♻️</span> Custom properties (variables)</h3>
+        <p>A CSS <strong>variable</strong> stores a value (a colour, a size) under a name so you can reuse it everywhere — and change it in <em>one</em> place. Two parts:</p>
+        <ul>
+          <li><strong>Define</strong> it with a name that starts with <code class="inline">--</code>, usually inside <code class="inline">:root</code> (the top of the document, so it's available everywhere).</li>
+          <li><strong>Use</strong> it with <code class="inline">var(--name)</code> anywhere a value goes.</li>
+        </ul>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">variables.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>:root {
+  --brand: #7c3aed;      /* define a colour variable  */
+  --space: 16px;         /* define a spacing variable */
+}
+
+.btn {
+  background: var(--brand);   /* use it */
+  padding: var(--space);
+}
+.link { color: var(--brand); }   /* reuse the same colour */</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Why variables are powerful</div><p>Change <code class="inline">--brand</code> once and <strong>every</strong> button, link and heading using it updates instantly. They're how you build themes (and how dark mode works) — change a set of variables and the whole site re-skins.</p></div>
+        </div>
+      </section>
+
+      <!-- BOX MODEL -->
+      <section class="section reveal" id="box-model">
+        <span class="section-kicker k-3">05</span>
+        <h2 class="section-title">The box model</h2>
+        <p class="section-sub">Every element is a rectangular box made of four layers. Understanding them is the key to spacing things correctly.</p>
+
+        <div class="diagram">
+          <div class="dg-title">📦 From inside out</div>
+          <div class="flow">
+            <div class="flow-box db"><span class="fb-ico">▦</span><b>content</b><small>text / image</small></div>
+            <div class="flow-box fe"><span class="fb-ico">⬚</span><b>padding</b><small>space inside</small></div>
+            <div class="flow-box be"><span class="fb-ico">▢</span><b>border</b><small>the edge</small></div>
+            <div class="flow-box" style="background:linear-gradient(135deg,#f59e0b,#f43f5e)"><span class="fb-ico">↹</span><b>margin</b><small>space outside</small></div>
+          </div>
+        </div>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">box.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.card {
+  padding: 20px;            /* space INSIDE, around the content */
+  border: 1px solid #ddd;
+  border-radius: 12px;      /* rounded corners */
+  margin: 16px;             /* space OUTSIDE, between boxes */
+}
+
+/* Make width include padding + border (much more intuitive) */
+* { box-sizing: border-box; }</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Always set box-sizing</div><p>Add <code class="inline">* { box-sizing: border-box; }</code> at the top of every stylesheet. Then <code class="inline">width: 300px</code> really means 300px — padding and border are counted <em>inside</em>, not added on.</p></div>
+        </div>
+      </section>
+
+      <!-- FLEXBOX -->
+      <section class="section reveal" id="flexbox">
+        <span class="section-kicker k-1">LAYOUT · 06</span>
+        <h2 class="section-title">Flexbox — rows &amp; columns</h2>
+        <p class="section-sub">The everyday layout tool. Add <code class="inline">display: flex</code> to a <strong>parent</strong> and its children line up in a flexible row (or column).</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">flex.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.navbar {
+  display: flex;
+  justify-content: space-between; /* spread items along the row */
+  align-items: center;            /* centre them vertically */
+  gap: 16px;                      /* space between items */
+}
+
+/* Centre anything, horizontally AND vertically */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Property (on parent)</th><th>Controls</th></tr></thead>
+            <tbody>
+              <tr><td><code>flex-direction</code></td><td><code>row</code> (default) or <code>column</code></td></tr>
+              <tr><td><code>justify-content</code></td><td>Spacing along the main axis: <code>center</code>, <code>space-between</code>, <code>space-around</code></td></tr>
+              <tr><td><code>align-items</code></td><td>Alignment across the axis: <code>center</code>, <code>stretch</code>, <code>flex-start</code></td></tr>
+              <tr><td><code>gap</code></td><td>Even gap between items</td></tr>
+              <tr><td><code>flex-wrap</code></td><td><code>wrap</code> — items drop to the next line when they don't fit</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- GRID -->
+      <section class="section reveal" id="grid">
+        <span class="section-kicker k-1">LAYOUT · 07</span>
+        <h2 class="section-title">CSS Grid — 2-D layouts</h2>
+        <p class="section-sub">Flexbox handles one direction; <strong>Grid handles rows and columns together</strong>. Perfect for card grids and galleries.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">grid.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 equal columns */
+  gap: 20px;
+}
+
+/* Responsive grid with NO media query: */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}</code></pre>
+        </div>
+        <div class="callout when">
+          <div class="ci">🧭</div>
+          <div><div class="ctitle">Flex or Grid?</div><p>One row/column of items → <strong>Flexbox</strong>. A 2-D arrangement (cards in rows &amp; columns, a page layout) → <strong>Grid</strong>. They work great together.</p></div>
+        </div>
+      </section>
+
+      <!-- POSITION -->
+      <section class="section reveal" id="position">
+        <span class="section-kicker k-1">LAYOUT · 08</span>
+        <h2 class="section-title">Position</h2>
+        <p class="section-sub">Take an element out of the normal flow and place it precisely — a sticky navbar, a corner badge, a modal.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">position.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.navbar { position: sticky; top: 0; }  /* sticks on scroll */
+
+.card { position: relative; }          /* anchor for children */
+.card .badge {
+  position: absolute;                  /* relative to .card */
+  top: 8px; right: 8px;
+}</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th><code>position</code></th><th>Behaviour</th></tr></thead>
+            <tbody>
+              <tr><td><code>static</code></td><td>Default — normal flow.</td></tr>
+              <tr><td><code>relative</code></td><td>Normal flow, nudgeable, and an anchor for absolute children.</td></tr>
+              <tr><td><code>absolute</code></td><td>Out of flow; positioned to the nearest <code>relative</code> ancestor.</td></tr>
+              <tr><td><code>fixed</code></td><td>Pinned to the viewport; ignores scrolling.</td></tr>
+              <tr><td><code>sticky</code></td><td>Normal until you scroll past, then sticks.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RESPONSIVE -->
+      <section class="section reveal" id="responsive">
+        <span class="section-kicker k-2">09</span>
+        <h2 class="section-title">Responsive design</h2>
+        <p class="section-sub">Make your page look great on phones, tablets and desktops. The main tool is the <strong>media query</strong> — apply different CSS at different screen widths.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">responsive.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>/* Base styles (mobile-first) */
+.features { display: grid; grid-template-columns: 1fr; }
+
+/* On screens 768px and wider, use 3 columns */
+@media (min-width: 768px) {
+  .features { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Hide something on small screens */
+@media (max-width: 600px) {
+  .navbar nav { display: none; }
+}</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Two essentials for responsive</div><p>1) The viewport meta tag in your HTML <code class="inline">&lt;head&gt;</code>. 2) Use flexible units (<code class="inline">%</code>, <code class="inline">fr</code>, <code class="inline">rem</code>) and <code class="inline">max-width</code> instead of fixed pixel widths.</p></div>
+        </div>
+      </section>
+
+      <!-- TRANSITIONS -->
+      <section class="section reveal" id="transitions">
+        <span class="section-kicker k-2">10</span>
+        <h2 class="section-title">Transitions &amp; animations</h2>
+        <p class="section-sub">Add polish — smooth hover effects and motion. A <code class="inline">transition</code> animates a property change; <code class="inline">@keyframes</code> defines a full animation.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">motion.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.btn {
+  background: #7c3aed;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-3px);   /* lifts up smoothly on hover */
+  background: #6d28d9;
+}
+
+/* A looping animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.logo { animation: float 3s ease-in-out infinite; }</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Be kind with motion</div><p>Keep transitions quick (0.15–0.3s) and subtle. Wrap big animations in <code class="inline">@media (prefers-reduced-motion: no-preference)</code> to respect users who turn motion off.</p></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 1 -->
+      <section class="section reveal" id="project">
+        <span class="section-kicker k-2">PROJECT 1</span>
+        <h2 class="section-title">Style the landing page</h2>
+        <p class="section-sub">Take the HTML landing page you built in the <a href="html.html">HTML guide</a> and turn it into a polished, responsive site — a sticky navbar, a hero, a grid of feature cards, and hover effects.</p>
+
+        <div class="callout output">
+          <div class="ci">📦</div>
+          <div><div class="ctitle">Reference project</div><p>The finished <strong>"Deliver Logistics"</strong> site lives in <code class="inline">public/projects/HTML-CSS-Project</code> (<code class="inline">index.html</code> + <code class="inline">style.css</code>). Style your own first, then compare.</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🧩</span> The key CSS</h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">style.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>/* Foundations */
+* { box-sizing: border-box; margin: 0; }
+:root { --brand: #7c3aed; --ink: #1e293b; }
+body { font-family: system-ui, sans-serif; color: var(--ink); }
+
+/* 1. Navbar — flex, spaced, sticky */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  position: sticky;
+  top: 0;
+  background: white;
+}
+.navbar nav { display: flex; gap: 24px; }
+
+/* 2. Hero — big, centred, with a button */
+.hero { text-align: center; padding: 80px 20px; }
+.hero h1 { font-size: 2.5rem; }
+.btn {
+  display: inline-block;
+  background: var(--brand);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.btn:hover { transform: translateY(-3px); }
+
+/* 3. Feature cards — responsive grid */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 40px 32px;
+}
+.card {
+  padding: 24px;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 30px -12px rgba(0,0,0,0.15);
+}
+
+/* 4. Responsive — stack the navbar links on phones */
+@media (max-width: 600px) {
+  .navbar { flex-direction: column; gap: 12px; }
+  .hero h1 { font-size: 1.8rem; }
+}</code></pre>
+        </div>
+
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Start with <code class="inline">box-sizing: border-box</code> and a couple of CSS variables.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Flexbox for the navbar; Grid (<code class="inline">auto-fill, minmax</code>) for the feature cards.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Add <code class="inline">transition</code> + a <code class="inline">:hover</code> lift to buttons and cards.</div></div>
+          <div class="kp"><span class="check">✓</span><div>Finish with a media query so it looks great on a phone.</div></div>
+        </div>
+
+        <div class="key-points" style="margin-top:14px">
+          <div class="kp"><span class="check">✓</span><div>Two more projects below — a profile card and a responsive navbar.</div></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 2 · PROFILE CARD -->
+      <section class="section reveal" id="project-card">
+        <span class="section-kicker k-4">PROJECT 2</span>
+        <h2 class="section-title">Style the profile card</h2>
+        <p class="section-sub">Take the profile-card markup from the <a href="html.html#project-card">HTML guide</a> and turn it into a sleek dark card: a circular avatar, a corner star, and social icons that light up on hover.</p>
+
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">card.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.profile-card {
+  width: 280px;
+  background: #1b1b1f;          /* dark card */
+  border-radius: 22px;
+  padding: 28px;
+  text-align: center;          /* centre everything inside */
+  color: white;
+  position: relative;          /* anchor for the star badge */
+  box-shadow: 0 20px 40px -16px rgba(0,0,0,0.5);
+}
+
+/* corner star badge */
+.star {
+  position: absolute;
+  top: 16px; right: 18px;
+  color: #fbbf24;
+}
+
+/* circular avatar */
+.avatar {
+  width: 120px; height: 120px;
+  border-radius: 50%;          /* makes it a circle */
+  object-fit: cover;           /* image fills the circle, no squish */
+  background: #c4b5fd;
+}
+
+.profile-card h2 { margin: 18px 0 4px; font-size: 1.3rem; }
+.location { color: #8a8a93; font-size: 0.85rem; }
+
+/* row of round social buttons */
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+.socials a {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: #2a2a30;
+  color: white;
+  display: grid;
+  place-items: center;          /* centre the icon */
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.socials a:hover {
+  background: #7c3aed;          /* brand colour on hover */
+  transform: translateY(-3px);
+}</code></pre>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><code class="inline">border-radius: 50%</code> + <code class="inline">object-fit: cover</code> = a perfect circular avatar.</div></div>
+          <div class="kp"><span class="check">✓</span><div><code class="inline">position: relative</code> on the card lets the star pin to the corner with <code class="inline">absolute</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div><code class="inline">display: grid; place-items: center</code> centres each icon in its round button.</div></div>
+          <div class="kp"><span class="check">✓</span><div>A <code class="inline">transition</code> makes the hover colour + lift feel smooth.</div></div>
+        </div>
+      </section>
+
+      <!-- PROJECT 3 · RESPONSIVE NAVBAR -->
+      <section class="section reveal" id="project-navbar">
+        <span class="section-kicker k-1">PROJECT 3</span>
+        <h2 class="section-title">Style the responsive navbar</h2>
+        <p class="section-sub">Style the navbar markup from the <a href="html.html#project-navbar">HTML guide</a>: a row of links on desktop, and a hamburger that slides a drawer in on mobile — all with the CSS <code class="inline">:checked</code> trick, no JavaScript.</p>
+
+        <h3><span class="h3-ico">🖥️</span> Base styles (desktop)</h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">navbar.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: #111;
+  color: white;
+}
+.logo { color: white; font-weight: 700; text-decoration: none; font-size: 1.2rem; }
+
+.nav-menu { display: flex; gap: 26px; }
+.nav-menu a { color: #ddd; text-decoration: none; transition: color 0.2s; }
+.nav-menu a:hover { color: white; }
+
+/* hide the checkbox and the hamburger on desktop */
+.nav-toggle { display: none; }
+.hamburger  { display: none; }</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">📱</span> Mobile (the hamburger drawer)</h3>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">navbar.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>@media (max-width: 700px) {
+  /* show the hamburger; build its 3 bars */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .hamburger span {
+    width: 26px; height: 3px;
+    background: white;
+    border-radius: 2px;
+  }
+
+  /* the menu becomes an off-screen drawer */
+  .nav-menu {
+    position: fixed;
+    top: 0; right: -100%;        /* parked off-screen */
+    height: 100vh; width: 240px;
+    background: #111;
+    flex-direction: column;
+    padding: 80px 28px;
+    gap: 22px;
+    transition: right 0.3s ease;  /* slide animation */
+  }
+
+  /* when the checkbox is ticked, slide the drawer in */
+  .nav-toggle:checked ~ .nav-menu { right: 0; }
+}</code></pre>
+        </div>
+
+        <div class="callout what">
+          <div class="ci">🪄</div>
+          <div><div class="ctitle">The magic line</div><p><code class="inline">.nav-toggle:checked ~ .nav-menu { right: 0; }</code> — when the hidden checkbox is checked (you tapped the hamburger label), the sibling <code class="inline">.nav-menu</code> slides from <code class="inline">right: -100%</code> to <code class="inline">right: 0</code>. The <code class="inline">transition</code> makes it glide.</p></div>
+        </div>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>Desktop: a flex row. Mobile: <code class="inline">position: fixed</code> drawer parked at <code class="inline">right: -100%</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The hamburger's three <code class="inline">&lt;span&gt;</code>s are stacked into bars with flex-column.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The sibling selector <code class="inline">:checked ~ .nav-menu</code> opens it — pure CSS.</div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="ci">🎓</div>
+          <div><div class="ctitle">What's next</div><p>Three projects styled and responsive! Now make them <em>do</em> things — head to the <a href="javascript.html"><strong>JavaScript guide</strong></a> for a calculator, a weather app and more.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="html.html" class="prev"><span class="dir">← Previous</span><span class="ttl">HTML</span></a>
+          <a href="javascript.html" class="next"><span class="dir">Next guide →</span><span class="ttl">JavaScript</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> CSS guide complete</span>
+            <h3 class="foot-title">Your pages look <span class="grad">beautiful</span> now</h3>
+            <p class="foot-lead">Next: bring them to life with JavaScript.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="javascript.html">Continue to JavaScript
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="index.html">All guides</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
