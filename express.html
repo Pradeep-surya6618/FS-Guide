@@ -359,8 +359,26 @@ app.delete("/tasks/:id", (req, res) =&gt; {
 app.listen(3000, () =&gt; console.log("API on http://localhost:3000"));</code></pre>
         </div>
 
+        <h3><span class="h3-ico">▶️</span> How to run it</h3>
+        <p>The whole app is one <code class="inline">app.js</code> file plus Express. In an empty folder, run these once, then start the server:</p>
+        <div class="code terminal" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>npm init -y            # create package.json
+npm install express    # download Express into node_modules
+node app.js            # start the server
+# → API on http://localhost:3000</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">No "type": "module" needed here</div><p>This file uses <code class="inline">require(...)</code> (CommonJS), so the default <code class="inline">package.json</code> from <code class="inline">npm init</code> works as-is — don't add <code class="inline">"type": "module"</code> (that's only for the <code class="inline">import</code> style). For auto-restart on save, install nodemon (<code class="inline">npm install -D nodemon</code>) and run <code class="inline">npx nodemon app.js</code>.</p></div>
+        </div>
+        <div class="callout mistake">
+          <div class="ci">🚫</div>
+          <div><div class="ctitle">Common trip-ups</div><p>• <code class="inline">Cannot find module 'express'</code> → you skipped <code class="inline">npm install express</code>. • <code class="inline">EADDRINUSE :3000</code> → port 3000 is already taken (another server is running) — stop it, or change the port in <code class="inline">app.listen</code>. • Leave this terminal open while the server runs; <kbd>Ctrl</kbd>+<kbd>C</kbd> stops it.</p></div>
+        </div>
+
         <h3><span class="h3-ico">🧪</span> Try it</h3>
-        <p>With the server running, test it from another terminal with <code class="inline">curl</code> (or use Postman):</p>
+        <p>Only <strong>GET</strong> works by typing a URL in the browser — open <a href="http://localhost:3000/tasks" target="_blank" rel="noopener"><code class="inline">http://localhost:3000/tasks</code></a> and you'll see the JSON. <strong>POST / PUT / DELETE</strong> need a request tool: <strong>Thunder Client</strong> (a VS Code extension), <strong>Postman</strong>, or <code class="inline">curl</code> from a second terminal:</p>
         <div class="code" data-lang="bash">
           <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">test.sh<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
           <pre><code># list tasks
@@ -374,6 +392,40 @@ curl -X POST http://localhost:3000/tasks \
 # delete task 1
 curl -X DELETE http://localhost:3000/tasks/1</code></pre>
         </div>
+
+        <h3><span class="h3-ico">🌐</span> Or test it right in the browser</h3>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">The address bar only does GET</div><p>Typing a URL is <em>always</em> a <code class="inline">GET</code> — that's why <code class="inline">/tasks</code> shows all tasks. You can't <code class="inline">POST</code>/<code class="inline">PUT</code>/<code class="inline">DELETE</code> from the URL bar. To do those in the browser, use the <strong>DevTools Console</strong>.</p></div>
+        </div>
+        <p>Open <code class="inline">http://localhost:3000/tasks</code> in the browser (a page served by your API), press <kbd>F12</kbd> → <strong>Console</strong>, and paste these. Using relative URLs (<code class="inline">/tasks</code>) keeps it same-origin, so there's no CORS block:</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">DevTools Console<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// READ all
+fetch("/tasks").then((r) =&gt; r.json()).then(console.log);
+
+// CREATE
+fetch("/tasks", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ title: "New task from the browser" }),
+}).then((r) =&gt; r.json()).then(console.log);
+
+// UPDATE task 1 (mark it done)
+fetch("/tasks/1", {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ done: true }),
+}).then((r) =&gt; r.json()).then(console.log);
+
+// DELETE task 1
+fetch("/tasks/1", { method: "DELETE" }).then((r) =&gt; console.log("status:", r.status));</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Seeing the change</div><p>After a CREATE/UPDATE/DELETE, run the READ line again (or just refresh <code class="inline">/tasks</code> in the tab) to see the updated list. Even easier for beginners: install the <strong>Thunder Client</strong> extension in VS Code — it's a point-and-click way to pick the method, URL and JSON body, no console needed.</p></div>
+        </div>
+
         <div class="key-points">
           <div class="kp"><span class="check">✓</span><div>Each route returns the right status: <code class="inline">201</code> created, <code class="inline">400</code> bad input, <code class="inline">404</code> missing, <code class="inline">204</code> deleted.</div></div>
           <div class="kp"><span class="check">✓</span><div><code class="inline">req.body</code> carries the JSON; <code class="inline">req.params.id</code> picks the task.</div></div>
