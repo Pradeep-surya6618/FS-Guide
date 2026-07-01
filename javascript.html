@@ -73,12 +73,14 @@
           <a class="nav-link" href="#functions" data-title="Functions & scope"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 0 0-2 2v3c0 1-1 2-2 2 1 0 2 1 2 2v3a2 2 0 0 0 2 2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v3c0 1 1 2 2 2-1 0-2 1-2 2v3a2 2 0 0 1-2 2h-2"/></svg></span> Functions</a>
           <a class="nav-link" href="#arrays" data-title="Arrays & objects"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2M17 4h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2"/></svg></span> Arrays &amp; objects</a>
           <a class="nav-link" href="#loops" data-title="Loops"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span> Loops</a>
+          <a class="nav-link" href="#es6" data-title="ES6 & modern JS"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-1 9h7l-8 11 1-9H5z"/></svg></span> ES6 &amp; modern JS</a>
         </div>
         <div class="nav-group">
           <div class="nav-title">In the browser</div>
           <a class="nav-link" href="#dom" data-title="The DOM"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M12 7v4M12 11 6 17M12 11l6 6"/></svg></span> The DOM</a>
           <a class="nav-link" href="#events" data-title="Events"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7 18 2.5-7.5L20 11z"/></svg></span> Events</a>
           <a class="nav-link" href="#storage" data-title="Storage"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span> Storage</a>
+          <a class="nav-link" href="#async" data-title="Callbacks & Promises"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8a5 5 0 0 1 5-5 5 5 0 0 1 5 5M17 16a5 5 0 0 1-5 5 5 5 0 0 1-5-5"/><path d="M3 8h4V4M21 16h-4v4"/></svg></span> Callbacks &amp; Promises</a>
           <a class="nav-link" href="#fetch" data-title="Fetch & async"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></span> Fetch &amp; async</a>
         </div>
         <div class="nav-group">
@@ -331,6 +333,64 @@ fruits.forEach((fruit) =&gt; console.log(fruit));</code></pre>
         </div>
       </section>
 
+      <!-- ES6 -->
+      <section class="section reveal" id="es6">
+        <span class="section-kicker k-2">MODERN JS</span>
+        <h2 class="section-title">ES6 &amp; modern JavaScript</h2>
+        <p class="section-sub"><strong>ES6</strong> (ECMAScript 2015) was a huge upgrade to JavaScript. "ES6+", "ES2015", "modern JS" all mean the same thing — the cleaner, newer syntax you've already been using (<code class="inline">let</code>, <code class="inline">const</code>, arrow functions). Here are the headline features in one place.</p>
+
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">es6.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// 1 · let &amp; const — block-scoped (replace the old `var`)
+const name = "Ada";
+let score = 0;
+
+// 2 · arrow functions — short function syntax
+const add = (a, b) =&gt; a + b;
+
+// 3 · template literals — drop values into strings with ${}
+const msg = `Hi ${name}, 2 + 2 = ${2 + 2}`;
+
+// 4 · destructuring — pull values straight out
+const user = { id: 1, city: "Paris" };
+const { id, city } = user;          // id = 1, city = "Paris"
+const [first, second] = [10, 20];   // first = 10, second = 20
+
+// 5 · spread (...) copy/merge — and rest (...) collect
+const more   = [...[1, 2], 3];      // [1, 2, 3]
+const merged = { ...user, active: true };
+const sum = (...nums) =&gt; nums.reduce((a, n) =&gt; a + n, 0);
+
+// 6 · default parameters
+const greet = (who = "friend") =&gt; `Hi ${who}`;
+
+// 7 · object shorthand
+const x = 5, y = 6;
+const point = { x, y };             // { x: 5, y: 6 }
+
+// 8 · modules
+// import { add } from "./math.js";
+// export default add;</code></pre>
+        </div>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Task</th><th>ES5 (old)</th><th>ES6+ (modern)</th></tr></thead>
+            <tbody>
+              <tr><td>Declare a variable</td><td><code>var x = 1</code></td><td><code>const x = 1</code> / <code>let x = 1</code></td></tr>
+              <tr><td>Write a function</td><td><code>function (a) { return a }</code></td><td><code>(a) =&gt; a</code></td></tr>
+              <tr><td>Build a string</td><td><code>"Hi " + name</code></td><td><code>`Hi ${name}`</code></td></tr>
+              <tr><td>Copy an array</td><td><code>arr.slice()</code></td><td><code>[...arr]</code></td></tr>
+              <tr><td>Read object props</td><td><code>var n = obj.name</code></td><td><code>const { name } = obj</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">It's just "how JavaScript is written now"</div><p>Every browser and Node support ES6+, so there's no reason to use the old style. New features arrive every year (ES2016, ES2017…) — <code class="inline">async/await</code>, optional chaining <code class="inline">?.</code>, and more all came this way.</p></div>
+        </div>
+      </section>
+
       <!-- DOM -->
       <section class="section reveal" id="dom">
         <span class="section-kicker k-1">BROWSER · 08</span>
@@ -554,6 +614,70 @@ console.log(saved.name);   // "Ada"</code></pre>
           <div><div class="ctitle">Don't store secrets here</div><p>Any script on the page can read <code class="inline">localStorage</code>. Never keep passwords or sensitive tokens in it — those belong in secure cookies, covered in the <a href="authentication.html">Authentication</a> &amp; <a href="jwt.html">JWT</a> guides.</p></div>
         </div>
         <p>This site itself uses <code class="inline">localStorage</code> to remember your theme and sidebar state — try toggling dark mode and reloading.</p>
+      </section>
+
+      <!-- CALLBACKS & PROMISES -->
+      <section class="section reveal" id="async">
+        <span class="section-kicker k-1">ASYNC</span>
+        <h2 class="section-title">Callbacks &amp; Promises</h2>
+        <p class="section-sub">Some things take time — a network request, a timer, reading a file. JavaScript doesn't freeze while it waits; it handles them <strong>asynchronously</strong> and runs your code "when it's done." Callbacks and Promises are the two tools for that.</p>
+
+        <h3><span class="h3-ico">📞</span> Callbacks</h3>
+        <p>A <strong>callback</strong> is just a function you pass to another function to be run <em>later</em> — when the work finishes.</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">callbacks.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// setTimeout takes a callback — run this after 1 second
+setTimeout(() =&gt; {
+  console.log("1 second later!");
+}, 1000);
+
+// your own function that accepts a callback
+function getUser(id, callback) {
+  // ...pretend we fetched a user...
+  callback({ id, name: "Ada" });
+}
+getUser(1, (user) =&gt; console.log(user.name));   // "Ada"</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">"Callback hell"</div><p>When one async step depends on the last, callbacks nest deeper and deeper into a hard-to-read "pyramid of doom":</p></div>
+        </div>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">pyramid.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>getUser(1, (user) =&gt; {
+  getPosts(user, (posts) =&gt; {
+    getComments(posts, (comments) =&gt; {
+      // 😵 nested, hard to read and to handle errors
+    });
+  });
+});</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🤝</span> Promises</h3>
+        <p>A <strong>Promise</strong> is an object representing a value that will arrive <em>later</em>. It fixes callback hell by letting you <strong>chain</strong> steps with <code class="inline">.then()</code> and handle errors in one place with <code class="inline">.catch()</code>.</p>
+        <div class="code" data-lang="js">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">promises.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>// fetch() returns a Promise — chain the steps flatly
+fetch("https://api.example.com/user")
+  .then((res) =&gt; res.json())            // runs on success
+  .then((data) =&gt; console.log(data))    // then this
+  .catch((err) =&gt; console.log("Failed:", err))  // any error lands here
+  .finally(() =&gt; console.log("Done"));  // always runs</code></pre>
+        </div>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>A Promise is always in one state</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><strong>pending</strong></td><td>Still working — the value hasn't arrived yet</td></tr>
+              <tr><td><strong>fulfilled</strong> (resolved)</td><td>Success ✅ — <code>.then()</code> runs</td></tr>
+              <tr><td><strong>rejected</strong></td><td>Failed ❌ — <code>.catch()</code> runs</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">async/await is just prettier Promises</div><p>The <code class="inline">async/await</code> style in the next section is built <em>on top of</em> Promises — <code class="inline">await</code> pauses for a Promise to resolve, and <code class="inline">try/catch</code> replaces <code class="inline">.catch()</code>. Same thing, read top-to-bottom like normal code.</p></div>
+        </div>
       </section>
 
       <!-- FETCH -->
