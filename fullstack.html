@@ -2393,9 +2393,9 @@ export default mongoose.model("Message", messageSchema);</code></pre>
           <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/controllers/chatController.js<span class="lang">javascript</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
           <pre><code>import Message from "../models/Message.js";
 
-// Gemini's REST endpoint (free tier). gemini-1.5-flash is fast &amp; free.
+// Gemini's REST endpoint (free tier). gemini-flash-latest = the current fast &amp; free model.
 const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
 
 // GET /api/chat  → the whole conversation
 export const getHistory = async (req, res) => {
