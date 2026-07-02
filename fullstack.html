@@ -1777,43 +1777,72 @@ export default function Contact() {
         </div>
 
         <h3><span class="h3-ico">🎨</span> Premium styles — <code class="inline">src/pages/Contact.css</code></h3>
-        <p>It's already imported at the top of <code class="inline">Contact.jsx</code> (<code class="inline">import "./Contact.css";</code>). A clean centered card with focus rings, status banners and a disabled-state button:</p>
+        <p>It's already imported at the top of <code class="inline">Contact.jsx</code> (<code class="inline">import "./Contact.css";</code>). The same premium <strong>dark theme</strong> as the notes app — a glassy card <strong>centred on a gradient page</strong>, dark focus-ring inputs, dark status banners and a disabled-state button:</p>
         <div class="code" data-lang="css">
           <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/pages/Contact.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
-          <pre><code>.contact-page {
-  max-width: 520px; margin: 40px auto; padding: 30px;
-  background: #fff; border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(40, 20, 90, 0.12);
-  font-family: system-ui, Arial, sans-serif;
-}
-.contact-page h1 { text-align: center; font-size: 1.8rem; margin: 0 0 20px; }
+          <pre><code>/* essentials (we removed index.css, so add these here) */
+* { box-sizing: border-box; }
+body { margin: 0; }
 
-/* status banners */
+/* dark page — the card centred on it */
+.contact-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+  background: radial-gradient(1000px 500px at 50% -10%, #241a52, transparent 60%),
+              linear-gradient(160deg, #0d1030 0%, #0a0c24 100%);
+  font-family: system-ui, Arial, sans-serif;
+  color: #e7ecff;
+}
+.contact-page h1 { text-align: center; font-size: 2rem; margin: 0; color: #fff; }
+
+/* status banners (dark) */
 .success,
 .error {
-  padding: 12px 14px; border-radius: 10px; font-size: 14px;
-  margin-bottom: 16px; text-align: center;
+  width: 100%; max-width: 520px; margin: 0;
+  padding: 12px 14px; border-radius: 10px; font-size: 14px; text-align: center;
 }
-.success { background: #e7f8ee; color: #0f7a43; border: 1px solid #b6e6c9; }
-.error   { background: #fdeaea; color: #b3261e; border: 1px solid #f3c2be; }
+.success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
+.error   { background: rgba(244, 63, 94, 0.15);  color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.35); }
 
-/* form */
-.contact-page form { display: flex; flex-direction: column; }
+/* the form — dark glass card */
+.contact-page form {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(30, 34, 66, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
 .contact-page input,
 .contact-page textarea {
   padding: 13px 15px; margin-top: 12px;
-  border: 1px solid #e2e5ef; border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #e7ecff;
   font-size: 15px; font-family: inherit; outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
+.contact-page input::placeholder,
+.contact-page textarea::placeholder { color: #8b93b8; }
 .contact-page input:focus,
 .contact-page textarea:focus {
-  border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
 }
 .contact-page textarea { min-height: 120px; resize: vertical; }
 
 /* inline field error */
-.field-error { color: #e11d48; font-size: 0.8rem; margin-top: 5px; padding-left: 2px; }
+.field-error { color: #fb7185; font-size: 0.8rem; margin-top: 5px; padding-left: 2px; }
 
 /* submit button */
 .contact-page button {
@@ -1822,13 +1851,12 @@ export default function Contact() {
   color: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
   transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
 }
-.contact-page button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(124, 58, 237, 0.4); }
+.contact-page button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(124, 58, 237, 0.5); }
 .contact-page button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* phones */
 @media (max-width: 520px) {
-  .contact-page { margin: 20px 14px; padding: 22px; }
-  .contact-page h1 { font-size: 1.5rem; }
+  .contact-page h1 { font-size: 1.6rem; }
 }</code></pre>
         </div>
 
@@ -2534,12 +2562,29 @@ export default function ChatWindow() {
         <h3><span class="h3-ico">🎨</span> Premium styles — <code class="inline">components/ChatWindow.css</code></h3>
         <div class="code" data-lang="css">
           <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/components/ChatWindow.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
-          <pre><code>.chat {
+          <pre><code>/* essentials + dark, centred page (we removed index.css) */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* the chat sits in the middle of the page */
+  padding: 20px;
+  background: radial-gradient(1000px 500px at 50% -10%, #241a52, transparent 60%),
+              linear-gradient(160deg, #0d1030 0%, #0a0c24 100%);
+  font-family: system-ui, Arial, sans-serif;
+}
+
+/* the chat window — dark card */
+.chat {
   width: 380px; max-width: 100%; height: 560px;
   display: flex; flex-direction: column;
-  border-radius: 20px; overflow: hidden; background: #fff;
-  box-shadow: 0 30px 70px -25px rgba(40, 20, 90, 0.4);
-  font-family: Arial, sans-serif;
+  border-radius: 20px; overflow: hidden;
+  background: #1a1f3d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+  font-family: system-ui, Arial, sans-serif;
 }
 
 /* gradient header */
@@ -2558,7 +2603,8 @@ export default function ChatWindow() {
 /* messages */
 .chat-body {
   flex: 1; overflow-y: auto; padding: 18px;
-  display: flex; flex-direction: column; gap: 10px; background: #f4f5fb;
+  display: flex; flex-direction: column; gap: 10px;
+  background: #12152e;
 }
 .bubble {
   max-width: 78%; padding: 11px 14px; border-radius: 16px;
@@ -2570,14 +2616,16 @@ export default function ChatWindow() {
   border-bottom-right-radius: 5px;
 }
 .bubble.assistant {
-  align-self: flex-start; color: #1e2235; background: #fff;
-  border: 1px solid #e6e8f3; border-bottom-left-radius: 5px;
+  align-self: flex-start; color: #e7ecff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom-left-radius: 5px;
 }
 
 /* typing dots */
 .bubble.typing { display: flex; gap: 4px; }
 .bubble.typing span {
-  width: 7px; height: 7px; border-radius: 50%; background: #b7bcd6;
+  width: 7px; height: 7px; border-radius: 50%; background: #8b93b8;
   animation: blink 1.2s infinite both;
 }
 .bubble.typing span:nth-child(2) { animation-delay: 0.2s; }
@@ -2590,16 +2638,24 @@ export default function ChatWindow() {
 /* input bar */
 .chat-input {
   display: flex; gap: 8px; padding: 12px;
-  background: #fff; border-top: 1px solid #eee;
+  background: #0f1228; border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 .chat-input input {
-  flex: 1; padding: 12px 14px; border: 1px solid #ddd;
-  border-radius: 999px; outline: none; font-size: 14px;
+  flex: 1; padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04); color: #e7ecff;
+  outline: none; font-size: 14px;
 }
+.chat-input input::placeholder { color: #8b93b8; }
 .chat-input button {
-  width: 44px; height: 44px; border: none; border-radius: 50%;
+  width: 44px; height: 44px; flex-shrink: 0; border: none; border-radius: 50%;
   background: linear-gradient(135deg, #7c3aed, #06b6d4);
   color: #fff; font-size: 16px; cursor: pointer;
+}
+
+/* phones */
+@media (max-width: 440px) {
+  .chat { height: 86vh; border-radius: 16px; }
 }</code></pre>
         </div>
 
@@ -2609,12 +2665,8 @@ export default function ChatWindow() {
           <pre><code>import ChatWindow from "./components/ChatWindow";
 
 export default function App() {
-  return (
-    &lt;div style={{ minHeight: "100vh", display: "grid", placeItems: "center",
-                  background: "#0e1230" }}&gt;
-      &lt;ChatWindow /&gt;
-    &lt;/div&gt;
-  );
+  // the dark, centred page is styled on `body` in ChatWindow.css — no wrapper needed
+  return &lt;ChatWindow /&gt;;
 }</code></pre>
         </div>
 
