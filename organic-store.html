@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Organic Store — an AI-powered MERN e-commerce project. Usage, full local setup, environment-key guide (MongoDB, Razorpay, OpenRouter, Brevo) and step-by-step Render + Vercel deployment. Download the source." />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Organic Store · DevGuides Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3EDG%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem("fsguide-theme");
+      if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+      if (localStorage.getItem("fsguide-collapsed") === "1") d.classList.add("nav-collapsed");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="scrim"></div>
+
+  <header class="appbar">
+    <div class="appbar-brand">
+      <button class="hamburger" data-menu-open aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Organic Store</strong><span>DevGuides · Project</span></span>
+      </a>
+    </div>
+    <div class="appbar-main">
+      <button class="nav-collapse" data-collapse-toggle aria-label="Collapse sidebar" title="Collapse sidebar">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="crumb">Projects / <b>Organic Store</b></div>
+      <div class="spacer"></div>
+      <div class="appbar-progress" title="Reading progress"><span class="ap-bar"><i class="ap-fill"></i></span><span class="ap-pct">0%</span></div>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <kbd>/</kbd>
+      </label>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="index.html" aria-label="All guides — home">
+        <span class="logo">DG</span>
+        <span class="brand-text"><strong>Organic Store</strong><span>DevGuides · Project</span></span>
+      </a>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-title">Browse</div>
+          <a class="nav-link" href="index.html" data-title="All guides"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span> All guides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">The project</div>
+          <a class="nav-link active" href="#overview" data-title="Overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span> Overview</a>
+          <a class="nav-link" href="#features" data-title="Features"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span> Features</a>
+          <a class="nav-link" href="#stack" data-title="Tech stack"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></span> Tech stack</a>
+          <a class="nav-link" href="#architecture" data-title="Architecture"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M10 6.5h4a2 2 0 0 1 2 2V14"/></svg></span> Architecture</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Run &amp; deploy</div>
+          <a class="nav-link" href="#setup" data-title="Local setup"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span> Local setup</a>
+          <a class="nav-link" href="#env" data-title="Environment keys"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M16 7l3 3M18 5l3 3"/></svg></span> Environment keys</a>
+          <a class="nav-link" href="#deploy" data-title="Deployment"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span> Deployment</a>
+          <a class="nav-link" href="#documentation" data-title="Documentation"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h4"/></svg></span> Documentation</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-title">Reference</div>
+          <a class="nav-link" href="#usage" data-title="Using the app"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span> Using the app</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
+
+      <!-- OVERVIEW -->
+      <section class="section reveal" id="overview">
+        <span class="section-kicker k-2">FULL-STACK PROJECT</span>
+        <h2 class="section-title">Organic Store 🌿 — AI-powered grocery platform</h2>
+        <p class="section-sub"><strong>Organic Store</strong> is a complete, production-style <strong>MERN</strong> e-commerce app where <strong>AI is built into both sides of the store</strong> — a customer shopping assistant and an admin "Store Copilot". It has real online payments (Razorpay), PDF invoices, transactional email, JWT auth with roles, and a full admin dashboard. Frontend on <strong>Vercel</strong>, backend on <strong>Render</strong>, database on <strong>MongoDB Atlas</strong>.</p>
+
+        <div class="proj-actions" style="margin:6px 0 4px">
+          <a class="proj-btn dl" href="public/downloads/organic-store.zip" download style="max-width:280px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+            Download the project (.zip)
+          </a>
+        </div>
+        <p style="font-size:.86rem;color:var(--text-faint);margin-top:6px">The download excludes <code class="inline">node_modules</code> and secret <code class="inline">.env.local</code> files — run <code class="inline">npm install</code> after unzipping and add your own keys (below).</p>
+
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">What makes it special</div><p>Unlike a demo, the AI is <strong>grounded in the store's own live data</strong> (a lightweight <em>RAG</em> approach), can <strong>take real actions safely</strong> (with a confirm step + audit log), and streams replies token-by-token. It also solves real production problems — e.g. Render's free tier blocks SMTP, so email goes through Brevo's HTTPS API.</p></div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="section reveal" id="features">
+        <span class="section-kicker k-3">USAGE</span>
+        <h2 class="section-title">What it does</h2>
+        <p class="section-sub">Two full experiences — a customer storefront and a protected admin dashboard — each with its own AI assistant.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-ico bg-mint">🛒</div>
+            <h4>Customer storefront</h4>
+            <p>Home &amp; shop with live category/price/rating filters, product detail, cart (subtotal + shipping + tax), <strong>Razorpay checkout</strong>, downloadable <strong>PDF invoice</strong>, order history &amp; tracking, address book, wishlist, reviews, recipes/blog, contact.</p>
+          </div>
+          <div class="card">
+            <div class="card-ico bg-violet">🛠️</div>
+            <h4>Admin dashboard</h4>
+            <p>KPIs + 7-day sales chart, product &amp; category management, a live <strong>order Kanban</strong>, delivery dispatch, reviews &amp; messages, content manager (ad-bar, blogs, recipes, pages), analytics, and an activity/audit log.</p>
+          </div>
+        </div>
+
+        <h3><span class="h3-ico">🤖</span> The AI, on both sides</h3>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Customer assistant</strong> — find products, "add 2 apples to cart", <strong>recipe → cart</strong>, track/reorder, and answer store questions grounded in real content pages. Replies stream word-by-word with 👍/👎 feedback.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Admin "Store Copilot"</strong> — "how's revenue this week?", "mark ORD… as delivered", "set stock of Honey to 50", generate product descriptions, draft replies, summarise reviews — every data-changing action needs a <strong>Confirm</strong> and is logged.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Safe by design</strong> — a deterministic parser (not the LLM) detects action commands; the LLM only writes text. A model <strong>fallback chain</strong> means the chat never crashes.</div></div>
+        </div>
+      </section>
+
+      <!-- TECH STACK -->
+      <section class="section reveal" id="stack">
+        <span class="section-kicker k-4">STACK</span>
+        <h2 class="section-title">Technology stack</h2>
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Layer</th><th>Tech</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Frontend</strong></td><td>React 18 (CRA), React Router, Tailwind CSS + styled-components, Axios, Recharts, framer-motion, react-hot-toast</td></tr>
+              <tr><td><strong>Backend</strong></td><td>Node.js + Express, MongoDB + Mongoose, JWT (access + refresh), bcrypt, multer, pdfkit</td></tr>
+              <tr><td><strong>Payments</strong></td><td>Razorpay (order + HMAC-SHA256 signature verification)</td></tr>
+              <tr><td><strong>Email</strong></td><td>Brevo HTTPS API (production) + nodemailer/Gmail SMTP (local) — OTP codes &amp; invoices</td></tr>
+              <tr><td><strong>AI</strong></td><td>OpenRouter (GPT-4o-mini → Claude → Gemini → Llama fallback) via native <code>fetch</code> + SSE streaming</td></tr>
+              <tr><td><strong>Security</strong></td><td>helmet, cors, express-rate-limit, express-mongo-sanitize, hpp, xss-clean</td></tr>
+              <tr><td><strong>Hosting</strong></td><td>Vercel (frontend) · Render (backend) · MongoDB Atlas (database)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ARCHITECTURE -->
+      <section class="section reveal" id="architecture">
+        <span class="section-kicker k-1">ARCHITECTURE</span>
+        <h2 class="section-title">How it fits together</h2>
+        <p class="section-sub">A classic three-tier setup: a React SPA, an Express API, and MongoDB — plus external services for payments, AI and email.</p>
+        <div class="code" data-lang="text">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">three-tier architecture<span class="lang">text</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>CLIENT  (React SPA — Vercel)     storefront + admin + AI chat widgets
+   │  Axios (REST, JWT Bearer)   │  fetch (SSE stream)
+   ▼                             ▼
+SERVER  (Node + Express — Render)
+   Routes → Controllers → Services → Models
+   auth · role · security middleware · AI · invoice · email services
+   │  Mongoose                   │  HTTPS
+   ▼                             ▼
+MongoDB (Atlas)          External APIs: Razorpay · OpenRouter · Brevo</code></pre>
+        </div>
+        <div class="callout what">
+          <div class="ci">📘</div>
+          <div><div class="ctitle">Order flow</div><p>React checkout → Razorpay payment → Express <strong>verifies the signature</strong> → order saved in MongoDB → PDF invoice generated → email sent via Brevo → success shown. The pricing formula (shipping free over ₹500, 5% tax) runs identically on client and server so the charged amount always matches the invoice.</p></div>
+        </div>
+      </section>
+
+      <!-- LOCAL SETUP -->
+      <section class="section reveal" id="setup">
+        <span class="section-kicker k-3">SETUP · 01</span>
+        <h2 class="section-title">Run it locally</h2>
+        <p class="section-sub">It's <strong>two apps in one folder</strong>: the React frontend at the repo root, and the Express backend in <code class="inline">backend/</code>. Run each in its own terminal.</p>
+
+        <div class="callout tip">
+          <div class="ci">💡</div>
+          <div><div class="ctitle">Prerequisites</div><p><strong>Node.js 18+</strong> (needed for the AI streaming <code class="inline">fetch</code>) and a <strong>MongoDB Atlas</strong> connection string. Unzip the download first, then:</p></div>
+        </div>
+
+        <h3><span class="h3-ico">🚀</span> Backend (terminal 1)</h3>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>cd backend
+npm install
+# create backend/.env.local (see the Environment keys section)
+npm start          # API on http://localhost:5000</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">⚛️</span> Frontend (terminal 2)</h3>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">repo root<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code># from the project root (a new terminal)
+npm install
+# create .env in the root (see Environment keys)
+npm start          # React on http://localhost:3000</code></pre>
+        </div>
+        <div class="callout tip">
+          <div class="ci">🔑</div>
+          <div><div class="ctitle">Admin login</div><p>Go to <code class="inline">/admin/login</code> with <code class="inline">admin@organicstore.com</code> / <code class="inline">OrganicStore@2024</code>. The 6-digit OTP is printed in the <strong>backend terminal</strong> — copy it in. (Full flow in <a href="#usage">Using the app</a>.)</p></div>
+        </div>
+      </section>
+
+      <!-- ENV KEYS -->
+      <section class="section reveal" id="env">
+        <span class="section-kicker k-3">SETUP · 02</span>
+        <h2 class="section-title">Environment keys — where to get each</h2>
+        <p class="section-sub">The app reads secrets from <code class="inline">.env</code> files (kept out of Git). Here's every key and the exact site to get it from.</p>
+
+        <div class="table-wrap">
+          <table class="docs">
+            <thead><tr><th>Key</th><th>Where to get it</th></tr></thead>
+            <tbody>
+              <tr><td><code>MONGODB_URI</code></td><td><strong>mongodb.com/atlas</strong> — create a free M0 cluster → add a DB user → <strong>Network Access → allow 0.0.0.0/0</strong> → Connect → Drivers → copy the string, add your DB name.</td></tr>
+              <tr><td><code>JWT_SECRET</code>, <code>JWT_REFRESH_SECRET</code></td><td>Generate yourself — run <code>node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"</code> twice. Also set <code>JWT_EXPIRE=15m</code>, <code>JWT_REFRESH_EXPIRE=7d</code>.</td></tr>
+              <tr><td><code>RAZORPAY_KEY_ID</code>, <code>RAZORPAY_KEY_SECRET</code></td><td><strong>dashboard.razorpay.com</strong> — Test Mode → Account &amp; Settings → API Keys → Generate Test Key. The Key Id also goes in the frontend.</td></tr>
+              <tr><td><code>OPENROUTER_API_KEY</code></td><td><strong>openrouter.ai/keys</strong> — Create Key (starts <code>sk-or-v1-…</code>). Has free/low-cost models; a small balance is enough.</td></tr>
+              <tr><td><code>BREVO_API_KEY</code></td><td><strong>brevo.com</strong> — verify a sender email → SMTP &amp; API → API Keys → Generate (<code>xkeysib-…</code>). Free plan = 300 emails/day. Used in production (Render blocks SMTP).</td></tr>
+              <tr><td><code>CLIENT_URL</code></td><td>Your Vercel frontend URL (set during deployment).</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3><span class="h3-ico">🔐</span> backend/.env.local</h3>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">backend/.env.local<span class="lang">env</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+
+MONGODB_URI=mongodb+srv://user:pass@cluster0.xxxxx.mongodb.net/organic_store
+
+JWT_SECRET=&lt;generated secret 1&gt;
+JWT_EXPIRE=15m
+JWT_REFRESH_SECRET=&lt;generated secret 2&gt;
+JWT_REFRESH_EXPIRE=7d
+
+RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
+RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxx
+
+OPENROUTER_API_KEY=sk-or-v1-xxxxxxxx
+
+# Email — local uses Gmail SMTP (add BREVO_API_KEY to use Brevo)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=you@gmail.com
+SMTP_PASS=your-16-char-app-password
+SMTP_FROM_NAME=Organic Store
+SMTP_FROM_EMAIL=you@gmail.com</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">⚛️</span> .env (project root — frontend)</h3>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">.env<span class="lang">env</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>REACT_APP_API_URL=http://localhost:5000/api/v1
+REACT_APP_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx</code></pre>
+        </div>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Two gotchas</div><p>• <code class="inline">REACT_APP_API_URL</code> <strong>must end with <code>/api/v1</code></strong> — otherwise you'll get "route not found". • Never commit <code class="inline">.env</code> / <code class="inline">.env.local</code> — they're already in <code class="inline">.gitignore</code>. CRA only exposes <code class="inline">REACT_APP_*</code> vars, and bakes them at build time (restart after changing).</p></div>
+        </div>
+      </section>
+
+      <!-- DEPLOY -->
+      <section class="section reveal" id="deploy">
+        <span class="section-kicker k-1">SETUP · 03</span>
+        <h2 class="section-title">Deploy it (Render + Vercel)</h2>
+        <p class="section-sub">The two apps deploy from <strong>one GitHub repo</strong>: the backend to <strong>Render</strong> (always-on Node server), the frontend to <strong>Vercel</strong> (React build). Vercel can't run Express — that's why the backend goes on Render.</p>
+
+        <h3><span class="h3-ico">1️⃣</span> Push to GitHub</h3>
+        <div class="code" data-lang="bash">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">terminal<span class="lang">bash</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>git init
+git add .
+git status                 # VERIFY no .env / .env.local is listed
+git commit -m "Organic Store"
+git branch -M main
+git remote add origin https://github.com/&lt;you&gt;/&lt;repo&gt;.git
+git push -u origin main</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">2️⃣</span> Backend → Render</h3>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>On <strong>render.com</strong> (sign in with GitHub): <strong>New → Blueprint</strong> → pick the repo. Render reads the included <code class="inline">render.yaml</code>.</div></div>
+          <div class="kp"><span class="check">✓</span><div>It creates the <code class="inline">organic-store-api</code> service and asks for the secrets — <strong>paste each</strong> from the Environment section (MongoDB, JWT ×2, Razorpay ×2, OpenRouter, Brevo, sender email/name). Leave <code class="inline">CLIENT_URL</code> blank for now.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Do not add a <code class="inline">PORT</code></strong> — Render provides it. Deploy, then test <code class="inline">https://&lt;your-render-url&gt;/api/v1/health</code> → <code class="inline">{"success":true}</code>.</div></div>
+        </div>
+
+        <h3><span class="h3-ico">3️⃣</span> Frontend → Vercel</h3>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div>On <strong>vercel.com</strong>: <strong>Add New → Project</strong> → import the repo. Set <strong>Framework Preset = Create React App</strong> and <strong>Root Directory = <code class="inline">./</code></strong> (not <code>backend</code>).</div></div>
+          <div class="kp"><span class="check">✓</span><div>Add env vars: <code class="inline">REACT_APP_API_URL</code> = <code class="inline">https://&lt;render-url&gt;/api/v1</code> (must end with <code>/api/v1</code>) and <code class="inline">REACT_APP_RAZORPAY_KEY_ID</code>. Deploy — you get a <code class="inline">*.vercel.app</code> URL.</div></div>
+          <div class="kp"><span class="check">✓</span><div>The included <code class="inline">vercel.json</code> rewrites routes to <code class="inline">index.html</code>, so deep links like <code class="inline">/shop</code> and <code class="inline">/admin/orders</code> work on refresh.</div></div>
+        </div>
+
+        <h3><span class="h3-ico">4️⃣</span> Connect them</h3>
+        <p>Back on <strong>Render → Environment</strong>, set <code class="inline">CLIENT_URL</code> to your Vercel URL and save (it redeploys). Now the frontend talks to the backend, which talks to Atlas. Done. 🎉</p>
+        <div class="callout warning">
+          <div class="ci">⚠️</div>
+          <div><div class="ctitle">Common deploy fixes</div><p>• <strong>"route not found"</strong> → <code class="inline">REACT_APP_API_URL</code> missing <code>/api/v1</code> (fix + redeploy Vercel). • <strong>Login spinner / "email timeout"</strong> → add <code class="inline">BREVO_API_KEY</code> on Render + verify the sender. • <strong>Mongo connection error</strong> → Atlas Network Access must allow <code class="inline">0.0.0.0/0</code>. • <strong>First request ~50s</strong> → normal; Render free tier wakes on the first hit.</p></div>
+        </div>
+      </section>
+
+      <!-- PROJECT DOCUMENTATION -->
+      <section class="section reveal" id="documentation">
+        <span class="section-kicker k-2">DOCS</span>
+        <h2 class="section-title">Project documentation</h2>
+        <p class="section-sub">The complete written documentation as a Word file — introduction &amp; objectives, technology stack, system architecture, authentication, the shopping/payment/invoice flow, the AI internals, database models, the full API reference, and security measures.</p>
+
+        <div class="proj-actions" style="margin:6px 0 4px">
+          <a class="proj-btn dl" href="public/docx/Organic_Store-Project-Documentation.docx" download style="max-width:340px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+            Download documentation (.docx)
+          </a>
+        </div>
+        <p style="font-size:.86rem;color:var(--text-faint);margin-top:6px">Ideal for a project report or viva — it covers everything on this page in depth. (The Markdown versions also ship inside the project <code class="inline">docs/</code> folder in the .zip.)</p>
+      </section>
+
+      <!-- USAGE -->
+      <section class="section reveal" id="usage">
+        <span class="section-kicker k-4">REFERENCE</span>
+        <h2 class="section-title">Using the app</h2>
+        <p class="section-sub">A quick tour once it's running.</p>
+        <div class="key-points">
+          <div class="kp"><span class="check">✓</span><div><strong>Shop &amp; buy</strong> — browse, add to cart, checkout, pay with the Razorpay test card <code class="inline">4111 1111 1111 1111</code> (any future expiry, any CVV), download the invoice.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Sign up / log in</strong> — a 6-digit OTP is emailed (Brevo in prod) or printed to the backend console (local).</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Admin</strong> — <code class="inline">/admin/login</code> with <code class="inline">admin@organicstore.com</code> / <code class="inline">OrganicStore@2024</code>; manage products, orders, content and watch live KPIs.</div></div>
+          <div class="kp"><span class="check">✓</span><div><strong>Try the AI</strong> — customer bubble: "what can I cook with spinach?" then add the recipe to cart. Admin copilot: "how's revenue this week?" or "set stock of Organic Honey to 50" → Confirm.</div></div>
+        </div>
+        <div class="callout output">
+          <div class="ci">📦</div>
+          <div><div class="ctitle">Full docs are in the download</div><p>The zip includes <code class="inline">docs/PROJECT_DOCUMENTATION.md</code> (architecture, models, all endpoints, AI internals) and <code class="inline">docs/SETUP_AND_DEPLOYMENT.md</code> (every key step-by-step + a troubleshooting table). This page is the quick version of both.</p></div>
+        </div>
+
+        <div class="pager">
+          <a href="index.html" class="prev"><span class="dir">← All guides</span><span class="ttl">DevGuides</span></a>
+          <a href="fullstack.html" class="next"><span class="dir">Learn the stack →</span><span class="ttl">Full Stack Guide</span></a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="foot reveal">
+        <span class="foot-glow foot-glow-a"></span>
+        <span class="foot-glow foot-glow-b"></span>
+        <div class="foot-inner">
+          <div class="foot-hero">
+            <span class="foot-eyebrow"><span class="dot"></span> Featured project</span>
+            <h3 class="foot-title">Build your own <span class="grad">AI store</span></h3>
+            <p class="foot-lead">Download the source, add your keys, and deploy it. New to the stack? Start with the guides.</p>
+            <div class="foot-cta">
+              <a class="btn btn-primary" href="public/downloads/organic-store.zip" download>Download .zip
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+              </a>
+              <a class="btn foot-ghost" href="fullstack.html">Full Stack Guide</a>
+            </div>
+          </div>
+          <div class="foot-divider"></div>
+          <div class="foot-bottom">
+            <div class="foot-brand"><span class="logo">DG</span><span>© <span data-year>2026</span> DevGuides · All rights reserved.</span></div>
+            <div class="foot-credit">Created by <strong>Pradeep Surya</strong></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
