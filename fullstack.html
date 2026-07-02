@@ -1323,6 +1323,7 @@ export default api;</code></pre>
           <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/pages/Notes.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
           <pre><code>import { useState, useEffect } from "react";
 import api from "../services/api";
+import "./Notes.css";
 
 export default function Notes() {
   // STATE — React re-renders the UI whenever these change
@@ -1424,6 +1425,119 @@ export default function Notes() {
 }</code></pre>
         </div>
 
+        <h3><span class="h3-ico">🎨</span> Premium styles — <code class="inline">src/pages/Notes.css</code></h3>
+        <p>It's already imported at the top of <code class="inline">Notes.jsx</code> (<code class="inline">import "./Notes.css";</code>). A premium <strong>dark theme</strong> — the form <strong>centred on the page</strong> over a deep gradient, a glassy dark card, a <strong>responsive grid</strong>, and dark note cards with neon colour accents:</p>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/pages/Notes.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>/* essentials (we removed index.css, so add these here) */
+* { box-sizing: border-box; }   /* padding no longer overflows width:100% */
+body { margin: 0; }             /* kill the default 8px gap around the page */
+
+/* dark page — the card centred on it */
+.notes-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 40px 20px;
+  background: radial-gradient(1000px 500px at 50% -10%, #241a52, transparent 60%),
+              linear-gradient(160deg, #0d1030 0%, #0a0c24 100%);
+  font-family: system-ui, Arial, sans-serif;
+  color: #e7ecff;
+}
+.notes-page h1 { text-align: center; font-size: 2rem; margin: 0; color: #fff; }
+
+/* add / edit form — dark glass card */
+.note-form {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(30, 34, 66, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.note-form input,
+.note-form textarea {
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #e7ecff;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.note-form input::placeholder,
+.note-form textarea::placeholder { color: #8b93b8; }
+.note-form input:focus,
+.note-form textarea:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+}
+.note-form textarea { min-height: 90px; resize: vertical; }
+.note-form button {
+  padding: 13px; border: none; border-radius: 10px;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  color: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.note-form button:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(124, 58, 237, 0.5); }
+
+/* responsive grid — cards flow &amp; wrap on any screen */
+.note-grid {
+  width: 100%;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+/* dark note cards with a colour accent */
+.note-card {
+  background: rgba(26, 31, 61, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 4px solid #a78bfa;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 16px 34px -18px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.note-card:hover { transform: translateY(-5px); box-shadow: 0 24px 46px -18px rgba(0, 0, 0, 0.8); }
+.note-card:nth-child(4n + 2) { border-top-color: #22d3ee; }
+.note-card:nth-child(4n + 3) { border-top-color: #fbbf24; }
+.note-card:nth-child(4n + 4) { border-top-color: #34d399; }
+.note-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: #fff; }
+.note-card p { margin: 0 0 16px; color: #aab2d5; font-size: 0.92rem; line-height: 1.5; flex: 1; white-space: pre-wrap; }
+
+.note-actions { display: flex; gap: 8px; }
+.note-actions button {
+  flex: 1; padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #cdd3f0;
+  font-size: 0.82rem; cursor: pointer; transition: background 0.15s;
+}
+.note-actions button:hover { background: rgba(124, 58, 237, 0.25); }
+
+/* phones */
+@media (max-width: 520px) {
+  .notes-page h1 { font-size: 1.6rem; }
+  .note-grid { grid-template-columns: 1fr; }
+}</code></pre>
+        </div>
+
         <h3><span class="h3-ico">🧠</span> Understanding the React concepts used</h3>
         <div class="grid cols-2">
           <div class="card"><span class="top-line"></span><div class="card-ico bg-violet">📦</div><h4>useState</h4><p>Creates a piece of "state". When you call its setter (e.g. <code class="inline">setNotes</code>), React re-renders the component with the new value.</p></div>
@@ -1436,7 +1550,6 @@ export default function Notes() {
         <div class="code" data-lang="js">
           <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/App.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
           <pre><code>import Notes from "./pages/Notes";
-import "./index.css";
 
 export default function App() {
   return &lt;Notes /&gt;;
@@ -1581,6 +1694,7 @@ app.use("/api/contacts", contactRoutes);</code></pre>
           <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/pages/Contact.jsx<span class="lang">jsx</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
           <pre><code>import { useState } from "react";
 import api from "../services/api";
+import "./Contact.css";
 
 const initialForm = { name: "", email: "", phone: "", message: "" };
 
@@ -1659,6 +1773,62 @@ export default function Contact() {
       &lt;/form&gt;
     &lt;/div&gt;
   );
+}</code></pre>
+        </div>
+
+        <h3><span class="h3-ico">🎨</span> Premium styles — <code class="inline">src/pages/Contact.css</code></h3>
+        <p>It's already imported at the top of <code class="inline">Contact.jsx</code> (<code class="inline">import "./Contact.css";</code>). A clean centered card with focus rings, status banners and a disabled-state button:</p>
+        <div class="code" data-lang="css">
+          <div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="fname">frontend/src/pages/Contact.css<span class="lang">css</span></span><span class="spacer"></span><button class="copy-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span class="cp-label">Copy</span></button></div>
+          <pre><code>.contact-page {
+  max-width: 520px; margin: 40px auto; padding: 30px;
+  background: #fff; border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(40, 20, 90, 0.12);
+  font-family: system-ui, Arial, sans-serif;
+}
+.contact-page h1 { text-align: center; font-size: 1.8rem; margin: 0 0 20px; }
+
+/* status banners */
+.success,
+.error {
+  padding: 12px 14px; border-radius: 10px; font-size: 14px;
+  margin-bottom: 16px; text-align: center;
+}
+.success { background: #e7f8ee; color: #0f7a43; border: 1px solid #b6e6c9; }
+.error   { background: #fdeaea; color: #b3261e; border: 1px solid #f3c2be; }
+
+/* form */
+.contact-page form { display: flex; flex-direction: column; }
+.contact-page input,
+.contact-page textarea {
+  padding: 13px 15px; margin-top: 12px;
+  border: 1px solid #e2e5ef; border-radius: 12px;
+  font-size: 15px; font-family: inherit; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.contact-page input:focus,
+.contact-page textarea:focus {
+  border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+.contact-page textarea { min-height: 120px; resize: vertical; }
+
+/* inline field error */
+.field-error { color: #e11d48; font-size: 0.8rem; margin-top: 5px; padding-left: 2px; }
+
+/* submit button */
+.contact-page button {
+  margin-top: 20px; padding: 14px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+}
+.contact-page button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(124, 58, 237, 0.4); }
+.contact-page button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* phones */
+@media (max-width: 520px) {
+  .contact-page { margin: 20px 14px; padding: 22px; }
+  .contact-page h1 { font-size: 1.5rem; }
 }</code></pre>
         </div>
 
