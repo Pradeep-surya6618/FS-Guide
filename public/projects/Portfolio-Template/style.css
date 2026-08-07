@@ -340,3 +340,26 @@ ul { list-style: none; }
   font-family: var(--serif); font-weight: 400;
   font-size: 1.3rem; line-height: 1.25; margin: 8px 0 10px;
 }
+
+/* ---------- contact ---------- */
+.contact-line {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(2.2rem, 6.5vw, 4.2rem);
+  line-height: 1.05; letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.contact-line em { font-style: italic; color: var(--accent); }
+
+.contact-mail {
+  display: inline-block;
+  margin: 26px 0 34px;
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 4px;
+  transition: color .2s ease, border-color .2s ease;
+  word-break: break-word;
+}
+.contact-mail:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.socials { display: flex; flex-wrap: wrap; gap: 12px 26px; }
