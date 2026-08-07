@@ -139,3 +139,66 @@ ul { list-style: none; }
 .foot-in { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: baseline; justify-content: space-between; }
 .foot-name { font-family: var(--serif); font-size: 1.35rem; }
 .foot-meta { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- hero ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(28px, 6vw, 72px);
+  align-items: center;
+  padding: clamp(48px, 10vw, 120px) 0 clamp(56px, 9vw, 110px);
+}
+
+.hero h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(2.5rem, 7.2vw, 4.9rem);
+  line-height: 1.04; letter-spacing: -.02em;
+  margin: 18px 0 22px;
+  text-wrap: balance;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+
+.lede { max-width: 46ch; color: var(--muted); }
+
+.hero-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: 999px;
+  background: var(--ink); color: var(--paper);
+  font-size: .9rem; font-weight: 500;
+  border: 1px solid var(--ink);
+  transition: transform .18s ease, opacity .18s ease;
+}
+.btn:hover { transform: translateY(-2px); opacity: .9; }
+
+.btn.ghost { background: none; color: var(--ink); border-color: var(--rule); }
+.btn.ghost:hover { border-color: var(--ink); }
+
+.hero-portrait { justify-self: end; text-align: center; }
+
+.frame {
+  width: clamp(180px, 24vw, 260px);
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--rule);
+  display: grid; place-items: center;
+  background: var(--paper-2);
+  position: relative;
+}
+.frame::after {
+  content: ""; position: absolute; inset: 9px;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+.frame span {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 6vw, 4.4rem);
+  letter-spacing: .04em;
+  color: var(--ink);
+}
+
+.frame-cap {
+  margin-top: 12px;
+  font-family: var(--mono); font-size: .68rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
