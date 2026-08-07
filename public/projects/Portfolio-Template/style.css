@@ -244,3 +244,60 @@ ul { list-style: none; }
   padding-top: .35em;
 }
 .skill-items { font-size: 1.05rem; }
+
+/* ---------- projects ---------- */
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: clamp(28px, 4vw, 48px);
+}
+
+.proj-item h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 1.5rem; line-height: 1.2; letter-spacing: -.01em;
+  margin: 16px 0 8px;
+}
+.proj-item p { color: var(--muted); font-size: .95rem; }
+.proj-item code {
+  font-family: var(--mono); font-size: .82em;
+  background: var(--paper-2); padding: 1px 5px; border-radius: 3px;
+}
+
+/* the "print plate" thumbnail — flat tone, hairline inset, oversized numeral */
+.plate {
+  aspect-ratio: 16 / 10;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  display: grid; place-items: center;
+  position: relative; overflow: hidden;
+}
+.plate::after {
+  content: ""; position: absolute; inset: 10px;
+  border: 1px solid var(--rule);
+}
+.plate-no {
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 7vw, 5rem);
+  line-height: 1;
+  color: var(--rule);
+  transition: color .28s ease, transform .28s ease;
+}
+.proj-item:hover .plate-no { color: var(--accent); transform: translateY(-3px); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 14px 0 16px; }
+.tags li {
+  font-family: var(--mono); font-size: .66rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+}
+
+.proj-links { display: flex; gap: 20px; }
+
+.arrow-link {
+  font-size: .85rem; font-weight: 500;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color .2s ease, color .2s ease;
+}
+.arrow-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.arrow-link span { display: inline-block; transition: transform .2s ease; }
+.arrow-link:hover span { transform: translate(2px, -2px); }
