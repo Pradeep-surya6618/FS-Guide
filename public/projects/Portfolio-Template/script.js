@@ -3,27 +3,17 @@
    Plain JavaScript, no libraries.
    ========================================================= */
 
-/* ---- 1. Light / dark theme ------------------------------ */
-var root = document.documentElement;
-var themeBtn = document.getElementById('theme-btn');
-
-themeBtn.addEventListener('click', function () {
-  var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  root.setAttribute('data-theme', next);
-  try { localStorage.setItem('portfolio-theme', next); } catch (e) {}
-});
-
-/* ---- 2. Topbar hairline once scrolled ------------------- */
+/* ---- 1. Topbar hairline once scrolled ------------------- */
 var topbar = document.getElementById('topbar');
 
 window.addEventListener('scroll', function () {
   topbar.classList.toggle('scrolled', window.scrollY > 12);
 }, { passive: true });
 
-/* ---- 3. Footer year ------------------------------------- */
+/* ---- 2. Footer year ------------------------------------- */
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* ---- 4. Mobile menu ------------------------------------- */
+/* ---- 3. Mobile menu ------------------------------------- */
 var menuBtn = document.getElementById('menu-btn');
 var nav = document.getElementById('nav');
 
@@ -46,7 +36,7 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') setMenu(false);
 });
 
-/* ---- 5. Reveal sections on scroll ----------------------- */
+/* ---- 4. Reveal sections on scroll ----------------------- */
 var revealItems = document.querySelectorAll('.reveal');
 var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -64,7 +54,7 @@ if (reduceMotion || !('IntersectionObserver' in window)) {
   revealItems.forEach(function (el) { revealObserver.observe(el); });
 }
 
-/* ---- 6. Highlight the nav link for the section in view --- */
+/* ---- 5. Highlight the nav link for the section in view --- */
 var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
 
 if ('IntersectionObserver' in window) {

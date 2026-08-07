@@ -4,12 +4,12 @@
    ========================================================= */
 
 :root {
-  --paper:   #FAF8F4;
-  --paper-2: #F3EFE8;
-  --ink:     #14110E;
-  --muted:   #6B635A;
-  --rule:    #E4DED4;
-  --accent:  #A8452A;
+  --paper:   #FAFAF9;   /* page background */
+  --paper-2: #F2F2F0;   /* plates, cards, code chips */
+  --ink:     #141416;   /* main text */
+  --muted:   #66656B;   /* secondary text */
+  --rule:    #E4E4E1;   /* hairlines */
+  --accent:  #5B21B6;   /* the one accent */
 
   --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
   --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -18,15 +18,6 @@
   --max: 1120px;
   --gut: clamp(20px, 5vw, 64px);
   --bar: 66px;
-}
-
-:root[data-theme="dark"] {
-  --paper:   #12100E;
-  --paper-2: #1A1714;
-  --ink:     #F2EDE4;
-  --muted:   #A29889;
-  --rule:    #2A2622;
-  --accent:  #D46A46;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -109,7 +100,9 @@ ul { list-style: none; }
   height: 1px; background: var(--accent);
 }
 
-.bar-actions { display: flex; align-items: center; gap: 6px; }
+/* Holds only the hamburger now, so it stays out of the flow at desktop width —
+   otherwise its flex gap would push the nav 20px off the right margin. */
+.bar-actions { display: none; align-items: center; gap: 6px; }
 
 .icon-btn {
   width: 36px; height: 36px; display: grid; place-items: center;
@@ -119,10 +112,6 @@ ul { list-style: none; }
 }
 .icon-btn:hover { color: var(--ink); border-color: var(--rule); }
 .icon-btn svg { width: 18px; height: 18px; }
-
-.i-moon { display: none; }
-:root[data-theme="dark"] .i-sun  { display: none; }
-:root[data-theme="dark"] .i-moon { display: block; }
 
 .menu-btn { display: none; }
 
@@ -379,6 +368,7 @@ ul { list-style: none; }
   .about-grid { grid-template-columns: 1fr; }
   .about-text { max-width: none; }
 
+  .bar-actions { display: flex; }
   .menu-btn { display: grid; }
 
   .nav {

@@ -20,7 +20,7 @@ python -m http.server 5500
 |------|--------------|
 | `index.html` | All the content — topbar, hero, seven sections, footer. |
 | `style.css` | Colours, fonts and every layout rule. |
-| `script.js` | Theme toggle, mobile menu, scroll effects. |
+| `script.js` | Mobile menu and the scroll effects. |
 
 ## Make it yours
 
@@ -45,16 +45,17 @@ Everything comes from a handful of variables at the top of `style.css`:
 
 ```css
 :root {
-  --paper:  #FAF8F4;   /* page background */
-  --ink:    #14110E;   /* main text       */
-  --muted:  #6B635A;   /* secondary text  */
-  --rule:   #E4DED4;   /* hairlines       */
-  --accent: #A8452A;   /* the one accent  */
+  --paper:  #FAFAF9;   /* page background */
+  --ink:    #141416;   /* main text       */
+  --muted:  #66656B;   /* secondary text  */
+  --rule:   #E4E4E1;   /* hairlines       */
+  --accent: #5B21B6;   /* the one accent  */
 }
 ```
 
 Change `--accent` first — it's the fastest way to make the page feel like yours.
-The dark theme lives right below in the `:root[data-theme="dark"]` block.
+It's the only colour that carries any weight: the italic word in the headline, the
+section numbers, company names, link hovers and the text selection all read from it.
 
 ## Fonts
 
