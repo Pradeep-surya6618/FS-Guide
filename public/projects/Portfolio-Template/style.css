@@ -391,6 +391,8 @@ ul { list-style: none; }
     opacity: 0;
     visibility: hidden;
     transition: opacity .22s ease, transform .22s ease, visibility .22s;
+    max-height: calc(100vh - var(--bar));
+    overflow-y: auto;
   }
   .nav.open { transform: none; opacity: 1; visibility: visible; }
 
