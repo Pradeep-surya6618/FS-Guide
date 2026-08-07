@@ -196,6 +196,9 @@ ul { list-style: none; }
   letter-spacing: .04em;
   color: var(--ink);
 }
+/* ✏️ Using a photo instead of initials? Put an <img> inside .frame — it fills the
+   frame without stretching, and the inset border still draws on top. */
+.frame img { width: 100%; height: 100%; object-fit: cover; }
 
 .frame-cap {
   margin-top: 12px;

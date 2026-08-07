@@ -34,8 +34,10 @@ Search `index.html` for **✏️** — every spot you need to edit is marked.
 5. **Add a project** — copy one whole `<article class="proj-item">` block and change
    the number, title, description, tags and links.
 6. **Add a job or a degree** — copy one whole `<div class="rail">` block.
-7. **Photo instead of initials** — replace `<div class="frame"><span>AM</span></div>`
-   with `<img class="frame" src="me.jpg" alt="Your name">`.
+7. **Add a certificate** — copy one whole `<div class="cert">` block.
+8. **Photo instead of initials** — keep the frame and put a photo inside it:
+   `<div class="frame"><img src="me.jpg" alt="Your name"></div>`. Any shape works —
+   it's cropped to fill, and the thin inner border still draws on top.
 
 ## Change the colours
 
