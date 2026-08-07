@@ -135,10 +135,14 @@ extracting it yields a `Portfolio-Template/` directory containing the four files
 
 | Breakpoint | Behaviour |
 |---|---|
-| ≥ 1024px | Full two-column editorial layout. |
-| ≤ 900px | Hero stacks (portrait above text), projects collapse to one column. |
-| ≤ 720px | Hamburger menu replaces the inline nav; About and timeline rails collapse to single column. |
+| ≥ 901px | Full two-column editorial layout, inline nav. |
+| ≤ 900px | Hero stacks (portrait above text); About collapses to one column; the hamburger menu replaces the inline nav. |
+| ≤ 700px | Projects collapse to one column; the skills rows, fact list and timeline rails stack. |
 | ≤ 420px | Display type steps down three sizes; horizontal padding tightens. |
+
+The hamburger arrives at 900px rather than the narrower 720px first considered: the seven
+nav links plus the brand and two icon buttons need roughly 780px of bar, so an inline nav
+would overflow between 720px and 780px.
 
 The page must never scroll horizontally at any width from 320px up.
 
@@ -171,7 +175,7 @@ accommodate a fifth card.
 2. Toggle the theme, reload — the choice persists and there is no flash of the wrong
    theme.
 3. Resize from 1440px down to 320px — no horizontal scrollbar; the menu becomes a
-   hamburger at 720px and the hamburger opens and closes.
+   hamburger at 900px and the hamburger opens and closes.
 4. Open the landing page — the Frontend row shows five cards, and both new buttons work
    (Preview opens in a new tab, .zip downloads and extracts to a working folder).
 5. Confirm the zip contains all four files and that the extracted `index.html` opens
