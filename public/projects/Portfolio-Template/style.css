@@ -301,3 +301,42 @@ ul { list-style: none; }
 .arrow-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .arrow-link span { display: inline-block; transition: transform .2s ease; }
 .arrow-link:hover span { transform: translate(2px, -2px); }
+
+/* ---------- rail (experience + education) ---------- */
+.rail {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  gap: 10px clamp(20px, 4vw, 48px);
+  padding: 26px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.rail:first-of-type { border-top: 1px solid var(--rule); }
+
+.rail-date {
+  font-family: var(--mono); font-size: .68rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  padding-top: .5em;
+}
+.rail-body h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 1.4rem; line-height: 1.25;
+}
+.rail-body .org { font-size: .9rem; color: var(--accent); margin: 2px 0 8px; }
+.rail-body p:last-child { color: var(--muted); font-size: .95rem; max-width: 62ch; }
+
+/* ---------- certifications ---------- */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: clamp(16px, 2.5vw, 24px);
+}
+.cert { border: 1px solid var(--rule); padding: 22px; }
+.cert-issuer,
+.cert-year {
+  font-family: var(--mono); font-size: .66rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+.cert h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 1.3rem; line-height: 1.25; margin: 8px 0 10px;
+}
