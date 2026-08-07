@@ -363,3 +363,6 @@ ul { list-style: none; }
 .contact-mail:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
 .socials { display: flex; flex-wrap: wrap; gap: 12px 26px; }
+
+/* ---------- mobile menu (the drop-down itself arrives at the ≤900px breakpoint) ---------- */
+body.nav-open { overflow: hidden; }
