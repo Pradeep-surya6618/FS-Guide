@@ -83,7 +83,7 @@ the page degrades gracefully offline.
 
 | # | Section | Treatment |
 |---|---|---|
-| — | Topbar | Sticky. Name left, nav right, theme toggle. Hairline bottom rule; background blurs once scrolled past the hero. |
+| — | Topbar | Sticky. Name left, nav right, theme toggle. Once scrolled, a hairline bottom rule appears and the background becomes solid `--paper` — solid rather than frosted, because a translucent background plus a backdrop blur would be the glassmorphism this design rules out. |
 | — | Hero | Mono eyebrow `PORTFOLIO — 2026`, three-line serif headline with one italic phrase, short paragraph, `View work` and `Résumé` links, monogram portrait frame at the right. |
 | 01 | About | Two columns — a large serif paragraph left, a hairline-separated fact list right (Location, Focus, Status). |
 | 02 | Skills | Three labelled rows (Languages, Frontend, Tools) separated by hairlines. Deliberately not badge-soup. |

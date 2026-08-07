@@ -235,11 +235,11 @@ ul { list-style: none; }
   border-bottom: 1px solid transparent;
   transition: border-color .25s ease, background .25s ease;
 }
+/* Solid, not frosted — a translucent background plus a backdrop blur would be
+   glassmorphism, which the Global Constraints forbid. */
 .topbar.scrolled {
   border-bottom-color: var(--rule);
-  background: color-mix(in srgb, var(--paper) 82%, transparent);
-  backdrop-filter: saturate(1.4) blur(10px);
-  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  background: var(--paper);
 }
 
 .bar {
