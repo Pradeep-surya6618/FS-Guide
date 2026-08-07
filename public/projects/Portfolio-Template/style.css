@@ -86,9 +86,7 @@ ul { list-style: none; }
 }
 .topbar.scrolled {
   border-bottom-color: var(--rule);
-  background: color-mix(in srgb, var(--paper) 82%, transparent);
-  backdrop-filter: saturate(1.4) blur(10px);
-  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  background: var(--paper);
 }
 
 .bar {
