@@ -398,6 +398,20 @@ ul { list-style: none; }
   body.nav-open { overflow: hidden; }
 }
 
+/* Tablet. The hamburger arrives at 900px because the nav needs it, but the HERO
+   still has width to spare here — stacking it this early leaves a big empty block
+   beside the portrait. Keep the two columns and step the headline down instead.
+   Must stay after the 900px block: same specificity, so source order decides. */
+@media (min-width: 701px) and (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 44px);
+  }
+  .hero-portrait { justify-self: end; text-align: center; order: 0; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 2.9rem); }
+  .about-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+}
+
 @media (max-width: 700px) {
   .proj-grid { grid-template-columns: 1fr; gap: 40px; }
 
