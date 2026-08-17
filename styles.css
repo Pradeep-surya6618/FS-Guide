@@ -1523,6 +1523,13 @@ body.lp { padding-top: 96px; }  /* clear the floating bar */
 .lp-cta-btn { padding: 9px 16px; font-size: .9rem; border-radius: 11px; }
 .lp-cta-btn svg { width: 15px; height: 15px; }
 
+/* Five top-level nav items get tight just above the drawer breakpoint. Drop the
+   leading icons and squeeze the padding so labels never collide with brand/CTA. */
+@media (min-width: 901px) and (max-width: 1100px) {
+  body.lp .lp-nav-link { padding-inline: 9px; font-size: .86rem; gap: 5px; }
+  body.lp .lp-nav-link > svg:not(.chev) { display: none; }
+}
+
 /* tablet/mobile → hide desktop nav & CTA, show the hamburger drawer */
 @media (max-width: 900px) {
   body.lp .lp-nav { display: none; }
@@ -1748,6 +1755,54 @@ body.lp { padding-top: 96px; }  /* clear the floating bar */
 
 .proj-card.soon { justify-content: flex-start; }
 .soon-badge { align-self: flex-start; font-family: var(--font-mono); font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); background: var(--hover); padding: 4px 11px; border-radius: 999px; margin-top: auto; }
+
+/* ---- Tasks (practice exercises) ---- */
+.task-card { cursor: default; }
+
+/* the mockup bleeds to the card edges, so it sits above the card's radial glow */
+.task-shot {
+  position: relative; z-index: 1;
+  margin: -22px -22px 14px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--glass-border);
+}
+.task-shot svg { display: block; width: 100%; height: auto; }
+
+/* one hue per language, loosely following each language's own brand colour */
+.task-shot.t-html { color: #e34f26; }
+.task-shot.t-css  { color: #2563eb; }
+.task-shot.t-js   { color: #a16207; }
+:root[data-theme="dark"] .task-shot.t-html { color: #ff7a52; }
+:root[data-theme="dark"] .task-shot.t-css  { color: #60a5fa; }
+:root[data-theme="dark"] .task-shot.t-js   { color: #f5c542; }
+
+.task-meta { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+.lvl {
+  font-family: var(--font-mono); font-size: .64rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .09em;
+  padding: 3px 9px; border-radius: 999px;
+}
+.lvl.easy   { background: rgba(16,185,129,.14); color: #047857; }
+.lvl.medium { background: rgba(245,158,11,.16); color: #b45309; }
+.lvl.hard   { background: rgba(244,63,94,.14);  color: #be123c; }
+:root[data-theme="dark"] .lvl.easy   { color: #34d399; }
+:root[data-theme="dark"] .lvl.medium { color: #fbbf24; }
+:root[data-theme="dark"] .lvl.hard   { color: #fb7185; }
+.dur { font-family: var(--font-mono); font-size: .72rem; color: var(--text-faint); }
+
+/* p is flex:1 on .lp-card; the tags and link need to sit under it, not be pushed by it */
+.task-card p { flex: 0 0 auto; margin-bottom: 12px; }
+.task-tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 16px; }
+.task-tags li {
+  font-family: var(--font-mono); font-size: .68rem; color: var(--text-faint);
+  background: var(--hover); border: 1px solid var(--glass-border);
+  padding: 2px 8px; border-radius: 7px;
+}
+.task-go {
+  margin-top: auto; font-family: var(--font-mono);
+  font-size: .8rem; font-weight: 700; color: var(--accent); text-decoration: none;
+}
+.task-go:hover { text-decoration: underline; }
 
 /* Row 1: icon (left) + download (right) · Row 2: title · Row 3: PPTX */
 .mat-card { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0; padding: 18px; }
